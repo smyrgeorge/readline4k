@@ -39,8 +39,13 @@ A minimal REPL-style loop with history persistence:
 fun main() {
     val history = "history.txt" // Filesystem path to the history file.
 
+    // Configure the LineEditor.
+    val config = LineEditorConfig(
+        maxHistorySize = 100,
+    )
+
     // Create a new LineEditor instance.
-    val editor = LineEditor(linePrefix = "> ").also { le ->
+    val editor = LineEditor(linePrefix = "> ", config).also { le ->
         // Load the history from disk (throws LineEditorError if it fails).
         le.loadHistory(history).getOrThrow()
     }
@@ -92,6 +97,12 @@ kotlin {
 
 If you use only one native target, add the dependency to that target's Main source set (e.g., macosX64Main,
 linuxX64Main, or mingwX64Main).
+
+## Notes
+
+Under the hood, readline4k leverages the [rustyline](https://github.com/kkawakam/rustyline) project to provide
+comprehensive readline functionality, with communication between Kotlin and the Rust library handled through FFI (
+Foreign Function Interface).
 
 ## License
 

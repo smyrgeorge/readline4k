@@ -1,10 +1,16 @@
 import io.github.smyrgeorge.readline4k.LineEditor
+import io.github.smyrgeorge.readline4k.LineEditorConfig
 
 fun main() {
     val history = "history.txt" // Filesystem path to the history file.
 
+    // Configure the LineEditor.
+    val config = LineEditorConfig(
+        maxHistorySize = 100,
+    )
+
     // Create a new LineEditor instance.
-    val editor = LineEditor(linePrefix = "> ").also { le ->
+    val editor = LineEditor(linePrefix = "> ", config).also { le ->
         // Load the history from disk (throws LineEditorError if it fails).
         le.loadHistory(history).getOrThrow()
     }
