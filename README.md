@@ -18,28 +18,32 @@ Cross-platform Kotlin/Native readline library with history support for interacti
 
 🏠 [Homepage](https://smyrgeorge.github.io/) (under construction)
 
-## Features
+## Supported Platforms
 
-- Simple API: LineEditor with sensible defaults
-- Optional prompt prefix (default: "> ")
-- Persistent history: load, append entries, and save
-- Result-based API with typed errors (Eof, Interrupted, Unknown)
-- Kotlin 2.2 compatible; ships as a native library for desktop targets
+- Unix (tested on FreeBSD, Linux and macOS)
+- Windows
+    - cmd.exe
+    - Powershell
+
+### Note that:
+
+- Powershell ISE is not supported
+- Mintty (Cygwin/MinGW) is not supported
+- Highlighting / Colors are not supported on Windows < Windows 10 except with ConEmu and ColorMode::Forced.
 
 ## Quick start
 
-A minimal REPL-style loop with history persistence (mirrors the example project):
+A minimal REPL-style loop with history persistence:
 
 ```kotlin
 fun main() {
     val history = "history.txt"
-    val editor = LineEditor().also {
+    val editor = LineEditor(linePrefix = "> ").also {
         it.loadHistory(history)
     }
     while (true) {
-        print("> ")
         val line = editor.readLine().getOrElse { err ->
-            // err is a LineEditor.LineEditorError
+            // err is a LineEditorError
             println(err.message)
             break
         }
@@ -50,24 +54,7 @@ fun main() {
 }
 ```
 
-Notes:
-
-- You can customize the editor's prompt prefix via LineEditor(linePrefix = "my-app> ").
-- The example prints a prompt explicitly. Choose either to rely on the editor's prefix or print your own to avoid
-  duplicate prompts.
-- loadHistory() safely no-ops if the file does not exist.
-
-## API overview
-
-Public API (see LineEditor.kt):
-
-- constructor(linePrefix: String = "> ")
-- readLine(): Result<String> — Read a line; on failure, the Result contains LineEditorError
-- loadHistory(path: String) — Loads history from file if it exists
-- addHistoryEntry(entry: String) — Appends an entry to the in-memory history
-- saveHistory(path: String) — Saves history to file
-
-## Installation
+## Usage
 
 The library is published to Maven Central.
 Use the latest version shown by the badge above.
@@ -94,11 +81,6 @@ kotlin {
 
 If you use only one native target, add the dependency to that target's Main source set (e.g., macosX64Main,
 linuxX64Main, or mingwX64Main).
-
-## Example project
-
-A runnable example lives under examples/src/nativeMain/kotlin/Main.kt and demonstrates loading/saving history and
-echoing input lines.
 
 ## License
 
