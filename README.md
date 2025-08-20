@@ -23,37 +23,38 @@ Cross-platform Kotlin/Native readline library with history support for interacti
 - Simple API: LineEditor with sensible defaults
 - Optional prompt prefix (default: "> ")
 - Persistent history: load, append entries, and save
-- Returns null on EOF (e.g., Ctrl-D/Ctrl-Z) so loops can exit cleanly
+- Result-based API with typed errors (Eof, Interrupted, Unknown)
 - Kotlin 2.2 compatible; ships as a native library for desktop targets
 
 ## Quick start
 
-A minimal REPL-style loop with history persistence:
+A minimal REPL-style loop with history persistence (mirrors the example project):
 
 ```kotlin
 fun main() {
-    val historyFile = "history.txt"
-    val editor = LineEditor() // default prompt is "> "
-
-    // Load previous session history if available
-    editor.loadHistory(historyFile)
-
+    val history = "history.txt"
+    val editor = LineEditor().also {
+        it.loadHistory(history)
+    }
     while (true) {
-        // readLine() will render the prompt and handle editing/history keys
-        val line = editor.readLine() ?: break // EOF -> exit loop
+        print("> ")
+        val line = editor.readLine().getOrElse { err ->
+            // err is a LineEditor.LineEditorError
+            println(err.message)
+            break
+        }
         editor.addHistoryEntry(line)
         println(line)
     }
-
-    // Persist this session's history
-    editor.saveHistory(historyFile)
+    editor.saveHistory(history)
 }
 ```
 
 Notes:
 
-- You can customize the prompt: LineEditor(linePrefix = "my-app> ")
-- readLine() returns null on EOF (Ctrl-D on Unix, Ctrl-Z on Windows), allowing you to break the loop.
+- You can customize the editor's prompt prefix via LineEditor(linePrefix = "my-app> ").
+- The example prints a prompt explicitly. Choose either to rely on the editor's prefix or print your own to avoid
+  duplicate prompts.
 - loadHistory() safely no-ops if the file does not exist.
 
 ## API overview
@@ -61,7 +62,7 @@ Notes:
 Public API (see LineEditor.kt):
 
 - constructor(linePrefix: String = "> ")
-- readLine(): String? — Reads an edited line or null on EOF
+- readLine(): Result<String> — Read a line; on failure, the Result contains LineEditorError
 - loadHistory(path: String) — Loads history from file if it exists
 - addHistoryEntry(entry: String) — Appends an entry to the in-memory history
 - saveHistory(path: String) — Saves history to file

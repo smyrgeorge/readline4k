@@ -28,20 +28,6 @@ class LineEditor(
     fun saveHistory(path: String): Unit =
         editor_save_history(rl, path)
 
-    @Suppress("CanBeParameter")
-    class LineEditorError(
-        val code: Code,
-        message: String? = null,
-    ) : RuntimeException("[$code] :: $message") {
-        enum class Code {
-            // IMPORTANT: Do not change the order the errors.
-            // Error from the underlying driver:
-            Eof,
-            Interrupted,
-            Unknown
-        }
-    }
-
     private fun CPointer<ReadLineResult>?.toResult(): Result<String> {
         fun ReadLineResult.isError(): Boolean = error >= 0
         fun ReadLineResult.toError(): LineEditorError {
