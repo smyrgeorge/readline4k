@@ -12,8 +12,11 @@
 ![](https://img.shields.io/static/v1?label=&message=macOS&color=blue)
 ![](https://img.shields.io/static/v1?label=&message=Windows&color=blue)
 
-Readline4k is a minimal Kotlin/Native line editor for interactive console apps. It provides readline-style input with
-history support across Linux, macOS, and Windows.
+Cross-platform Kotlin/Native readline library with history support for interactive console apps.
+
+📖 [Documentation](https://smyrgeorge.github.io/readline4k/)
+
+🏠 [Homepage](https://smyrgeorge.github.io/) (under construction)
 
 ## Features
 
