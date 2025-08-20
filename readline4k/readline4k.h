@@ -23,8 +23,8 @@ void *new_default_editor(void);
 
 struct ReadLineResult *editor_read_line(void *rl, const char *prefix);
 
-void editor_load_history(void *rl, const char *path);
+struct ReadLineResult *editor_load_history(void *rl, const char *path);
 
 void editor_add_history_entry(void *rl, const char *entry);
 
-void editor_save_history(void *rl, const char *path);
+struct ReadLineResult *editor_save_history(void *rl, const char *path);

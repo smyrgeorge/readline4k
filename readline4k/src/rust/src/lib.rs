@@ -108,10 +108,11 @@ pub extern "C" fn editor_read_line(rl: *mut c_void, prefix: *const c_char) -> *m
 }
 
 #[no_mangle]
-pub extern "C" fn editor_load_history(rl: *mut c_void, path: *const c_char) {
+pub extern "C" fn editor_load_history(rl: *mut c_void, path: *const c_char) -> *mut ReadLineResult {
     let rl = unsafe { &mut *(rl as *mut Editor<(), FileHistory>) };
     let path = c_chars_to_str(path);
-    rl.load_history(path).unwrap();
+    let result = rl.load_history(path);
+    handle_simple_result(result)
 }
 
 #[no_mangle]
@@ -122,12 +123,35 @@ pub extern "C" fn editor_add_history_entry(rl: *mut c_void, entry: *const c_char
 }
 
 #[no_mangle]
-pub extern "C" fn editor_save_history(rl: *mut c_void, path: *const c_char) {
+pub extern "C" fn editor_save_history(rl: *mut c_void, path: *const c_char) -> *mut ReadLineResult {
     let rl = unsafe { &mut *(rl as *mut Editor<(), FileHistory>) };
     let path = c_chars_to_str(path);
-    rl.save_history(path).unwrap();
+    let result = rl.save_history(path);
+    handle_simple_result(result)
 }
 
-pub fn c_chars_to_str<'a>(c_chars: *const c_char) -> &'a str {
+fn handle_simple_result(res: Result<(), ReadlineError>) -> *mut ReadLineResult {
+    match res {
+        Ok(_) => {
+            let result = ReadLineResult {
+                ..Default::default()
+            };
+            result.leak()
+        }
+        Err(err) => {
+            let error_message = CString::new(format!("Unknown error: {:?}", err))
+                .unwrap()
+                .into_raw();
+            let result = ReadLineResult {
+                error: ERROR_UNKNOWN,
+                error_message,
+                ..Default::default()
+            };
+            result.leak()
+        }
+    }
+}
+
+fn c_chars_to_str<'a>(c_chars: *const c_char) -> &'a str {
     unsafe { CStr::from_ptr(c_chars).to_str().unwrap() }
 }

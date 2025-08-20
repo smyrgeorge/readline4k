@@ -37,19 +37,30 @@ A minimal REPL-style loop with history persistence:
 
 ```kotlin
 fun main() {
-    val history = "history.txt"
-    val editor = LineEditor(linePrefix = "> ").also {
-        it.loadHistory(history)
+    val history = "history.txt" // Filesystem path to the history file.
+
+    // Create a new LineEditor instance.
+    val editor = LineEditor(linePrefix = "> ").also { le ->
+        // Load the history from disk (throws LineEditorError if it fails).
+        le.loadHistory(history).getOrThrow()
     }
+
     while (true) {
-        val line = editor.readLine().getOrElse { err ->
-            // err is a LineEditorError
-            println(err.message)
-            break
-        }
-        editor.addHistoryEntry(line)
-        println(line)
+        // Read a line from the user.
+        editor.readLine()
+            .onFailure { err ->
+                // err is a LineEditorError
+                println(err.message)
+                break
+
+            }
+            .onSuccess { line ->
+                editor.addHistoryEntry(line)
+                println(line)
+            }
     }
+
+    // Save the history to disk.
     editor.saveHistory(history)
 }
 ```
