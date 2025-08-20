@@ -7,6 +7,7 @@ fun main() {
     // Configure the LineEditor.
     val config = LineEditorConfig(
         maxHistorySize = 100,
+        // See the documentation for more options.
     )
 
     // Create a new LineEditor instance.
