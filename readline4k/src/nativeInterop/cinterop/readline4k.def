@@ -1,0 +1,8 @@
+package = readline4k
+headers = readline4k.h
+compilerOpts = -I./src/rust/target
+staticLibraries = libreadline4k.a
+libraryPaths.macos_arm64 = ./src/rust/target/aarch64-apple-darwin/release
+libraryPaths.macos_x64 = ./src/rust/target/x86_64-apple-darwin/release
+libraryPaths.linux_arm64 = ./src/rust/target/aarch64-unknown-linux-gnu/release
+libraryPaths.linux_x64 = ./src/rust/target/x86_64-unknown-linux-gnu/release

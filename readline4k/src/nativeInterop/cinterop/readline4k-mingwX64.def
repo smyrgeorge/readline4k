@@ -1,0 +1,10 @@
+package = readline4k
+headers = readline4k.h
+compilerOpts = -I./src/rust/target
+staticLibraries = libreadline4k.a
+libraryPaths = ./src/rust/target/x86_64-pc-windows-gnu/release
+# The following was found with: export RUSTFLAGS="--print=native-static-libs"
+# https://github.com/HowardHinnant/date/issues/272
+linkerOpts = -lntdll -lole32
+# linkerOpts = -lsecur32 -lkernel32 -lbcrypt -ladvapi32 -lole32 -lkernel32 -ladvapi32 -lntdll -luserenv -lws2_32 -ldbghelp
+# linkerOpts = -lsecur32 -lkernel32 -lbcrypt -ladvapi32 -lwindows.0.52.0 -lkernel32 -ladvapi32 -lntdll -luserenv -lws2_32 -ldbghelp

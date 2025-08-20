@@ -1,0 +1,21 @@
+[package]
+name = "readline4k"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+crate-type = ["staticlib"]
+
+[profile.release]
+opt-level = "z"
+strip = true
+lto = true
+panic = "abort"
+
+[dependencies]
+# https://crates.io/crates/rustyline
+rustyline = "17.0.1"
+
+[build-dependencies]
+# https://crates.io/crates/cbindgen
+cbindgen = "0.29.0"
