@@ -11,7 +11,7 @@ import org.gradle.kotlin.dsl.configure
 class PublishConventions : Plugin<Project> {
 
     private val descriptions: Map<String, String> = mapOf(
-        "readline4k" to "",
+        "readline4k" to "Cross-platform Kotlin/Native readline library with history support for interactive console apps.",
     )
 
     override fun apply(project: Project) {

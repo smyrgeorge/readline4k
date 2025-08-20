@@ -17,9 +17,32 @@ typedef struct ReadLineResult {
   char *result;
 } ReadLineResult;
 
+typedef struct EditorConfig {
+  int32_t max_history_size;
+  int32_t history_duplicates;
+  bool history_ignore_space;
+  int32_t completion_type;
+  bool completion_show_all_if_ambiguous;
+  int32_t completion_prompt_limit;
+  int32_t key_seq_timeout;
+  int32_t edit_mode;
+  bool auto_add_history;
+  int32_t bell_style;
+  int32_t color_mode;
+  int32_t behavior;
+  uint8_t tab_stop;
+  uint8_t indent_size;
+  bool check_cursor_position;
+  bool enable_bracketed_paste;
+  bool enable_synchronized_output;
+  bool enable_signals;
+} EditorConfig;
+
 void free_read_line_result(struct ReadLineResult *ptr);
 
 void *new_default_editor(void);
+
+void *new_editor_with_config(const struct EditorConfig *cfg);
 
 struct ReadLineResult *editor_read_line(void *rl, const char *prefix);
 
