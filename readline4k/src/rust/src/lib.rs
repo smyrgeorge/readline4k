@@ -1,9 +1,56 @@
-use std::ffi::{c_char, c_void, CStr, CString};
+use std::ffi::{c_char, c_int, c_void, CStr, CString};
 use std::ptr::null_mut;
 
 use rustyline::error::ReadlineError;
 use rustyline::history::FileHistory;
 use rustyline::{DefaultEditor, Editor};
+
+pub const OK: c_int = -1;
+pub const ERROR_EOF: c_int = 0;
+pub const ERROR_INTERRUPTED: c_int = 1;
+pub const ERROR_UNKNOWN: c_int = 2;
+
+#[repr(C)]
+pub struct ReadLineResult {
+    pub error: c_int,
+    pub error_message: *mut c_char,
+    pub result: *mut c_char,
+}
+
+impl ReadLineResult {
+    pub fn leak(self) -> *mut ReadLineResult {
+        let result = Box::new(self);
+        let result = Box::leak(result);
+        result
+    }
+}
+
+impl Default for ReadLineResult {
+    fn default() -> Self {
+        Self {
+            error: OK,
+            error_message: null_mut(),
+            result: null_mut(),
+        }
+    }
+}
+
+#[no_mangle]
+pub extern "C" fn free_read_line_result(ptr: *mut ReadLineResult) {
+    let ptr: ReadLineResult = unsafe { *Box::from_raw(ptr) };
+
+    if ptr.error >= 0 {
+        let error_message = unsafe { CString::from_raw(ptr.error_message) };
+        std::mem::drop(error_message);
+    }
+
+    if ptr.result == null_mut() {
+        return;
+    }
+
+    let result = unsafe { CString::from_raw(ptr.result) };
+    std::mem::drop(result);
+}
 
 #[no_mangle]
 pub extern "C" fn new_default_editor() -> *mut c_void {
@@ -14,23 +61,48 @@ pub extern "C" fn new_default_editor() -> *mut c_void {
 }
 
 #[no_mangle]
-pub extern "C" fn editor_read_line(rl: *mut c_void, prefix: *const c_char) -> *mut c_char {
+pub extern "C" fn editor_read_line(rl: *mut c_void, prefix: *const c_char) -> *mut ReadLineResult {
     let rl = unsafe { &mut *(rl as *mut Editor<(), FileHistory>) };
     let prefix = c_chars_to_str(prefix);
-    let readline = rl.readline(prefix);
+    let readline: Result<String, ReadlineError> = rl.readline(prefix);
     match readline {
-        Ok(line) => CString::new(line).unwrap().into_raw(),
-        Err(ReadlineError::Interrupted) => {
-            println!("CTRL-C");
-            null_mut()
+        Ok(line) => {
+            let result = ReadLineResult {
+                result: CString::new(line).unwrap().into_raw(),
+                ..Default::default()
+            };
+            result.leak()
         }
         Err(ReadlineError::Eof) => {
-            println!("CTRL-D");
-            null_mut()
+            let error_message = CString::new("Reached end of file").unwrap().into_raw();
+            let result = ReadLineResult {
+                error: ERROR_EOF,
+                error_message,
+                ..Default::default()
+            };
+            result.leak()
+        }
+        Err(ReadlineError::Interrupted) => {
+            let error_message = CString::new("Received interrupt signal")
+                .unwrap()
+                .into_raw();
+            let result = ReadLineResult {
+                error: ERROR_INTERRUPTED,
+                error_message,
+                ..Default::default()
+            };
+            result.leak()
         }
         Err(err) => {
-            println!("Error: {:?}", err);
-            null_mut()
+            let error_message = CString::new(format!("Unknown error: {:?}", err))
+                .unwrap()
+                .into_raw();
+            let result = ReadLineResult {
+                error: ERROR_UNKNOWN,
+                error_message,
+                ..Default::default()
+            };
+            result.leak()
         }
     }
 }
