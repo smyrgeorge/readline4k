@@ -6,10 +6,11 @@ use rustyline::config::{
     Behavior, BellStyle, ColorMode, CompletionType, Config, Configurer, EditMode, HistoryDuplicates,
 };
 use rustyline::error::ReadlineError;
+use rustyline::highlight::Highlighter;
 use rustyline::hint::HistoryHinter;
 use rustyline::history::FileHistory;
 use rustyline::{DefaultEditor, Editor};
-use rustyline_derive::{Completer, Helper, Highlighter, Hinter, Validator};
+use rustyline_derive::{Completer, Helper, Hinter, Validator};
 
 pub const OK: c_int = -1;
 pub const ERROR_EOF: c_int = 0;
@@ -63,12 +64,19 @@ pub struct EditorConfig {
     pub enable_signals: bool,
 }
 
-#[derive(Helper, Completer, Hinter, Highlighter, Validator)]
+#[derive(Helper, Completer, Hinter, Validator)]
 pub struct FileCompleterHelper {
     #[rustyline(Completer)]
     completer: FilenameCompleter,
     #[rustyline(Hinter)]
     hinter: HistoryHinter,
+}
+
+impl Highlighter for FileCompleterHelper {
+    fn highlight_hint<'h>(&self, hint: &'h str) -> std::borrow::Cow<'h, str> {
+        // Color the hint in a dimmed gray style
+        format!("\x1b[90m{}\x1b[0m", hint).into()
+    }
 }
 
 #[no_mangle]
@@ -291,29 +299,35 @@ pub extern "C" fn free_file_completer_editor(ptr: *mut c_void) {
 fn map_config(cfg: &EditorConfig) -> Config {
     let history_dupes = match cfg.history_duplicates {
         0 => HistoryDuplicates::AlwaysAdd,
-        _ => HistoryDuplicates::IgnoreConsecutive,
+        1 => HistoryDuplicates::IgnoreConsecutive,
+        _ => panic!("Invalid history_duplicates value"),
     };
     let completion_type = match cfg.completion_type {
+        0 => CompletionType::Circular,
         1 => CompletionType::List,
-        _ => CompletionType::Circular,
+        _ => panic!("Invalid completion_type value"),
     };
     let edit_mode = match cfg.edit_mode {
+        0 => EditMode::Emacs,
         1 => EditMode::Vi,
-        _ => EditMode::Emacs,
+        _ => panic!("Invalid edit_mode value"),
     };
     let bell_style = match cfg.bell_style {
+        0 => BellStyle::Audible,
         1 => BellStyle::None,
         2 => BellStyle::Visible,
-        _ => BellStyle::Audible,
+        _ => panic!("Invalid bell_style value"),
     };
     let color_mode = match cfg.color_mode {
+        0 => ColorMode::Enabled,
         1 => ColorMode::Forced,
         2 => ColorMode::Disabled,
-        _ => ColorMode::Enabled,
+        _ => panic!("Invalid color_mode value"),
     };
     let behavior = match cfg.behavior {
+        0 => Behavior::Stdio,
         1 => Behavior::PreferTerm,
-        _ => Behavior::Stdio,
+        _ => panic!("Invalid behavior value"),
     };
     let keyseq_timeout: Option<u16> = if cfg.key_seq_timeout >= 0 {
         Some(cfg.key_seq_timeout as u16)
