@@ -20,7 +20,7 @@ Cross-platform Kotlin/Native readline library with history support for interacti
 
 ## Supported Platforms
 
-- Unix (tested on FreeBSD, Linux and macOS)
+- Unix (tested on FreeBSD, Linux, and macOS)
 - Windows
     - cmd.exe
     - Powershell
@@ -47,7 +47,7 @@ fun main() {
 
     // Create a new LineEditor instance.
     val editor = LineEditor(linePrefix = "> ", config).also { le ->
-        // Load the history from disk (throws LineEditorError if it fails).
+        // Load the history from the disk (throws LineEditorError if it fails).
         le.loadHistory(history).getOrThrow()
     }
 
@@ -70,6 +70,21 @@ fun main() {
     editor.saveHistory(history)
 }
 ```
+
+## Next steps
+
+Planned work and areas where contributions are welcome:
+
+- [ ] Completion API
+    - [ ] Public autocomplete interface and registration in the editor
+    - [ ] Incremental suggestions, cycling (next/previous), and “accept hint” behavior
+- [ ] Filesystem completer
+    - [ ] Cross‑platform path parsing, tilde and environment expansion, directory-only mode
+    - [ ] Hidden files toggle and suffix directories with a separator
+- [ ] Multiline input
+    - [ ] Continuation prompts, indentation preservation, and paste mode
+- [ ] Documentation and examples
+    - [ ] Small recipes for building REPLs, using history safely, and integrating auto-complete functionality
 
 ## Actions
 
@@ -210,7 +225,7 @@ kotlin {
     mingwX64()
 
     sourceSets {
-        // With default hierarchy, a shared nativeMain is available when you have multiple native targets
+        // With the default hierarchy, a shared nativeMain is available when you have multiple native targets
         val nativeMain by getting {
             dependencies {
                 implementation("io.github.smyrgeorge:readline4k:<latest>")
@@ -223,11 +238,11 @@ kotlin {
 If you use only one native target, add the dependency to that target's Main source set (e.g., macosX64Main,
 linuxX64Main, or mingwX64Main).
 
-## Notes
+## Acknowledgements
 
-Under the hood, readline4k leverages the [rustyline](https://github.com/kkawakam/rustyline) project to provide
-comprehensive readline functionality, with communication between Kotlin and the Rust library handled through FFI (
-Foreign Function Interface).
+Under the hood, `readline4k` leverages the [rustyline](https://github.com/kkawakam/rustyline) project to provide
+comprehensive readline functionality, with communication between Kotlin and the Rust library handled through FFI
+(Foreign Function Interface).
 
 ## License
 

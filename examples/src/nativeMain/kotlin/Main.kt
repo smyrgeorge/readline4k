@@ -12,7 +12,7 @@ fun main() {
 
     // Create a new LineEditor instance.
     val editor = LineEditor(linePrefix = "> ", config).also { le ->
-        // Load the history from disk (throws LineEditorError if it fails).
+        // Load the history from the disk (throws LineEditorError if it fails).
         le.loadHistory(history).getOrThrow()
     }
 
