@@ -18,6 +18,10 @@ Cross-platform Kotlin/Native readline library with history support for interacti
 
 🏠 [Homepage](https://smyrgeorge.github.io/) (under construction)
 
+## See it in action
+
+[![asciicast](https://asciinema.org/a/5WqK8cbZGcBaPa6KOA3QaGlWs.svg)](https://asciinema.org/a/5WqK8cbZGcBaPa6KOA3QaGlWs)
+
 ## Supported Platforms
 
 - Unix (tested on FreeBSD, Linux, and macOS)
