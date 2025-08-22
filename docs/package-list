@@ -3,3 +3,4 @@ $dokka.linkExtension:html
 
 module:readline4k
 io.github.smyrgeorge.readline4k
+io.github.smyrgeorge.readline4k.impl
