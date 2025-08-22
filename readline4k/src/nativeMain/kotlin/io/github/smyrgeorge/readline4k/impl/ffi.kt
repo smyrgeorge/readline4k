@@ -24,14 +24,14 @@ internal fun CPointer<ReadLineResult>?.toStringResult(): Result<String> {
     }
 }
 
-internal fun ReadLineResult.isError(): Boolean = error >= 0
-internal fun ReadLineResult.toError(): LineEditorError {
+private fun ReadLineResult.isError(): Boolean = error >= 0
+private fun ReadLineResult.toError(): LineEditorError {
     val code = LineEditorError.Code.entries[error]
     val message = error_message?.toKString()
     return LineEditorError(code, message)
 }
 
-internal inline fun <T> CPointer<ReadLineResult>?.use(block: (ReadLineResult) -> T): T {
+private inline fun <T> CPointer<ReadLineResult>?.use(block: (ReadLineResult) -> T): T {
     try {
         return this?.pointed?.let(block)
             ?: error("Invalid ReadLineResult pointer: cannot dereference null pointer")

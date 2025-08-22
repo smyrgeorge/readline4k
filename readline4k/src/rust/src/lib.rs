@@ -1,14 +1,15 @@
 use std::ffi::{c_char, c_int, c_void, CStr, CString};
 use std::ptr::null_mut;
 
+use rustyline::completion::FilenameCompleter;
 use rustyline::config::{
-    Behavior as RBehavior, BellStyle as RBellStyle, ColorMode as RColorMode,
-    CompletionType as RCompletionType, Config as RConfig, Configurer, EditMode as REditMode,
-    HistoryDuplicates as RHistoryDupes,
+    Behavior, BellStyle, ColorMode, CompletionType, Config, Configurer, EditMode, HistoryDuplicates,
 };
 use rustyline::error::ReadlineError;
+use rustyline::hint::HistoryHinter;
 use rustyline::history::FileHistory;
 use rustyline::{DefaultEditor, Editor};
+use rustyline_derive::{Completer, Helper, Highlighter, Hinter, Validator};
 
 pub const OK: c_int = -1;
 pub const ERROR_EOF: c_int = 0;
@@ -62,6 +63,14 @@ pub struct EditorConfig {
     pub enable_signals: bool,
 }
 
+#[derive(Helper, Completer, Hinter, Highlighter, Validator)]
+pub struct FileCompleterHelper {
+    #[rustyline(Completer)]
+    completer: FilenameCompleter,
+    #[rustyline(Hinter)]
+    hinter: HistoryHinter,
+}
+
 #[no_mangle]
 pub extern "C" fn free_read_line_result(ptr: *mut ReadLineResult) {
     let ptr: ReadLineResult = unsafe { *Box::from_raw(ptr) };
@@ -102,6 +111,102 @@ pub extern "C" fn editor_read_line(rl: *mut c_void, prefix: *const c_char) -> *m
     let rl = unsafe { &mut *(rl as *mut Editor<(), FileHistory>) };
     let prefix = c_chars_to_str(prefix);
     let readline: Result<String, ReadlineError> = rl.readline(prefix);
+    handle_readline_result(readline)
+}
+
+#[no_mangle]
+pub extern "C" fn editor_load_history(rl: *mut c_void, path: *const c_char) -> *mut ReadLineResult {
+    let rl = unsafe { &mut *(rl as *mut Editor<(), FileHistory>) };
+    let path = c_chars_to_str(path);
+    let result = rl.load_history(path);
+    handle_simple_result(result)
+}
+
+#[no_mangle]
+pub extern "C" fn editor_add_history_entry(rl: *mut c_void, entry: *const c_char) {
+    let rl = unsafe { &mut *(rl as *mut Editor<(), FileHistory>) };
+    let entry = c_chars_to_str(entry);
+    rl.add_history_entry(entry).unwrap();
+}
+
+#[no_mangle]
+pub extern "C" fn editor_save_history(rl: *mut c_void, path: *const c_char) -> *mut ReadLineResult {
+    let rl = unsafe { &mut *(rl as *mut Editor<(), FileHistory>) };
+    let path = c_chars_to_str(path);
+    let result = rl.save_history(path);
+    handle_simple_result(result)
+}
+
+#[no_mangle]
+pub extern "C" fn editor_clear_history(rl: *mut c_void) -> *mut ReadLineResult {
+    let rl = unsafe { &mut *(rl as *mut Editor<(), FileHistory>) };
+    let result = rl.clear_history();
+    handle_simple_result(result)
+}
+
+#[no_mangle]
+pub extern "C" fn new_file_completer_editor_with_config(cfg: *const EditorConfig) -> *mut c_void {
+    let cfg = unsafe { &*cfg };
+    let cfg = map_config(cfg);
+    let helper = FileCompleterHelper {
+        completer: FilenameCompleter::new(),
+        hinter: HistoryHinter {},
+    };
+    let mut rl: Editor<FileCompleterHelper, FileHistory> = Editor::with_config(cfg).unwrap();
+    rl.set_helper(Some(helper));
+    let rl = Box::new(rl);
+    let rl = Box::leak(rl);
+    rl as *mut _ as *mut c_void
+}
+
+#[no_mangle]
+pub extern "C" fn file_completer_editor_read_line(
+    rl: *mut c_void,
+    prefix: *const c_char,
+) -> *mut ReadLineResult {
+    let rl = unsafe { &mut *(rl as *mut Editor<FileCompleterHelper, FileHistory>) };
+    let prefix = c_chars_to_str(prefix);
+    let readline: Result<String, ReadlineError> = rl.readline(prefix);
+    handle_readline_result(readline)
+}
+
+#[no_mangle]
+pub extern "C" fn file_completer_editor_load_history(
+    rl: *mut c_void,
+    path: *const c_char,
+) -> *mut ReadLineResult {
+    let rl = unsafe { &mut *(rl as *mut Editor<FileCompleterHelper, FileHistory>) };
+    let path = c_chars_to_str(path);
+    let result = rl.load_history(path);
+    handle_simple_result(result)
+}
+
+#[no_mangle]
+pub extern "C" fn file_completer_editor_add_history_entry(rl: *mut c_void, entry: *const c_char) {
+    let rl = unsafe { &mut *(rl as *mut Editor<FileCompleterHelper, FileHistory>) };
+    let entry = c_chars_to_str(entry);
+    rl.add_history_entry(entry).unwrap();
+}
+
+#[no_mangle]
+pub extern "C" fn file_completer_editor_save_history(
+    rl: *mut c_void,
+    path: *const c_char,
+) -> *mut ReadLineResult {
+    let rl = unsafe { &mut *(rl as *mut Editor<FileCompleterHelper, FileHistory>) };
+    let path = c_chars_to_str(path);
+    let result = rl.save_history(path);
+    handle_simple_result(result)
+}
+
+#[no_mangle]
+pub extern "C" fn file_completer_editor_clear_history(rl: *mut c_void) -> *mut ReadLineResult {
+    let rl = unsafe { &mut *(rl as *mut Editor<FileCompleterHelper, FileHistory>) };
+    let result = rl.clear_history();
+    handle_simple_result(result)
+}
+
+fn handle_readline_result(readline: Result<String, ReadlineError>) -> *mut ReadLineResult {
     match readline {
         Ok(line) => {
             let result = ReadLineResult {
@@ -144,29 +249,6 @@ pub extern "C" fn editor_read_line(rl: *mut c_void, prefix: *const c_char) -> *m
     }
 }
 
-#[no_mangle]
-pub extern "C" fn editor_load_history(rl: *mut c_void, path: *const c_char) -> *mut ReadLineResult {
-    let rl = unsafe { &mut *(rl as *mut Editor<(), FileHistory>) };
-    let path = c_chars_to_str(path);
-    let result = rl.load_history(path);
-    handle_simple_result(result)
-}
-
-#[no_mangle]
-pub extern "C" fn editor_add_history_entry(rl: *mut c_void, entry: *const c_char) {
-    let rl = unsafe { &mut *(rl as *mut Editor<(), FileHistory>) };
-    let entry = c_chars_to_str(entry);
-    rl.add_history_entry(entry).unwrap();
-}
-
-#[no_mangle]
-pub extern "C" fn editor_save_history(rl: *mut c_void, path: *const c_char) -> *mut ReadLineResult {
-    let rl = unsafe { &mut *(rl as *mut Editor<(), FileHistory>) };
-    let path = c_chars_to_str(path);
-    let result = rl.save_history(path);
-    handle_simple_result(result)
-}
-
 fn handle_simple_result(res: Result<(), ReadlineError>) -> *mut ReadLineResult {
     match res {
         Ok(_) => {
@@ -193,32 +275,45 @@ fn c_chars_to_str<'a>(c_chars: *const c_char) -> &'a str {
     unsafe { CStr::from_ptr(c_chars).to_str().unwrap() }
 }
 
-fn map_config(cfg: &EditorConfig) -> RConfig {
+#[no_mangle]
+pub extern "C" fn free_editor(ptr: *mut c_void) {
+    let _editor: Box<Editor<(), FileHistory>> = unsafe { Box::from_raw(ptr as *mut _) };
+    // Box will be dropped automatically
+}
+
+#[no_mangle]
+pub extern "C" fn free_file_completer_editor(ptr: *mut c_void) {
+    let _editor: Box<Editor<FileCompleterHelper, FileHistory>> =
+        unsafe { Box::from_raw(ptr as *mut _) };
+    // Box will be dropped automatically
+}
+
+fn map_config(cfg: &EditorConfig) -> Config {
     let history_dupes = match cfg.history_duplicates {
-        0 => RHistoryDupes::AlwaysAdd,
-        _ => RHistoryDupes::IgnoreConsecutive,
+        0 => HistoryDuplicates::AlwaysAdd,
+        _ => HistoryDuplicates::IgnoreConsecutive,
     };
     let completion_type = match cfg.completion_type {
-        1 => RCompletionType::List,
-        _ => RCompletionType::Circular,
+        1 => CompletionType::List,
+        _ => CompletionType::Circular,
     };
     let edit_mode = match cfg.edit_mode {
-        1 => REditMode::Vi,
-        _ => REditMode::Emacs,
+        1 => EditMode::Vi,
+        _ => EditMode::Emacs,
     };
     let bell_style = match cfg.bell_style {
-        1 => RBellStyle::None,
-        2 => RBellStyle::Visible,
-        _ => RBellStyle::Audible,
+        1 => BellStyle::None,
+        2 => BellStyle::Visible,
+        _ => BellStyle::Audible,
     };
     let color_mode = match cfg.color_mode {
-        1 => RColorMode::Forced,
-        2 => RColorMode::Disabled,
-        _ => RColorMode::Enabled,
+        1 => ColorMode::Forced,
+        2 => ColorMode::Disabled,
+        _ => ColorMode::Enabled,
     };
     let behavior = match cfg.behavior {
-        1 => RBehavior::PreferTerm,
-        _ => RBehavior::Stdio,
+        1 => Behavior::PreferTerm,
+        _ => Behavior::Stdio,
     };
     let keyseq_timeout: Option<u16> = if cfg.key_seq_timeout >= 0 {
         Some(cfg.key_seq_timeout as u16)
@@ -226,13 +321,13 @@ fn map_config(cfg: &EditorConfig) -> RConfig {
         None
     };
 
-    let mut builder = RConfig::builder();
+    let mut builder = Config::builder();
     builder = builder
         .max_history_size(cfg.max_history_size.max(0) as usize)
         .unwrap();
     // Fallback to boolean API for duplicates handling
     builder = builder
-        .history_ignore_dups(!matches!(history_dupes, RHistoryDupes::AlwaysAdd))
+        .history_ignore_dups(!matches!(history_dupes, HistoryDuplicates::AlwaysAdd))
         .unwrap();
     builder = builder.history_ignore_space(cfg.history_ignore_space);
     builder = builder.completion_type(completion_type);

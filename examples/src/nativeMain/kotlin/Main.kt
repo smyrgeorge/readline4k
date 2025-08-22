@@ -1,5 +1,5 @@
-import io.github.smyrgeorge.readline4k.LineEditor
 import io.github.smyrgeorge.readline4k.LineEditorConfig
+import io.github.smyrgeorge.readline4k.impl.FileCompleterLineEditor
 
 fun main() {
     val history = "history.txt" // Filesystem path to the history file.
@@ -11,10 +11,13 @@ fun main() {
     )
 
     // Create a new LineEditor instance.
-    val editor = LineEditor(linePrefix = "> ", config).also { le ->
+    val editor = FileCompleterLineEditor(linePrefix = "> ", config).also { le ->
         // Load the history from the disk (throws LineEditorError if it fails).
         le.loadHistory(history).getOrThrow()
     }
+
+    println("Welcome to the LineEditor example!")
+    println("Press Ctrl+C to exit")
 
     while (true) {
         // Read a line from the user.

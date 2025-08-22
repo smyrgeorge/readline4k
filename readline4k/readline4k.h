@@ -51,3 +51,21 @@ struct ReadLineResult *editor_load_history(void *rl, const char *path);
 void editor_add_history_entry(void *rl, const char *entry);
 
 struct ReadLineResult *editor_save_history(void *rl, const char *path);
+
+struct ReadLineResult *editor_clear_history(void *rl);
+
+void *new_file_completer_editor_with_config(const struct EditorConfig *cfg);
+
+struct ReadLineResult *file_completer_editor_read_line(void *rl, const char *prefix);
+
+struct ReadLineResult *file_completer_editor_load_history(void *rl, const char *path);
+
+void file_completer_editor_add_history_entry(void *rl, const char *entry);
+
+struct ReadLineResult *file_completer_editor_save_history(void *rl, const char *path);
+
+struct ReadLineResult *file_completer_editor_clear_history(void *rl);
+
+void free_editor(void *ptr);
+
+void free_file_completer_editor(void *ptr);

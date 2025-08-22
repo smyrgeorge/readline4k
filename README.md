@@ -50,10 +50,13 @@ fun main() {
     )
 
     // Create a new LineEditor instance.
-    val editor = LineEditor(linePrefix = "> ", config).also { le ->
+    val editor = SimpleLineEditor(linePrefix = "> ", config).also { le ->
         // Load the history from the disk (throws LineEditorError if it fails).
         le.loadHistory(history).getOrThrow()
     }
+
+    println("Welcome to the LineEditor example!")
+    println("Press Ctrl+C to exit")
 
     while (true) {
         // Read a line from the user.

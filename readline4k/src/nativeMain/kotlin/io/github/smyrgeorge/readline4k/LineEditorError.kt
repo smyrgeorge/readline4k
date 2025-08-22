@@ -21,4 +21,9 @@ class LineEditorError(
         Interrupted,
         Unknown
     }
+
+    companion object {
+        internal fun couldNotInstantiateTheEditor(): Nothing =
+            throw LineEditorError(Code.Unknown, "Could not instantiate the editor.")
+    }
 }
