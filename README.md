@@ -81,8 +81,8 @@ fun main() {
     ).also { editor ->
         // Set up the completer and highlighter.
         editor
-            .withCompleter(SimpleFileCompleter()) // Provides file completion.
-            .withHighlighter(SimpleHighlighter()) // Provides color highlighting.
+            .withCompleter(SimpleFileCompleter()) // Provides file completion (optional).
+            .withHighlighter(SimpleHighlighter()) // Provides color highlighting (optional).
 
         // Load the history from the disk (throws LineEditorError if it fails).
         editor.loadHistory(history).getOrThrow()
@@ -110,21 +110,6 @@ fun main() {
     editor.saveHistory(history)
 }
 ```
-
-## Next steps
-
-Planned work and areas where contributions are welcome:
-
-- [x] Completion API
-    - [x] Public autocomplete interface and registration in the editor
-    - [x] Incremental suggestions, cycling (next/previous), and “accept hint” behavior
-- [x] File completer
-    - [x] Cross‑platform path parsing, tilde and environment expansion, directory-only mode
-    - [x] Show hidden files only if the request starts with '.'
-- [ ] Multiline input
-    - [ ] Continuation prompts, indentation preservation, and paste mode
-- [ ] Documentation and examples
-    - [ ] Small recipes for building REPLs, using history safely, and integrating auto-complete functionality
 
 ## Actions
 

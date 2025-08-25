@@ -21,8 +21,8 @@ fun main() {
     ).also { editor ->
         // Set up the completer and highlighter.
         editor
-            .withCompleter(SimpleFileCompleter()) // Provides file completion.
-            .withHighlighter(SimpleHighlighter()) // Provides color highlighting.
+            .withCompleter(SimpleFileCompleter()) // Provides file completion (optional).
+            .withHighlighter(SimpleHighlighter()) // Provides color highlighting (optional).
 
         // Load the history from the disk (throws LineEditorError if it fails).
         editor.loadHistory(history).getOrThrow()

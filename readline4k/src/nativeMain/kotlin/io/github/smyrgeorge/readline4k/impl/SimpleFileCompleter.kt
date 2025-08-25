@@ -11,15 +11,30 @@ import kotlinx.io.files.SystemPathSeparator
 import platform.posix.getenv
 
 /**
- * A simple filesystem-based completer.
+ * A filesystem-aware [Completer] that suggests file and directory paths.
  *
- * It completes the last whitespace-delimited token in the current line as a file path.
- * - Supports relative and absolute paths.
- * - Expands a leading "~/" to the user's home directory for lookup, but preserves it in what is displayed.
- * - Hides dotfiles unless the prefix itself starts with a dot.
- * - Appends a trailing "/" to directory candidates.
+ * Behavior:
+ * - Completes only the current token, where tokens are separated by whitespace.
+ * - Supports relative segments and tilde ("~/") expansion for lookup.
+ * - Filters dotfiles unless the typed prefix itself starts with '.'.
+ * - Appends the platform path separator to directory suggestions to ease further navigation.
+ * - Sorts suggestions lexicographically.
+ *
+ * Examples:
+ * - Input: "cat src/na", caret at end → suggestions like "src/nativeMain/", "src/nativeTest/".
+ * - Input: "open ~/<tab>" → expands HOME for listing only; suggestions contain user folders.
+ *
+ * Note: Directory detection is best-effort by checking if it can be listed via `SystemFileSystem.list`.
  */
 class SimpleFileCompleter : Completer {
+    /**
+     * Produces completion suggestions based on the current token under the caret.
+     *
+     * @param line The full input line.
+     * @param pos The caret position within [line].
+     * @return A pair of (startIndex, suggestions) where startIndex is the index within [line]
+     *         where the replacement should begin, and suggestions are candidate strings.
+     */
     override fun complete(line: String, pos: Int): Pair<Int, List<String>> {
         val start = lastTokenStart(line, pos)
         val token = safeSubstring(line, start, pos)
