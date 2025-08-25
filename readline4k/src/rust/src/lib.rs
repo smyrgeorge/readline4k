@@ -414,6 +414,24 @@ pub extern "C" fn editor_set_cursor_visibility(rl: *mut c_void, visible: bool) {
 }
 
 #[no_mangle]
+pub extern "C" fn editor_set_auto_add_history(rl: *mut c_void, value: bool) {
+    let rl = unsafe { &mut *(rl as *mut Editor<CustomHelper, FileHistory>) };
+    rl.set_auto_add_history(value);
+}
+
+#[no_mangle]
+pub extern "C" fn editor_set_color_mode(rl: *mut c_void, value: c_int) {
+    let rl = unsafe { &mut *(rl as *mut Editor<CustomHelper, FileHistory>) };
+    let color_mode = match value {
+        0 => ColorMode::Enabled,
+        2 => ColorMode::Forced,
+        3 => ColorMode::Disabled,
+        _ => panic!("Invalid color mode value"),
+    };
+    rl.set_color_mode(color_mode);
+}
+
+#[no_mangle]
 pub extern "C" fn free_editor(ptr: *mut c_void) {
     let _editor: Box<Editor<CustomHelper, FileHistory>> = unsafe { Box::from_raw(ptr as *mut _) };
     // Box will be dropped automatically

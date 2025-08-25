@@ -74,6 +74,10 @@ struct ReadLineResult *editor_clear_screen(void *rl);
 
 void editor_set_cursor_visibility(void *rl, bool visible);
 
+void editor_set_auto_add_history(void *rl, bool value);
+
+void editor_set_color_mode(void *rl, int value);
+
 void free_editor(void *ptr);
 
 extern void free(void *ptr);

@@ -99,6 +99,27 @@ abstract class AbstractLineEditor(
     fun setCursorVisibility(visible: Boolean) = editor_set_cursor_visibility(rl, visible)
 
     /**
+     * Enable or disable automatic addition of accepted lines to the history buffer.
+     *
+     * When enabled, every successful [readLine] call will append the produced line to history,
+     * subject to the history-related options in [config] (e.g., size, duplicate policy).
+     *
+     * @param value true to enable auto-add; false to require manual calls to [addHistoryEntry].
+     */
+    fun setAutoAddHistory(value: Boolean) = editor_set_auto_add_history(rl, value)
+
+    /**
+     * Set the color rendering mode used by the editor for prompts, hints, and highlights.
+     *
+     * This controls how ANSI color sequences are produced or suppressed based on the selected
+     * [LineEditorConfig.ColorMode]. Typically you would choose AUTO to respect terminal support,
+     * FORCE to always emit colors, or NONE to disable colors entirely.
+     *
+     * @param value The desired color mode.
+     */
+    fun setColorMode(value: LineEditorConfig.ColorMode) = editor_set_color_mode(rl, value.ordinal)
+
+    /**
      * Install a [Completer] which will be consulted during completion (e.g., Tab).
      * Returns this editor instance for chaining.
      */
