@@ -21,10 +21,6 @@ Cross-platform Kotlin/Native readline library with history support for interacti
 > [!IMPORTANT]  
 > The project is in a very early stage; thus, breaking changes should be expected.
 
-## See it in action
-
-[![asciicast](https://asciinema.org/a/5WqK8cbZGcBaPa6KOA3QaGlWs.svg)](https://asciinema.org/a/5WqK8cbZGcBaPa6KOA3QaGlWs)
-
 ## Supported Platforms
 
 - Unix (tested on FreeBSD, Linux, and macOS)
@@ -49,13 +45,22 @@ fun main() {
     // Configure the LineEditor.
     val config = LineEditorConfig(
         maxHistorySize = 100,
+        completionType = CompletionType.LIST,
         // See the documentation for more options.
     )
 
     // Create a new LineEditor instance.
-    val editor = SimpleLineEditor(linePrefix = "> ", config).also { le ->
+    val editor = SimpleLineEditor(
+        linePrefix = "> ",
+        config = config,
+    ).also { editor ->
+        // Set up the completer and highlighter.
+        editor
+            .withCompleter(SimpleFileCompleter()) // Provides file completion.
+            .withHighlighter(SimpleHighlighter()) // Provides color highlighting.
+
         // Load the history from the disk (throws LineEditorError if it fails).
-        le.loadHistory(history).getOrThrow()
+        editor.loadHistory(history).getOrThrow()
     }
 
     println("Welcome to the LineEditor example!")
@@ -85,11 +90,11 @@ fun main() {
 
 Planned work and areas where contributions are welcome:
 
-- [ ] Completion API
-    - [ ] Public autocomplete interface and registration in the editor
-    - [ ] Incremental suggestions, cycling (next/previous), and “accept hint” behavior
-- [ ] Filesystem completer
-    - [ ] Cross‑platform path parsing, tilde and environment expansion, directory-only mode
+- [x] Completion API
+    - [x] Public autocomplete interface and registration in the editor
+    - [x] Incremental suggestions, cycling (next/previous), and “accept hint” behavior
+- [ ] File completer
+    - [x] Cross‑platform path parsing, tilde and environment expansion, directory-only mode
     - [ ] Hidden files toggle and suffix directories with a separator
 - [ ] Multiline input
     - [ ] Continuation prompts, indentation preservation, and paste mode

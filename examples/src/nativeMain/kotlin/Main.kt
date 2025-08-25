@@ -1,8 +1,8 @@
 import io.github.smyrgeorge.readline4k.LineEditorConfig
 import io.github.smyrgeorge.readline4k.LineEditorConfig.CompletionType
-import io.github.smyrgeorge.readline4k.impl.CustomLineEditor
+import io.github.smyrgeorge.readline4k.impl.SimpleFileCompleter
 import io.github.smyrgeorge.readline4k.impl.SimpleHighlighter
-import io.github.smyrgeorge.readline4k.tools.Completer
+import io.github.smyrgeorge.readline4k.impl.SimpleLineEditor
 
 fun main() {
     val history = "history.txt" // Filesystem path to the history file.
@@ -15,20 +15,17 @@ fun main() {
     )
 
     // Create a new LineEditor instance.
-    val editor = CustomLineEditor(
+    val editor = SimpleLineEditor(
         linePrefix = "> ",
         config = config,
-    ).also { le ->
-        // Load the history from the disk (throws LineEditorError if it fails).
-        le.withCompleter(
-            object : Completer {
-                override fun complete(line: String, pos: Int): Pair<Int, List<String>> {
-                    return 0 to listOf("test-1", "test-2", "test-3", "test-4")
-                }
-            }
-        ).withHighlighter(SimpleHighlighter())
+    ).also { editor ->
+        // Set up the completer and highlighter.
+        editor
+            .withCompleter(SimpleFileCompleter()) // Provides file completion.
+            .withHighlighter(SimpleHighlighter()) // Provides color highlighting.
 
-        le.loadHistory(history).getOrThrow()
+        // Load the history from the disk (throws LineEditorError if it fails).
+        editor.loadHistory(history).getOrThrow()
     }
 
     println("Welcome to the LineEditor example!")

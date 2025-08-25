@@ -1,107 +1,128 @@
 package io.github.smyrgeorge.readline4k
 
-import kotlinx.cinterop.COpaquePointer
-import kotlinx.cinterop.CValue
-import kotlinx.cinterop.ExperimentalForeignApi
-import kotlinx.cinterop.cValue
-import readline4k.EditorConfig
+import io.github.smyrgeorge.readline4k.LineEditorError.Companion.couldNotInstantiateTheEditor
+import io.github.smyrgeorge.readline4k.impl.*
+import io.github.smyrgeorge.readline4k.tools.Completer
+import io.github.smyrgeorge.readline4k.tools.Highlighter
+import kotlinx.cinterop.*
+import kotlinx.io.files.Path
+import kotlinx.io.files.SystemFileSystem
+import readline4k.*
 
 /**
- * Abstract base class for creating a line-based text editor with command history and configurable behavior.
+ * Abstract base for interactive line editors backed by a native engine.
  *
- * This class provides an interface to handle user input line by line, apply customizable configurations,
- * support command history management, and interact with a native backend for advanced input handling.
- * Subclasses are expected to provide specific implementations.
+ * This class wires the Kotlin API to the underlying native implementation and
+ * exposes a small, composable API for reading input lines, managing history,
+ * and plugging in completion and highlighting.
+ *
+ * Typical usage:
+ * - Instantiate a concrete editor (e.g., SimpleLineEditor) with a prompt prefix and optional [config].
+ * - Optionally attach a [Completer] via [withCompleter] and/or a [Highlighter] via [withHighlighter].
+ * - Call [readLine] in a loop; handle the returned [Result].
+ * - Optionally persist history with [loadHistory] and [saveHistory].
+ *
+ * Notes on behavior and threading:
+ * - All operations interact with a native resource created at construction time. The resource is
+ *   freed by the underlying runtime when the process exits; you do not need to close it manually.
+ * - Instances are not intended to be used concurrently from multiple threads.
+ * - Methods returning Result wrap native errors into [LineEditorError].
+ *
+ * @property linePrefix The prompt/prefix displayed before each input (e.g., "> ").
+ * @property config The immutable configuration used to initialize the native editor.
  */
+@Suppress("unused")
 @OptIn(ExperimentalForeignApi::class)
-abstract class AbstractLineEditor {
-    /**
-     * Represents the prefix added to each line of input during editing.
-     *
-     * The `linePrefix` is used to visually distinguish the input line
-     * when displaying it to the user, typically indicating the start
-     * of input and providing contextual information or prompting behavior.
-     *
-     * This property is defined as an abstract member, allowing subclasses
-     * to specify their own prefix string.
-     */
-    abstract val linePrefix: String
+abstract class AbstractLineEditor(
+    val linePrefix: String,
+    val config: LineEditorConfig,
+) {
+    private val holder: CallbacksHolder = CallbacksHolder()
+    private val holderRef: StableRef<CallbacksHolder> = StableRef.create(holder)
+    private val holderPointer: COpaquePointer = holderRef.asCPointer()
+
+    private val rl: COpaquePointer = memScoped {
+        val cfg: CValue<EditorConfig> = config.toCValue()
+        new_editor_with_config(cfg.ptr) ?: couldNotInstantiateTheEditor()
+    }
 
     /**
-     * The configuration settings applied to the line editor.
+     * Read a single line from the user.
      *
-     * This configuration governs various aspects of the line editor's behavior,
-     * such as history management, editing mode, tab completion, and visual settings.
-     * The settings are encapsulated in a [LineEditorConfig] data class that allows
-     * customization of features like history size, colorization, and input handling.
+     * The native editor renders [linePrefix], processes key bindings according to [config],
+     * applies optional completion/highlighting if configured, and returns the accepted line.
+     *
+     * Returns:
+     * - Result.success(String) with the user input when a line is accepted.
+     * - Result.failure(LineEditorError) when the input is interrupted (e.g., Ctrl-C), EOF, or
+     *   an unknown native error occurs. Inspect [LineEditorError.code].
      */
-    abstract val config: LineEditorConfig
+    fun readLine(): Result<String> = editor_read_line(rl, linePrefix).toStringResult()
 
     /**
-     * Represents a low-level pointer to the native line editor instance.
+     * Load history entries from the given file [path].
      *
-     * This pointer is used internally to interface with the underlying C-based implementation of the
-     * line editor, enabling operations such as reading input, handling history, and applying configuration.
-     *
-     * It is initialized during the creation of the line editor and must remain valid for the lifetime
-     * of the `AbstractLineEditor` or its implementing classes. Proper cleanup should ensure that any
-     * associated resources are released when the editor is closed.
+     * If the file does not exist, this is a no-op and returns success. When it exists, entries
+     * are appended/replaced according to the native backend policy and current [config].
      */
-    internal abstract val rl: COpaquePointer
+    fun loadHistory(path: String): Result<Unit> {
+        val exists = SystemFileSystem.exists(Path(path))
+        return if (!exists) Result.success(Unit)
+        else editor_load_history(rl, path).toUnitResult()
+    }
 
     /**
-     * Reads a single line of input from the user, applying the line editor's current configuration
-     * and handling of the input. The method blocks until input is received or the operation is interrupted.
+     * Add a single [entry] to the in-memory history buffer.
      *
-     * @return A result containing the input string if successful, or an error encapsulated in a `LineEditorError`
-     *         if the operation fails (e.g., end of input or interruption).
+     * Whether duplicates are kept depends on [LineEditorConfig.historyDuplicates].
      */
-    abstract fun readLine(): Result<String>
+    fun addHistoryEntry(entry: String): Unit = editor_add_history_entry(rl, entry)
 
     /**
-     * Loads the command history from a specified file path into the line editor.
-     * If the file does not exist, the function completes silently without executing further operations.
-     *
-     * @param path The filesystem path to the history file to be loaded.
-     * @return A [Result] indicating success or failure of the operation.
-     *         The result contains a successful [Unit] value if the history is loaded successfully.
-     *         If an error occurs, it encapsulates the error as a [LineEditorError].
+     * Save current history to the file at [path]. Creates or overwrites as needed.
      */
-    abstract fun loadHistory(path: String): Result<Unit>
+    fun saveHistory(path: String): Result<Unit> = editor_save_history(rl, path).toUnitResult()
 
     /**
-     * Adds a new entry to the line editor's command history.
-     *
-     * @param entry The command string to be appended to the history.
+     * Clear the in-memory history.
      */
-    abstract fun addHistoryEntry(entry: String)
+    fun clearHistory(): Result<Unit> = editor_clear_history(rl).toUnitResult()
 
     /**
-     * Saves the command history to a specified file path. This allows the persisted history
-     * to be stored on the file system for reuse in future sessions.
-     *
-     * @param path The filesystem path to save the history into. If the file exists, it will
-     *             be overwritten. If the file does not exist, it will be created.
-     * @return A [Result] indicating the success or failure of the operation. The result contains
-     *         a successful [Unit] value if the history is saved successfully, or an error
-     *         encapsulated in a [LineEditorError] if the operation fails.
+     * Install a [Completer] which will be consulted during completion (e.g., Tab).
+     * Returns this editor instance for chaining.
      */
-    abstract fun saveHistory(path: String): Result<Unit>
+    fun withCompleter(completer: Completer): AbstractLineEditor {
+        holder.completer = completer
+        editor_set_completer(rl, staticCFunction(::completerCallback), holderPointer)
+        return this
+    }
 
     /**
-     * Clears the command history stored within the line editor.
-     *
-     * This method removes all previously saved history entries, effectively resetting the history
-     * to an empty state.
-     *
-     * @return A [Result] indicating the success or failure of the operation. The result contains
-     *         a successful [Unit] value if the history is cleared successfully, or an error
-     *         encapsulated in a [LineEditorError] if the operation fails.
+     * Install a [Highlighter] to customize visual presentation of hints, prompts, and candidates.
+     * Returns this editor instance for chaining.
      */
-    abstract fun clearHistory(): Result<Unit>
+    fun withHighlighter(highlighter: Highlighter): AbstractLineEditor {
+        holder.highlighter = highlighter
+        editor_set_hint_highlighter(rl, staticCFunction(::hintHighlighterCallback), holderPointer)
+        editor_set_prompt_highlighter(rl, staticCFunction(::promptHighlighterCallback), holderPointer)
+        editor_set_candidate_highlighter(rl, staticCFunction(::candidateHighlighterCallback), holderPointer)
+        return this
+    }
 
-    @OptIn(ExperimentalForeignApi::class)
-    internal fun LineEditorConfig.toCValue(): CValue<EditorConfig> =
+    /**
+     * Holds user-supplied strategy objects so they can be accessed from native callbacks.
+     * Stored behind a StableRef and passed to native as an opaque pointer.
+     */
+    internal class CallbacksHolder(
+        var completer: Completer? = null,
+        var highlighter: Highlighter? = null,
+    )
+
+    /**
+     * Convert the high-level [LineEditorConfig] to the FFI struct consumed by the native editor.
+     */
+    private fun LineEditorConfig.toCValue(): CValue<EditorConfig> =
         cValue<EditorConfig> {
             max_history_size = this@toCValue.maxHistorySize
             history_duplicates = this@toCValue.historyDuplicates.ordinal

@@ -1,7 +1,7 @@
 use std::ffi::{c_char, c_int, c_void, CStr, CString};
 use std::ptr::null_mut;
 
-use rustyline::completion::{Completer, FilenameCompleter, Pair};
+use rustyline::completion::{Completer, Pair};
 use rustyline::config::{
     Behavior, BellStyle, ColorMode, CompletionType, Config, Configurer, EditMode, HistoryDuplicates,
 };
@@ -9,8 +9,8 @@ use rustyline::error::ReadlineError;
 use rustyline::highlight::Highlighter;
 use rustyline::hint::HistoryHinter;
 use rustyline::history::FileHistory;
-use rustyline::{DefaultEditor, Editor};
-use rustyline_derive::{Completer, Helper, Hinter, Validator};
+use rustyline::Editor;
+use rustyline_derive::{Helper, Hinter, Validator};
 
 pub const OK: c_int = -1;
 pub const ERROR_EOF: c_int = 0;
@@ -62,39 +62,6 @@ pub struct EditorConfig {
     pub enable_bracketed_paste: bool,
     pub enable_synchronized_output: bool,
     pub enable_signals: bool,
-}
-
-#[derive(Helper, Completer, Hinter, Validator)]
-pub struct FileCompleterHelper {
-    #[rustyline(Completer)]
-    completer: FilenameCompleter,
-    #[rustyline(Hinter)]
-    hinter: HistoryHinter,
-}
-
-impl Highlighter for FileCompleterHelper {
-    fn highlight_hint<'h>(&self, hint: &'h str) -> std::borrow::Cow<'h, str> {
-        // Color the hint in a dimmed gray style
-        format!("\x1b[90m{}\x1b[0m", hint).into()
-    }
-
-    fn highlight_candidate<'c>(
-        &self,
-        candidate: &'c str,
-        _completion: CompletionType,
-    ) -> std::borrow::Cow<'c, str> {
-        // Color candidates in cyan to distinguish from input
-        format!("\x1b[36m{}\x1b[0m", candidate).into()
-    }
-
-    fn highlight_prompt<'b, 's: 'b, 'p: 'b>(
-        &self,
-        prompt: &'p str,
-        _default: bool,
-    ) -> std::borrow::Cow<'b, str> {
-        // Make the prompt bold green
-        format!("\x1b[1;32m{}\x1b[0m", prompt).into()
-    }
 }
 
 pub type CustomCompleterCallback = extern "C" fn(
@@ -279,125 +246,7 @@ pub extern "C" fn free_read_line_result(ptr: *mut ReadLineResult) {
 }
 
 #[no_mangle]
-pub extern "C" fn new_default_editor() -> *mut c_void {
-    let rl: Editor<(), FileHistory> = DefaultEditor::new().unwrap();
-    let rl = Box::new(rl);
-    let rl = Box::leak(rl);
-    rl as *mut _ as *mut c_void
-}
-
-#[no_mangle]
 pub extern "C" fn new_editor_with_config(cfg: *const EditorConfig) -> *mut c_void {
-    let cfg = unsafe { &*cfg };
-    let cfg = map_config(cfg);
-    let rl: Editor<(), FileHistory> = Editor::with_config(cfg).unwrap();
-    let rl = Box::new(rl);
-    let rl = Box::leak(rl);
-    rl as *mut _ as *mut c_void
-}
-
-#[no_mangle]
-pub extern "C" fn editor_read_line(rl: *mut c_void, prefix: *const c_char) -> *mut ReadLineResult {
-    let rl = unsafe { &mut *(rl as *mut Editor<(), FileHistory>) };
-    let prefix = c_chars_to_str(prefix);
-    let readline: Result<String, ReadlineError> = rl.readline(prefix);
-    handle_readline_result(readline)
-}
-
-#[no_mangle]
-pub extern "C" fn editor_load_history(rl: *mut c_void, path: *const c_char) -> *mut ReadLineResult {
-    let rl = unsafe { &mut *(rl as *mut Editor<(), FileHistory>) };
-    let path = c_chars_to_str(path);
-    let result = rl.load_history(path);
-    handle_simple_result(result)
-}
-
-#[no_mangle]
-pub extern "C" fn editor_add_history_entry(rl: *mut c_void, entry: *const c_char) {
-    let rl = unsafe { &mut *(rl as *mut Editor<(), FileHistory>) };
-    let entry = c_chars_to_str(entry);
-    rl.add_history_entry(entry).unwrap();
-}
-
-#[no_mangle]
-pub extern "C" fn editor_save_history(rl: *mut c_void, path: *const c_char) -> *mut ReadLineResult {
-    let rl = unsafe { &mut *(rl as *mut Editor<(), FileHistory>) };
-    let path = c_chars_to_str(path);
-    let result = rl.save_history(path);
-    handle_simple_result(result)
-}
-
-#[no_mangle]
-pub extern "C" fn editor_clear_history(rl: *mut c_void) -> *mut ReadLineResult {
-    let rl = unsafe { &mut *(rl as *mut Editor<(), FileHistory>) };
-    let result = rl.clear_history();
-    handle_simple_result(result)
-}
-
-#[no_mangle]
-pub extern "C" fn new_file_completer_editor_with_config(cfg: *const EditorConfig) -> *mut c_void {
-    let cfg = unsafe { &*cfg };
-    let cfg = map_config(cfg);
-    let helper = FileCompleterHelper {
-        completer: FilenameCompleter::new(),
-        hinter: HistoryHinter {},
-    };
-    let mut rl: Editor<FileCompleterHelper, FileHistory> = Editor::with_config(cfg).unwrap();
-    rl.set_helper(Some(helper));
-    let rl = Box::new(rl);
-    let rl = Box::leak(rl);
-    rl as *mut _ as *mut c_void
-}
-
-#[no_mangle]
-pub extern "C" fn file_completer_editor_read_line(
-    rl: *mut c_void,
-    prefix: *const c_char,
-) -> *mut ReadLineResult {
-    let rl = unsafe { &mut *(rl as *mut Editor<FileCompleterHelper, FileHistory>) };
-    let prefix = c_chars_to_str(prefix);
-    let readline: Result<String, ReadlineError> = rl.readline(prefix);
-    handle_readline_result(readline)
-}
-
-#[no_mangle]
-pub extern "C" fn file_completer_editor_load_history(
-    rl: *mut c_void,
-    path: *const c_char,
-) -> *mut ReadLineResult {
-    let rl = unsafe { &mut *(rl as *mut Editor<FileCompleterHelper, FileHistory>) };
-    let path = c_chars_to_str(path);
-    let result = rl.load_history(path);
-    handle_simple_result(result)
-}
-
-#[no_mangle]
-pub extern "C" fn file_completer_editor_add_history_entry(rl: *mut c_void, entry: *const c_char) {
-    let rl = unsafe { &mut *(rl as *mut Editor<FileCompleterHelper, FileHistory>) };
-    let entry = c_chars_to_str(entry);
-    rl.add_history_entry(entry).unwrap();
-}
-
-#[no_mangle]
-pub extern "C" fn file_completer_editor_save_history(
-    rl: *mut c_void,
-    path: *const c_char,
-) -> *mut ReadLineResult {
-    let rl = unsafe { &mut *(rl as *mut Editor<FileCompleterHelper, FileHistory>) };
-    let path = c_chars_to_str(path);
-    let result = rl.save_history(path);
-    handle_simple_result(result)
-}
-
-#[no_mangle]
-pub extern "C" fn file_completer_editor_clear_history(rl: *mut c_void) -> *mut ReadLineResult {
-    let rl = unsafe { &mut *(rl as *mut Editor<FileCompleterHelper, FileHistory>) };
-    let result = rl.clear_history();
-    handle_simple_result(result)
-}
-
-#[no_mangle]
-pub extern "C" fn new_custom_editor_with_config(cfg: *const EditorConfig) -> *mut c_void {
     let cfg = unsafe { &*cfg };
     let cfg = map_config(cfg);
     let helper = CustomHelper::default();
@@ -409,7 +258,7 @@ pub extern "C" fn new_custom_editor_with_config(cfg: *const EditorConfig) -> *mu
 }
 
 #[no_mangle]
-pub extern "C" fn custom_editor_set_completer(
+pub extern "C" fn editor_set_completer(
     rl: *mut c_void,
     cb: CustomCompleterCallback,
     k_callback_holder: *mut c_void,
@@ -422,7 +271,7 @@ pub extern "C" fn custom_editor_set_completer(
 }
 
 #[no_mangle]
-pub extern "C" fn custom_editor_set_hint_highlighter(
+pub extern "C" fn editor_set_hint_highlighter(
     rl: *mut c_void,
     cb: CustomHintHighlighterCallback,
     k_callback_holder: *mut c_void,
@@ -435,7 +284,7 @@ pub extern "C" fn custom_editor_set_hint_highlighter(
 }
 
 #[no_mangle]
-pub extern "C" fn custom_editor_set_prompt_highlighter(
+pub extern "C" fn editor_set_prompt_highlighter(
     rl: *mut c_void,
     cb: CustomPromptHighlighterCallback,
     k_callback_holder: *mut c_void,
@@ -448,7 +297,7 @@ pub extern "C" fn custom_editor_set_prompt_highlighter(
 }
 
 #[no_mangle]
-pub extern "C" fn custom_editor_set_candidate_highlighter(
+pub extern "C" fn editor_set_candidate_highlighter(
     rl: *mut c_void,
     cb: CustomCandidateHighlighterCallback,
     k_callback_holder: *mut c_void,
@@ -461,10 +310,7 @@ pub extern "C" fn custom_editor_set_candidate_highlighter(
 }
 
 #[no_mangle]
-pub extern "C" fn custom_editor_read_line(
-    rl: *mut c_void,
-    prefix: *const c_char,
-) -> *mut ReadLineResult {
+pub extern "C" fn editor_read_line(rl: *mut c_void, prefix: *const c_char) -> *mut ReadLineResult {
     let rl = unsafe { &mut *(rl as *mut Editor<CustomHelper, FileHistory>) };
     let prefix = c_chars_to_str(prefix);
     let readline: Result<String, ReadlineError> = rl.readline(prefix);
@@ -472,10 +318,7 @@ pub extern "C" fn custom_editor_read_line(
 }
 
 #[no_mangle]
-pub extern "C" fn custom_editor_load_history(
-    rl: *mut c_void,
-    path: *const c_char,
-) -> *mut ReadLineResult {
+pub extern "C" fn editor_load_history(rl: *mut c_void, path: *const c_char) -> *mut ReadLineResult {
     let rl = unsafe { &mut *(rl as *mut Editor<CustomHelper, FileHistory>) };
     let path = c_chars_to_str(path);
     let result = rl.load_history(path);
@@ -483,17 +326,14 @@ pub extern "C" fn custom_editor_load_history(
 }
 
 #[no_mangle]
-pub extern "C" fn custom_editor_add_history_entry(rl: *mut c_void, entry: *const c_char) {
+pub extern "C" fn editor_add_history_entry(rl: *mut c_void, entry: *const c_char) {
     let rl = unsafe { &mut *(rl as *mut Editor<CustomHelper, FileHistory>) };
     let entry = c_chars_to_str(entry);
     rl.add_history_entry(entry).unwrap();
 }
 
 #[no_mangle]
-pub extern "C" fn custom_editor_save_history(
-    rl: *mut c_void,
-    path: *const c_char,
-) -> *mut ReadLineResult {
+pub extern "C" fn editor_save_history(rl: *mut c_void, path: *const c_char) -> *mut ReadLineResult {
     let rl = unsafe { &mut *(rl as *mut Editor<CustomHelper, FileHistory>) };
     let path = c_chars_to_str(path);
     let result = rl.save_history(path);
@@ -501,10 +341,16 @@ pub extern "C" fn custom_editor_save_history(
 }
 
 #[no_mangle]
-pub extern "C" fn custom_editor_clear_history(rl: *mut c_void) -> *mut ReadLineResult {
+pub extern "C" fn editor_clear_history(rl: *mut c_void) -> *mut ReadLineResult {
     let rl = unsafe { &mut *(rl as *mut Editor<CustomHelper, FileHistory>) };
     let result = rl.clear_history();
     handle_simple_result(result)
+}
+
+#[no_mangle]
+pub extern "C" fn free_editor(ptr: *mut c_void) {
+    let _editor: Box<Editor<CustomHelper, FileHistory>> = unsafe { Box::from_raw(ptr as *mut _) };
+    // Box will be dropped automatically
 }
 
 fn handle_readline_result(readline: Result<String, ReadlineError>) -> *mut ReadLineResult {
@@ -574,25 +420,6 @@ fn handle_simple_result(res: Result<(), ReadlineError>) -> *mut ReadLineResult {
 
 extern "C" {
     fn free(ptr: *mut c_void);
-}
-
-#[no_mangle]
-pub extern "C" fn free_editor(ptr: *mut c_void) {
-    let _editor: Box<Editor<(), FileHistory>> = unsafe { Box::from_raw(ptr as *mut _) };
-    // Box will be dropped automatically
-}
-
-#[no_mangle]
-pub extern "C" fn free_file_completer_editor(ptr: *mut c_void) {
-    let _editor: Box<Editor<FileCompleterHelper, FileHistory>> =
-        unsafe { Box::from_raw(ptr as *mut _) };
-    // Box will be dropped automatically
-}
-
-#[no_mangle]
-pub extern "C" fn free_custom_editor(ptr: *mut c_void) {
-    let _editor: Box<Editor<CustomHelper, FileHistory>> = unsafe { Box::from_raw(ptr as *mut _) };
-    // Box will be dropped automatically
 }
 
 fn map_config(cfg: &EditorConfig) -> Config {

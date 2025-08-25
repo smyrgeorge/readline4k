@@ -2,6 +2,7 @@
 
 package io.github.smyrgeorge.readline4k.impl
 
+import io.github.smyrgeorge.readline4k.AbstractLineEditor
 import io.github.smyrgeorge.readline4k.LineEditorConfig.CompletionType
 import io.github.smyrgeorge.readline4k.LineEditorError
 import kotlinx.cinterop.*
@@ -47,7 +48,7 @@ internal fun completerCallback(
 ): CPointer<ByteVar>? {
     require(holderPointer != null) { "The holderPointer must not be null!" }
     if (line == null || outStart == null) return null
-    val holder = holderPointer.asStableRef<CustomLineEditor.CallbacksHolder>().get()
+    val holder = holderPointer.asStableRef<AbstractLineEditor.CallbacksHolder>().get()
     val completer = holder.completer ?: return null
     val (start, items) = completer.complete(line.toKString(), pos)
     outStart.pointed.value = start
@@ -63,7 +64,7 @@ internal fun hintHighlighterCallback(
 ): CPointer<ByteVar>? {
     require(holderPointer != null) { "The holderPointer must not be null!" }
     if (hint == null) return null
-    val holder = holderPointer.asStableRef<CustomLineEditor.CallbacksHolder>().get()
+    val holder = holderPointer.asStableRef<AbstractLineEditor.CallbacksHolder>().get()
     val highlighter = holder.highlighter ?: return null
     val highlighted = highlighter.highlightHint(hint.toKString())
     // return malloc-allocated string for Rust to free via free()
@@ -78,7 +79,7 @@ internal fun promptHighlighterCallback(
 ): CPointer<ByteVar>? {
     require(holderPointer != null) { "The holderPointer must not be null!" }
     if (prompt == null) return null
-    val holder = holderPointer.asStableRef<CustomLineEditor.CallbacksHolder>().get()
+    val holder = holderPointer.asStableRef<AbstractLineEditor.CallbacksHolder>().get()
     val highlighter = holder.highlighter ?: return null
     val highlighted = highlighter.highlightPrompt(prompt.toKString(), isDefault)
     // return malloc-allocated string for Rust to free via free()
@@ -93,7 +94,7 @@ internal fun candidateHighlighterCallback(
 ): CPointer<ByteVar>? {
     require(holderPointer != null) { "The holderPointer must not be null!" }
     if (candidate == null) return null
-    val holder = holderPointer.asStableRef<CustomLineEditor.CallbacksHolder>().get()
+    val holder = holderPointer.asStableRef<AbstractLineEditor.CallbacksHolder>().get()
     val highlighter = holder.highlighter ?: return null
     val highlighted = highlighter.highlightCandidate(candidate.toKString(), CompletionType.entries[completion])
     // return malloc-allocated string for Rust to free via free()
