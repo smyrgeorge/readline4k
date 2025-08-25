@@ -38,6 +38,21 @@ typedef struct EditorConfig {
   bool enable_signals;
 } EditorConfig;
 
+typedef char *(*CustomCompleterCallback)(void *k_callback_holder,
+                                         const char *line,
+                                         int pos,
+                                         int *out_start);
+
+typedef char *(*CustomHintHighlighterCallback)(void *k_callback_holder, const char *hint);
+
+typedef char *(*CustomPromptHighlighterCallback)(void *k_callback_holder,
+                                                 const char *prompt,
+                                                 bool is_default);
+
+typedef char *(*CustomCandidateHighlighterCallback)(void *k_callback_holder,
+                                                    const char *candidate,
+                                                    int completion);
+
 void free_read_line_result(struct ReadLineResult *ptr);
 
 void *new_default_editor(void);
@@ -66,6 +81,36 @@ struct ReadLineResult *file_completer_editor_save_history(void *rl, const char *
 
 struct ReadLineResult *file_completer_editor_clear_history(void *rl);
 
+void *new_custom_editor_with_config(const struct EditorConfig *cfg);
+
+void custom_editor_set_completer(void *rl, CustomCompleterCallback cb, void *k_callback_holder);
+
+void custom_editor_set_hint_highlighter(void *rl,
+                                        CustomHintHighlighterCallback cb,
+                                        void *k_callback_holder);
+
+void custom_editor_set_prompt_highlighter(void *rl,
+                                          CustomPromptHighlighterCallback cb,
+                                          void *k_callback_holder);
+
+void custom_editor_set_candidate_highlighter(void *rl,
+                                             CustomCandidateHighlighterCallback cb,
+                                             void *k_callback_holder);
+
+struct ReadLineResult *custom_editor_read_line(void *rl, const char *prefix);
+
+struct ReadLineResult *custom_editor_load_history(void *rl, const char *path);
+
+void custom_editor_add_history_entry(void *rl, const char *entry);
+
+struct ReadLineResult *custom_editor_save_history(void *rl, const char *path);
+
+struct ReadLineResult *custom_editor_clear_history(void *rl);
+
+extern void free(void *ptr);
+
 void free_editor(void *ptr);
 
 void free_file_completer_editor(void *ptr);
+
+void free_custom_editor(void *ptr);

@@ -1,7 +1,7 @@
 use std::ffi::{c_char, c_int, c_void, CStr, CString};
 use std::ptr::null_mut;
 
-use rustyline::completion::FilenameCompleter;
+use rustyline::completion::{Completer, FilenameCompleter, Pair};
 use rustyline::config::{
     Behavior, BellStyle, ColorMode, CompletionType, Config, Configurer, EditMode, HistoryDuplicates,
 };
@@ -76,6 +76,188 @@ impl Highlighter for FileCompleterHelper {
     fn highlight_hint<'h>(&self, hint: &'h str) -> std::borrow::Cow<'h, str> {
         // Color the hint in a dimmed gray style
         format!("\x1b[90m{}\x1b[0m", hint).into()
+    }
+
+    fn highlight_candidate<'c>(
+        &self,
+        candidate: &'c str,
+        _completion: CompletionType,
+    ) -> std::borrow::Cow<'c, str> {
+        // Color candidates in cyan to distinguish from input
+        format!("\x1b[36m{}\x1b[0m", candidate).into()
+    }
+
+    fn highlight_prompt<'b, 's: 'b, 'p: 'b>(
+        &self,
+        prompt: &'p str,
+        _default: bool,
+    ) -> std::borrow::Cow<'b, str> {
+        // Make the prompt bold green
+        format!("\x1b[1;32m{}\x1b[0m", prompt).into()
+    }
+}
+
+pub type CustomCompleterCallback = extern "C" fn(
+    k_callback_holder: *mut c_void,
+    line: *const c_char,
+    pos: c_int,
+    out_start: *mut c_int,
+) -> *mut c_char;
+
+pub type CustomHintHighlighterCallback =
+    extern "C" fn(k_callback_holder: *mut c_void, hint: *const c_char) -> *mut c_char;
+
+pub type CustomPromptHighlighterCallback = extern "C" fn(
+    k_callback_holder: *mut c_void,
+    prompt: *const c_char,
+    is_default: bool,
+) -> *mut c_char;
+
+pub type CustomCandidateHighlighterCallback = extern "C" fn(
+    k_callback_holder: *mut c_void,
+    candidate: *const c_char,
+    completion: c_int,
+) -> *mut c_char;
+
+#[derive(Helper, Hinter, Validator)]
+pub struct CustomHelper {
+    #[rustyline(Hinter)]
+    hinter: HistoryHinter,
+    completer_cb: Option<CustomCompleterCallback>,
+    hint_highlighter_cb: Option<CustomHintHighlighterCallback>,
+    prompt_highlighter_cb: Option<CustomPromptHighlighterCallback>,
+    candidate_highlighter_cb: Option<CustomCandidateHighlighterCallback>,
+    k_callback_holder: *mut c_void,
+}
+
+impl Default for CustomHelper {
+    fn default() -> Self {
+        Self {
+            hinter: HistoryHinter {},
+            completer_cb: Default::default(),
+            hint_highlighter_cb: Default::default(),
+            prompt_highlighter_cb: Default::default(),
+            candidate_highlighter_cb: Default::default(),
+            k_callback_holder: Default::default(),
+        }
+    }
+}
+
+impl Completer for CustomHelper {
+    type Candidate = Pair;
+
+    fn complete(
+        &self,
+        line: &str,
+        pos: usize,
+        _ctx: &rustyline::Context<'_>,
+    ) -> rustyline::Result<(usize, Vec<Pair>)> {
+        if let Some(cb) = self.completer_cb {
+            let c_line = CString::new(line).unwrap();
+            let mut start: c_int = pos as c_int;
+            let ptr = cb(
+                self.k_callback_holder,
+                c_line.as_ptr(),
+                pos as c_int,
+                &mut start as *mut c_int,
+            );
+            if ptr.is_null() {
+                return Ok((start as usize, Vec::new()));
+            }
+            let items_str = unsafe {
+                CStr::from_ptr(ptr as *const c_char)
+                    .to_string_lossy()
+                    .into_owned()
+            };
+            unsafe { free(ptr as *mut c_void) };
+            let candidates: Vec<Pair> = items_str
+                .split("_*#*_")
+                .filter(|s| !s.is_empty())
+                .map(|s| Pair {
+                    display: s.to_string(),
+                    replacement: s.to_string(),
+                })
+                .collect();
+            Ok((start as usize, candidates))
+        } else {
+            Ok((pos, Vec::new()))
+        }
+    }
+}
+
+impl Highlighter for CustomHelper {
+    fn highlight_hint<'h>(&self, hint: &'h str) -> std::borrow::Cow<'h, str> {
+        if let Some(cb) = self.hint_highlighter_cb {
+            let c_hint = CString::new(hint).unwrap();
+            let ptr = cb(self.k_callback_holder, c_hint.as_ptr());
+            if ptr.is_null() {
+                return std::borrow::Cow::Borrowed(hint);
+            }
+            let owned = unsafe {
+                CStr::from_ptr(ptr as *const c_char)
+                    .to_string_lossy()
+                    .into_owned()
+            };
+            unsafe { free(ptr as *mut c_void) };
+            owned.into()
+        } else {
+            std::borrow::Cow::Borrowed(hint)
+        }
+    }
+
+    fn highlight_candidate<'c>(
+        &self,
+        candidate: &'c str,
+        completion: CompletionType,
+    ) -> std::borrow::Cow<'c, str> {
+        if let Some(cb) = self.candidate_highlighter_cb {
+            let c_candidate = CString::new(candidate).unwrap();
+            let completion_code: c_int = match completion {
+                CompletionType::Circular => 0,
+                CompletionType::List => 1,
+                _ => 0,
+            };
+            let ptr = cb(
+                self.k_callback_holder,
+                c_candidate.as_ptr(),
+                completion_code,
+            );
+            if ptr.is_null() {
+                return std::borrow::Cow::Borrowed(candidate);
+            }
+            let owned = unsafe {
+                CStr::from_ptr(ptr as *const c_char)
+                    .to_string_lossy()
+                    .into_owned()
+            };
+            unsafe { free(ptr as *mut c_void) };
+            owned.into()
+        } else {
+            std::borrow::Cow::Borrowed(candidate)
+        }
+    }
+
+    fn highlight_prompt<'b, 's: 'b, 'p: 'b>(
+        &self,
+        prompt: &'p str,
+        is_default: bool,
+    ) -> std::borrow::Cow<'b, str> {
+        if let Some(cb) = self.prompt_highlighter_cb {
+            let c_prompt = CString::new(prompt).unwrap();
+            let ptr = cb(self.k_callback_holder, c_prompt.as_ptr(), is_default);
+            if ptr.is_null() {
+                return std::borrow::Cow::Owned(prompt.to_string());
+            }
+            let owned = unsafe {
+                CStr::from_ptr(ptr as *const c_char)
+                    .to_string_lossy()
+                    .into_owned()
+            };
+            unsafe { free(ptr as *mut c_void) };
+            owned.into()
+        } else {
+            std::borrow::Cow::Owned(prompt.to_string())
+        }
     }
 }
 
@@ -214,6 +396,117 @@ pub extern "C" fn file_completer_editor_clear_history(rl: *mut c_void) -> *mut R
     handle_simple_result(result)
 }
 
+#[no_mangle]
+pub extern "C" fn new_custom_editor_with_config(cfg: *const EditorConfig) -> *mut c_void {
+    let cfg = unsafe { &*cfg };
+    let cfg = map_config(cfg);
+    let helper = CustomHelper::default();
+    let mut rl: Editor<CustomHelper, FileHistory> = Editor::with_config(cfg).unwrap();
+    rl.set_helper(Some(helper));
+    let rl = Box::new(rl);
+    let rl = Box::leak(rl);
+    rl as *mut _ as *mut c_void
+}
+
+#[no_mangle]
+pub extern "C" fn custom_editor_set_completer(
+    rl: *mut c_void,
+    cb: CustomCompleterCallback,
+    k_callback_holder: *mut c_void,
+) {
+    let rl = unsafe { &mut *(rl as *mut Editor<CustomHelper, FileHistory>) };
+    if let Some(h) = rl.helper_mut() {
+        h.completer_cb = Some(cb);
+        h.k_callback_holder = k_callback_holder;
+    }
+}
+
+#[no_mangle]
+pub extern "C" fn custom_editor_set_hint_highlighter(
+    rl: *mut c_void,
+    cb: CustomHintHighlighterCallback,
+    k_callback_holder: *mut c_void,
+) {
+    let rl = unsafe { &mut *(rl as *mut Editor<CustomHelper, FileHistory>) };
+    if let Some(h) = rl.helper_mut() {
+        h.hint_highlighter_cb = Some(cb);
+        h.k_callback_holder = k_callback_holder;
+    }
+}
+
+#[no_mangle]
+pub extern "C" fn custom_editor_set_prompt_highlighter(
+    rl: *mut c_void,
+    cb: CustomPromptHighlighterCallback,
+    k_callback_holder: *mut c_void,
+) {
+    let rl = unsafe { &mut *(rl as *mut Editor<CustomHelper, FileHistory>) };
+    if let Some(h) = rl.helper_mut() {
+        h.prompt_highlighter_cb = Some(cb);
+        h.k_callback_holder = k_callback_holder;
+    }
+}
+
+#[no_mangle]
+pub extern "C" fn custom_editor_set_candidate_highlighter(
+    rl: *mut c_void,
+    cb: CustomCandidateHighlighterCallback,
+    k_callback_holder: *mut c_void,
+) {
+    let rl = unsafe { &mut *(rl as *mut Editor<CustomHelper, FileHistory>) };
+    if let Some(h) = rl.helper_mut() {
+        h.candidate_highlighter_cb = Some(cb);
+        h.k_callback_holder = k_callback_holder;
+    }
+}
+
+#[no_mangle]
+pub extern "C" fn custom_editor_read_line(
+    rl: *mut c_void,
+    prefix: *const c_char,
+) -> *mut ReadLineResult {
+    let rl = unsafe { &mut *(rl as *mut Editor<CustomHelper, FileHistory>) };
+    let prefix = c_chars_to_str(prefix);
+    let readline: Result<String, ReadlineError> = rl.readline(prefix);
+    handle_readline_result(readline)
+}
+
+#[no_mangle]
+pub extern "C" fn custom_editor_load_history(
+    rl: *mut c_void,
+    path: *const c_char,
+) -> *mut ReadLineResult {
+    let rl = unsafe { &mut *(rl as *mut Editor<CustomHelper, FileHistory>) };
+    let path = c_chars_to_str(path);
+    let result = rl.load_history(path);
+    handle_simple_result(result)
+}
+
+#[no_mangle]
+pub extern "C" fn custom_editor_add_history_entry(rl: *mut c_void, entry: *const c_char) {
+    let rl = unsafe { &mut *(rl as *mut Editor<CustomHelper, FileHistory>) };
+    let entry = c_chars_to_str(entry);
+    rl.add_history_entry(entry).unwrap();
+}
+
+#[no_mangle]
+pub extern "C" fn custom_editor_save_history(
+    rl: *mut c_void,
+    path: *const c_char,
+) -> *mut ReadLineResult {
+    let rl = unsafe { &mut *(rl as *mut Editor<CustomHelper, FileHistory>) };
+    let path = c_chars_to_str(path);
+    let result = rl.save_history(path);
+    handle_simple_result(result)
+}
+
+#[no_mangle]
+pub extern "C" fn custom_editor_clear_history(rl: *mut c_void) -> *mut ReadLineResult {
+    let rl = unsafe { &mut *(rl as *mut Editor<CustomHelper, FileHistory>) };
+    let result = rl.clear_history();
+    handle_simple_result(result)
+}
+
 fn handle_readline_result(readline: Result<String, ReadlineError>) -> *mut ReadLineResult {
     match readline {
         Ok(line) => {
@@ -279,8 +572,8 @@ fn handle_simple_result(res: Result<(), ReadlineError>) -> *mut ReadLineResult {
     }
 }
 
-fn c_chars_to_str<'a>(c_chars: *const c_char) -> &'a str {
-    unsafe { CStr::from_ptr(c_chars).to_str().unwrap() }
+extern "C" {
+    fn free(ptr: *mut c_void);
 }
 
 #[no_mangle]
@@ -293,6 +586,12 @@ pub extern "C" fn free_editor(ptr: *mut c_void) {
 pub extern "C" fn free_file_completer_editor(ptr: *mut c_void) {
     let _editor: Box<Editor<FileCompleterHelper, FileHistory>> =
         unsafe { Box::from_raw(ptr as *mut _) };
+    // Box will be dropped automatically
+}
+
+#[no_mangle]
+pub extern "C" fn free_custom_editor(ptr: *mut c_void) {
+    let _editor: Box<Editor<CustomHelper, FileHistory>> = unsafe { Box::from_raw(ptr as *mut _) };
     // Box will be dropped automatically
 }
 
@@ -360,4 +659,8 @@ fn map_config(cfg: &EditorConfig) -> Config {
     builder.enable_synchronized_output(cfg.enable_synchronized_output);
     builder = builder.enable_signals(cfg.enable_signals);
     builder.build()
+}
+
+fn c_chars_to_str<'a>(c_chars: *const c_char) -> &'a str {
+    unsafe { CStr::from_ptr(c_chars).to_str().unwrap() }
 }
