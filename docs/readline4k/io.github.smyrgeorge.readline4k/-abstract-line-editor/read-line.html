@@ -41,7 +41,7 @@
             </a>        <button class="navigation-controls--btn navigation-controls--btn_toc ui-kit_mobile-only" id="toc-toggle" type="button">Toggle table of contents
         </button>
         <div class="navigation-controls--break ui-kit_mobile-only"></div>
-        <div class="library-version" id="library-version">0.2.0
+        <div class="library-version" id="library-version">0.3.0
         </div>
         <div class="navigation-controls">
         <div class="filter-section filter-section_loading" id="filter-section">
@@ -95,7 +95,7 @@
   <div class="cover ">
     <h1 class="cover"><span>read</span><wbr><span><span>Line</span></span></h1>
   </div>
-  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":readline4k:dokkaHtmlPartial/nativeMain"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">fun </span><a href="read-line.html"><span class="token function">readLine</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><span data-unresolved-link="/<Error class: unknown class>///PointingToDeclaration/">&lt;Error class: unknown class&gt;</span><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator">&gt;</span></div><p class="paragraph">Reads a single line of input from the user, applying the line editor's current configuration and handling of the input. The method blocks until input is received or the operation is interrupted.</p><span class="kdoc-tag"><h4 class="">Return</h4><p class="paragraph">A result containing the input string if successful, or an error encapsulated in a <code class="lang-kotlin">LineEditorError</code>     if the operation fails (e.g., end of input or interruption).</p></span></div></div>
+  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":readline4k:dokkaHtmlPartial/nativeMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="read-line.html"><span class="token function">readLine</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><span data-unresolved-link="/<Error class: unknown class>///PointingToDeclaration/">&lt;Error class: unknown class&gt;</span><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator">&gt;</span></div><p class="paragraph">Read a single line from the user.</p><p class="paragraph">The native editor renders <a href="line-prefix.html">linePrefix</a>, processes key bindings according to <a href="config.html">config</a>, applies optional completion/highlighting if configured, and returns the accepted line.</p><p class="paragraph">Returns:</p><ul><li><p class="paragraph">Result.success(String) with the user input when a line is accepted.</p></li><li><p class="paragraph">Result.failure(LineEditorError) when the input is interrupted (e.g., Ctrl-C), EOF, or an unknown native error occurs. Inspect <a href="../-line-editor-error/code.html">LineEditorError.code</a>.</p></li></ul></div></div>
 </div>
     <div class="footer">
         <a href="#content" id="go-to-top-link" class="footer--button footer--button_go-to-top"></a>

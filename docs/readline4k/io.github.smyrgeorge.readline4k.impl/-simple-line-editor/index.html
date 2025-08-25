@@ -41,7 +41,7 @@
             </a>        <button class="navigation-controls--btn navigation-controls--btn_toc ui-kit_mobile-only" id="toc-toggle" type="button">Toggle table of contents
         </button>
         <div class="navigation-controls--break ui-kit_mobile-only"></div>
-        <div class="library-version" id="library-version">0.2.0
+        <div class="library-version" id="library-version">0.3.0
         </div>
         <div class="navigation-controls">
         <div class="filter-section filter-section_loading" id="filter-section">
@@ -94,7 +94,7 @@
   <div class="breadcrumbs"><a href="../../index.html">readline4k</a><span class="delimiter">/</span><a href="../index.html">io.github.smyrgeorge.readline4k.impl</a><span class="delimiter">/</span><span class="current">SimpleLineEditor</span></div>
   <div class="cover ">
     <h1 class="cover"><span>Simple</span><wbr><span>Line</span><wbr><span><span>Editor</span></span></h1>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":readline4k:dokkaHtmlPartial/nativeMain"><div class="symbol monospace"><span class="token keyword">class </span><a href="index.html">SimpleLineEditor</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>linePrefix<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator"> = </span><span class="token string">"&gt; "</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>config<span class="token operator">: </span><a href="../../io.github.smyrgeorge.readline4k/-line-editor-config/index.html">LineEditorConfig</a><span class="token operator"> = </span>LineEditorConfig()</span></span><span class="token punctuation">)</span> : <a href="../../io.github.smyrgeorge.readline4k/-abstract-line-editor/index.html">AbstractLineEditor</a></div></div></div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":readline4k:dokkaHtmlPartial/nativeMain"><div class="symbol monospace"><span class="token keyword">class </span><a href="index.html">SimpleLineEditor</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>linePrefix<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator"> = </span><span class="token string">"&gt; "</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>config<span class="token operator">: </span><a href="../../io.github.smyrgeorge.readline4k/-line-editor-config/index.html">LineEditorConfig</a><span class="token operator"> = </span>LineEditorConfig()</span></span><span class="token punctuation">)</span> : <a href="../../io.github.smyrgeorge.readline4k/-abstract-line-editor/index.html">AbstractLineEditor</a></div><p class="paragraph">A ready‑to‑use <a href="../../io.github.smyrgeorge.readline4k/-abstract-line-editor/index.html">AbstractLineEditor</a> with sensible defaults.</p><p class="paragraph">SimpleLineEditor wires the base line editor with a default prompt ("&gt; ") and a default <a href="../../io.github.smyrgeorge.readline4k/-line-editor-config/index.html">LineEditorConfig</a>. It is intended for quick setups and examples where no custom behavior is required.</p><p class="paragraph">Typical usage:</p><ul><li><p class="paragraph">Create an instance and call <a href="../../io.github.smyrgeorge.readline4k/-abstract-line-editor/read-line.html">AbstractLineEditor.readLine</a> in a loop.</p></li><li><p class="paragraph">For syntax highlighting or completion, compose it with <a href="../-simple-highlighter/index.html">SimpleHighlighter</a> and <a href="../-simple-file-completer/index.html">SimpleFileCompleter</a> via the configuration object if needed.</p></li></ul><p class="paragraph">Note: If you need to customize key bindings, history persistence, or rendering, consider using <a href="../../io.github.smyrgeorge.readline4k/-abstract-line-editor/index.html">AbstractLineEditor</a> directly with a tailored <a href="../../io.github.smyrgeorge.readline4k/-line-editor-config/index.html">LineEditorConfig</a>.</p><h4 class="">Parameters</h4><div class="table"><div class="table-row" data-filterable-current=":readline4k:dokkaHtmlPartial/nativeMain" data-filterable-set=":readline4k:dokkaHtmlPartial/nativeMain"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><u><span>line</span><wbr><span><span>Prefix</span></span></u></div></span></div><div><div class="title"><p class="paragraph">The prompt displayed before each input line. Defaults to "&gt; ".</p></div></div></div></div><div class="table-row" data-filterable-current=":readline4k:dokkaHtmlPartial/nativeMain" data-filterable-set=":readline4k:dokkaHtmlPartial/nativeMain"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><u><span><span>config</span></span></u></div></span></div><div><div class="title"><p class="paragraph">Editor configuration controlling behavior such as completion type, history, rendering, and key handling. Defaults to a new <a href="../../io.github.smyrgeorge.readline4k/-line-editor-config/index.html">LineEditorConfig</a>.</p></div></div></div></div></div></div></div>
   </div>
   <div class="tabbedcontent">
     <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button></div>
@@ -120,32 +120,32 @@
       </div>
       <div data-togglable="PROPERTY">
         <h2 class="">Properties</h2>
-        <div class="table"><a data-name="836732250%2FProperties%2F2012386630" anchor-label="config" id="836732250%2FProperties%2F2012386630" data-filterable-set=":readline4k:dokkaHtmlPartial/nativeMain"></a>
+        <div class="table"><a data-name="120448932%2FProperties%2F2012386630" anchor-label="config" id="120448932%2FProperties%2F2012386630" data-filterable-set=":readline4k:dokkaHtmlPartial/nativeMain"></a>
           <div class="table-row" data-filterable-current=":readline4k:dokkaHtmlPartial/nativeMain" data-filterable-set=":readline4k:dokkaHtmlPartial/nativeMain">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
-                  <div><a href="config.html"><span><span>config</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="836732250%2FProperties%2F2012386630"></span>
+                  <div><a href="../../io.github.smyrgeorge.readline4k/-abstract-line-editor/config.html"><span><span>config</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="120448932%2FProperties%2F2012386630"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":readline4k:dokkaHtmlPartial/nativeMain"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">val </span><a href="config.html">config</a><span class="token operator">: </span><a href="../../io.github.smyrgeorge.readline4k/-line-editor-config/index.html">LineEditorConfig</a></div><div class="brief "><p class="paragraph">The configuration settings applied to the line editor.</p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":readline4k:dokkaHtmlPartial/nativeMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="../../io.github.smyrgeorge.readline4k/-abstract-line-editor/config.html">config</a><span class="token operator">: </span><a href="../../io.github.smyrgeorge.readline4k/-line-editor-config/index.html">LineEditorConfig</a></div><div class="brief "><p class="paragraph">The immutable configuration used to initialize the native editor.</p></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-2064117258%2FProperties%2F2012386630" anchor-label="linePrefix" id="-2064117258%2FProperties%2F2012386630" data-filterable-set=":readline4k:dokkaHtmlPartial/nativeMain"></a>
+<a data-name="1817722688%2FProperties%2F2012386630" anchor-label="linePrefix" id="1817722688%2FProperties%2F2012386630" data-filterable-set=":readline4k:dokkaHtmlPartial/nativeMain"></a>
           <div class="table-row" data-filterable-current=":readline4k:dokkaHtmlPartial/nativeMain" data-filterable-set=":readline4k:dokkaHtmlPartial/nativeMain">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
-                  <div><a href="line-prefix.html"><span>line</span><wbr><span><span>Prefix</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2064117258%2FProperties%2F2012386630"></span>
+                  <div><a href="../../io.github.smyrgeorge.readline4k/-abstract-line-editor/line-prefix.html"><span>line</span><wbr><span><span>Prefix</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1817722688%2FProperties%2F2012386630"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":readline4k:dokkaHtmlPartial/nativeMain"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">val </span><a href="line-prefix.html">linePrefix</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a></div><div class="brief "><p class="paragraph">Represents the prefix added to each line of input during editing.</p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":readline4k:dokkaHtmlPartial/nativeMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="../../io.github.smyrgeorge.readline4k/-abstract-line-editor/line-prefix.html">linePrefix</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a></div><div class="brief "><p class="paragraph">The prompt/prefix displayed before each input (e.g., "&gt; ").</p></div></div></div>
                 </div>
               </div>
             </div>
@@ -154,77 +154,122 @@
       </div>
       <div data-togglable="FUNCTION">
         <h2 class="">Functions</h2>
-        <div class="table"><a data-name="169060869%2FFunctions%2F2012386630" anchor-label="addHistoryEntry" id="169060869%2FFunctions%2F2012386630" data-filterable-set=":readline4k:dokkaHtmlPartial/nativeMain"></a>
+        <div class="table"><a data-name="1071831247%2FFunctions%2F2012386630" anchor-label="addHistoryEntry" id="1071831247%2FFunctions%2F2012386630" data-filterable-set=":readline4k:dokkaHtmlPartial/nativeMain"></a>
           <div class="table-row" data-filterable-current=":readline4k:dokkaHtmlPartial/nativeMain" data-filterable-set=":readline4k:dokkaHtmlPartial/nativeMain">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
-                  <div><a href="add-history-entry.html"><span>add</span><wbr><span>History</span><wbr><span><span>Entry</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="169060869%2FFunctions%2F2012386630"></span>
+                  <div><a href="../../io.github.smyrgeorge.readline4k/-abstract-line-editor/add-history-entry.html"><span>add</span><wbr><span>History</span><wbr><span><span>Entry</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1071831247%2FFunctions%2F2012386630"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":readline4k:dokkaHtmlPartial/nativeMain"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="add-history-entry.html"><span class="token function">addHistoryEntry</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">entry<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><span data-unresolved-link="/<Error class: unknown class>///PointingToDeclaration/">&lt;Error class: unknown class&gt;</span></div><div class="brief "><p class="paragraph">Adds a new entry to the line editor's command history.</p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":readline4k:dokkaHtmlPartial/nativeMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../../io.github.smyrgeorge.readline4k/-abstract-line-editor/add-history-entry.html"><span class="token function">addHistoryEntry</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">entry<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Add a single <a href="../../io.github.smyrgeorge.readline4k/-abstract-line-editor/add-history-entry.html">entry</a> to the in-memory history buffer.</p></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-933595275%2FFunctions%2F2012386630" anchor-label="clearHistory" id="-933595275%2FFunctions%2F2012386630" data-filterable-set=":readline4k:dokkaHtmlPartial/nativeMain"></a>
+<a data-name="1482979903%2FFunctions%2F2012386630" anchor-label="clearHistory" id="1482979903%2FFunctions%2F2012386630" data-filterable-set=":readline4k:dokkaHtmlPartial/nativeMain"></a>
           <div class="table-row" data-filterable-current=":readline4k:dokkaHtmlPartial/nativeMain" data-filterable-set=":readline4k:dokkaHtmlPartial/nativeMain">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
-                  <div><a href="clear-history.html"><span>clear</span><wbr><span><span>History</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-933595275%2FFunctions%2F2012386630"></span>
+                  <div><a href="../../io.github.smyrgeorge.readline4k/-abstract-line-editor/clear-history.html"><span>clear</span><wbr><span><span>History</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1482979903%2FFunctions%2F2012386630"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":readline4k:dokkaHtmlPartial/nativeMain"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="clear-history.html"><span class="token function">clearHistory</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><span data-unresolved-link="/<Error class: unknown class>///PointingToDeclaration/">&lt;Error class: unknown class&gt;</span><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Clears the command history stored within the line editor.</p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":readline4k:dokkaHtmlPartial/nativeMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../../io.github.smyrgeorge.readline4k/-abstract-line-editor/clear-history.html"><span class="token function">clearHistory</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><span data-unresolved-link="/<Error class: unknown class>///PointingToDeclaration/">&lt;Error class: unknown class&gt;</span><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Clear the in-memory history.</p></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-977046636%2FFunctions%2F2012386630" anchor-label="loadHistory" id="-977046636%2FFunctions%2F2012386630" data-filterable-set=":readline4k:dokkaHtmlPartial/nativeMain"></a>
+<a data-name="-336208517%2FFunctions%2F2012386630" anchor-label="clearScreen" id="-336208517%2FFunctions%2F2012386630" data-filterable-set=":readline4k:dokkaHtmlPartial/nativeMain"></a>
           <div class="table-row" data-filterable-current=":readline4k:dokkaHtmlPartial/nativeMain" data-filterable-set=":readline4k:dokkaHtmlPartial/nativeMain">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
-                  <div><a href="load-history.html"><span>load</span><wbr><span><span>History</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-977046636%2FFunctions%2F2012386630"></span>
+                  <div><a href="../../io.github.smyrgeorge.readline4k/-abstract-line-editor/clear-screen.html"><span>clear</span><wbr><span><span>Screen</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-336208517%2FFunctions%2F2012386630"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":readline4k:dokkaHtmlPartial/nativeMain"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="load-history.html"><span class="token function">loadHistory</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">path<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><span data-unresolved-link="/<Error class: unknown class>///PointingToDeclaration/">&lt;Error class: unknown class&gt;</span><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Loads the command history from a specified file path into the line editor. If the file does not exist, the function completes silently without executing further operations.</p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":readline4k:dokkaHtmlPartial/nativeMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../../io.github.smyrgeorge.readline4k/-abstract-line-editor/clear-screen.html"><span class="token function">clearScreen</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><span data-unresolved-link="/<Error class: unknown class>///PointingToDeclaration/">&lt;Error class: unknown class&gt;</span><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Clears the terminal screen using the native line editor's rendering capabilities.</p></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-617889998%2FFunctions%2F2012386630" anchor-label="readLine" id="-617889998%2FFunctions%2F2012386630" data-filterable-set=":readline4k:dokkaHtmlPartial/nativeMain"></a>
+<a data-name="-801269922%2FFunctions%2F2012386630" anchor-label="loadHistory" id="-801269922%2FFunctions%2F2012386630" data-filterable-set=":readline4k:dokkaHtmlPartial/nativeMain"></a>
           <div class="table-row" data-filterable-current=":readline4k:dokkaHtmlPartial/nativeMain" data-filterable-set=":readline4k:dokkaHtmlPartial/nativeMain">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
-                  <div><a href="read-line.html"><span>read</span><wbr><span><span>Line</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-617889998%2FFunctions%2F2012386630"></span>
+                  <div><a href="../../io.github.smyrgeorge.readline4k/-abstract-line-editor/load-history.html"><span>load</span><wbr><span><span>History</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-801269922%2FFunctions%2F2012386630"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":readline4k:dokkaHtmlPartial/nativeMain"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="read-line.html"><span class="token function">readLine</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><span data-unresolved-link="/<Error class: unknown class>///PointingToDeclaration/">&lt;Error class: unknown class&gt;</span><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Reads a single line of input from the user, applying the line editor's current configuration and handling of the input. The method blocks until input is received or the operation is interrupted.</p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":readline4k:dokkaHtmlPartial/nativeMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../../io.github.smyrgeorge.readline4k/-abstract-line-editor/load-history.html"><span class="token function">loadHistory</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">path<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><span data-unresolved-link="/<Error class: unknown class>///PointingToDeclaration/">&lt;Error class: unknown class&gt;</span><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Load history entries from the given file <a href="../../io.github.smyrgeorge.readline4k/-abstract-line-editor/load-history.html">path</a>.</p></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-168918947%2FFunctions%2F2012386630" anchor-label="saveHistory" id="-168918947%2FFunctions%2F2012386630" data-filterable-set=":readline4k:dokkaHtmlPartial/nativeMain"></a>
+<a data-name="-1771391236%2FFunctions%2F2012386630" anchor-label="readLine" id="-1771391236%2FFunctions%2F2012386630" data-filterable-set=":readline4k:dokkaHtmlPartial/nativeMain"></a>
           <div class="table-row" data-filterable-current=":readline4k:dokkaHtmlPartial/nativeMain" data-filterable-set=":readline4k:dokkaHtmlPartial/nativeMain">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
-                  <div><a href="save-history.html"><span>save</span><wbr><span><span>History</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-168918947%2FFunctions%2F2012386630"></span>
+                  <div><a href="../../io.github.smyrgeorge.readline4k/-abstract-line-editor/read-line.html"><span>read</span><wbr><span><span>Line</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1771391236%2FFunctions%2F2012386630"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":readline4k:dokkaHtmlPartial/nativeMain"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="save-history.html"><span class="token function">saveHistory</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">path<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><span data-unresolved-link="/<Error class: unknown class>///PointingToDeclaration/">&lt;Error class: unknown class&gt;</span><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Saves the command history to a specified file path. This allows the persisted history to be stored on the file system for reuse in future sessions.</p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":readline4k:dokkaHtmlPartial/nativeMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../../io.github.smyrgeorge.readline4k/-abstract-line-editor/read-line.html"><span class="token function">readLine</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><span data-unresolved-link="/<Error class: unknown class>///PointingToDeclaration/">&lt;Error class: unknown class&gt;</span><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Read a single line from the user.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="6857767%2FFunctions%2F2012386630" anchor-label="saveHistory" id="6857767%2FFunctions%2F2012386630" data-filterable-set=":readline4k:dokkaHtmlPartial/nativeMain"></a>
+          <div class="table-row" data-filterable-current=":readline4k:dokkaHtmlPartial/nativeMain" data-filterable-set=":readline4k:dokkaHtmlPartial/nativeMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../io.github.smyrgeorge.readline4k/-abstract-line-editor/save-history.html"><span>save</span><wbr><span><span>History</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="6857767%2FFunctions%2F2012386630"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":readline4k:dokkaHtmlPartial/nativeMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../../io.github.smyrgeorge.readline4k/-abstract-line-editor/save-history.html"><span class="token function">saveHistory</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">path<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><span data-unresolved-link="/<Error class: unknown class>///PointingToDeclaration/">&lt;Error class: unknown class&gt;</span><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Save current history to the file at <a href="../../io.github.smyrgeorge.readline4k/-abstract-line-editor/save-history.html">path</a>. Creates or overwrites as needed.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1723827132%2FFunctions%2F2012386630" anchor-label="withCompleter" id="1723827132%2FFunctions%2F2012386630" data-filterable-set=":readline4k:dokkaHtmlPartial/nativeMain"></a>
+          <div class="table-row" data-filterable-current=":readline4k:dokkaHtmlPartial/nativeMain" data-filterable-set=":readline4k:dokkaHtmlPartial/nativeMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../io.github.smyrgeorge.readline4k/-abstract-line-editor/with-completer.html"><span>with</span><wbr><span><span>Completer</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1723827132%2FFunctions%2F2012386630"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":readline4k:dokkaHtmlPartial/nativeMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../../io.github.smyrgeorge.readline4k/-abstract-line-editor/with-completer.html"><span class="token function">withCompleter</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">completer<span class="token operator">: </span><a href="../../io.github.smyrgeorge.readline4k/-completer/index.html">Completer</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../io.github.smyrgeorge.readline4k/-abstract-line-editor/index.html">AbstractLineEditor</a></div><div class="brief "><p class="paragraph">Install a <a href="../../io.github.smyrgeorge.readline4k/-completer/index.html">Completer</a> which will be consulted during completion (e.g., Tab). Returns this editor instance for chaining.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="237267196%2FFunctions%2F2012386630" anchor-label="withHighlighter" id="237267196%2FFunctions%2F2012386630" data-filterable-set=":readline4k:dokkaHtmlPartial/nativeMain"></a>
+          <div class="table-row" data-filterable-current=":readline4k:dokkaHtmlPartial/nativeMain" data-filterable-set=":readline4k:dokkaHtmlPartial/nativeMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../io.github.smyrgeorge.readline4k/-abstract-line-editor/with-highlighter.html"><span>with</span><wbr><span><span>Highlighter</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="237267196%2FFunctions%2F2012386630"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":readline4k:dokkaHtmlPartial/nativeMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../../io.github.smyrgeorge.readline4k/-abstract-line-editor/with-highlighter.html"><span class="token function">withHighlighter</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">highlighter<span class="token operator">: </span><a href="../../io.github.smyrgeorge.readline4k/-highlighter/index.html">Highlighter</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../io.github.smyrgeorge.readline4k/-abstract-line-editor/index.html">AbstractLineEditor</a></div><div class="brief "><p class="paragraph">Install a <a href="../../io.github.smyrgeorge.readline4k/-highlighter/index.html">Highlighter</a> to customize visual presentation of hints, prompts, and candidates. Returns this editor instance for chaining.</p></div></div></div>
                 </div>
               </div>
             </div>
