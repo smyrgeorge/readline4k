@@ -18,6 +18,9 @@ Cross-platform Kotlin/Native readline library with history support for interacti
 
 🏠 [Homepage](https://smyrgeorge.github.io/) (under construction)
 
+> [!IMPORTANT]  
+> The project is in a very early stage; thus, breaking changes should be expected.
+
 ## See it in action
 
 [![asciicast](https://asciinema.org/a/5WqK8cbZGcBaPa6KOA3QaGlWs.svg)](https://asciinema.org/a/5WqK8cbZGcBaPa6KOA3QaGlWs)

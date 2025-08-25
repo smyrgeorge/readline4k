@@ -2,11 +2,10 @@
 
 package io.github.smyrgeorge.readline4k.impl
 
+import io.github.smyrgeorge.readline4k.LineEditorConfig.CompletionType
 import io.github.smyrgeorge.readline4k.LineEditorError
-import kotlinx.cinterop.CPointer
-import kotlinx.cinterop.ExperimentalForeignApi
-import kotlinx.cinterop.pointed
-import kotlinx.cinterop.toKString
+import kotlinx.cinterop.*
+import platform.posix.strdup
 import readline4k.ReadLineResult
 import readline4k.free_read_line_result
 
@@ -38,4 +37,65 @@ private inline fun <T> CPointer<ReadLineResult>?.use(block: (ReadLineResult) -> 
     } finally {
         free_read_line_result(this)
     }
+}
+
+internal fun completerCallback(
+    holderPointer: COpaquePointer?,
+    line: CPointer<ByteVar>?,
+    pos: Int,
+    outStart: CPointer<IntVar>?,
+): CPointer<ByteVar>? {
+    require(holderPointer != null) { "The holderPointer must not be null!" }
+    if (line == null || outStart == null) return null
+    val holder = holderPointer.asStableRef<CustomLineEditor.CallbacksHolder>().get()
+    val completer = holder.completer ?: return null
+    val (start, items) = completer.complete(line.toKString(), pos)
+    outStart.pointed.value = start
+    val joined = items.joinToString("_*#*_")
+    // return malloc-allocated string for Rust to free via free()
+    return strdup(joined)?.reinterpret()
+}
+
+@Suppress("DuplicatedCode")
+internal fun hintHighlighterCallback(
+    holderPointer: COpaquePointer?,
+    hint: CPointer<ByteVar>?,
+): CPointer<ByteVar>? {
+    require(holderPointer != null) { "The holderPointer must not be null!" }
+    if (hint == null) return null
+    val holder = holderPointer.asStableRef<CustomLineEditor.CallbacksHolder>().get()
+    val highlighter = holder.highlighter ?: return null
+    val highlighted = highlighter.highlightHint(hint.toKString())
+    // return malloc-allocated string for Rust to free via free()
+    return strdup(highlighted)?.reinterpret()
+}
+
+@Suppress("DuplicatedCode")
+internal fun promptHighlighterCallback(
+    holderPointer: COpaquePointer?,
+    prompt: CPointer<ByteVar>?,
+    isDefault: Boolean,
+): CPointer<ByteVar>? {
+    require(holderPointer != null) { "The holderPointer must not be null!" }
+    if (prompt == null) return null
+    val holder = holderPointer.asStableRef<CustomLineEditor.CallbacksHolder>().get()
+    val highlighter = holder.highlighter ?: return null
+    val highlighted = highlighter.highlightPrompt(prompt.toKString(), isDefault)
+    // return malloc-allocated string for Rust to free via free()
+    return strdup(highlighted)?.reinterpret()
+}
+
+@Suppress("DuplicatedCode")
+internal fun candidateHighlighterCallback(
+    holderPointer: COpaquePointer?,
+    candidate: CPointer<ByteVar>?,
+    completion: Int,
+): CPointer<ByteVar>? {
+    require(holderPointer != null) { "The holderPointer must not be null!" }
+    if (candidate == null) return null
+    val holder = holderPointer.asStableRef<CustomLineEditor.CallbacksHolder>().get()
+    val highlighter = holder.highlighter ?: return null
+    val highlighted = highlighter.highlightCandidate(candidate.toKString(), CompletionType.entries[completion])
+    // return malloc-allocated string for Rust to free via free()
+    return strdup(highlighted)?.reinterpret()
 }
