@@ -6,7 +6,13 @@ import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.cinterop.convert
 import kotlinx.cinterop.refTo
 import kotlinx.cinterop.toKString
-import platform.posix.*
+import kotlinx.io.files.Path
+import kotlinx.io.files.SystemFileSystem
+import kotlinx.io.files.SystemPathSeparator
+import platform.posix.chdir
+import platform.posix.getcwd
+import platform.posix.getenv
+import platform.posix.getpid
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
@@ -16,11 +22,11 @@ class SimpleFileCompleterTest {
     fun completesFilesWithinAbsoluteDirectory() {
         val tmpDir = makeTempDir()
         try {
-            // Create files and dirs
+            // Create files and dirs using kotlinx-io
             touch("$tmpDir/file1.txt")
             touch("$tmpDir/fish.sh")
             touch("$tmpDir/.hidden.txt")
-            mkdir("$tmpDir/final", 0x1FF.toUShort()) // 0777
+            SystemFileSystem.createDirectories(Path("$tmpDir/final"))
 
             val completer = SimpleFileCompleter()
             val prefix = "$tmpDir/fi"
@@ -44,12 +50,12 @@ class SimpleFileCompleterTest {
                 "Hidden files must be filtered out when prefix doesn't start with '.'"
             )
         } finally {
-            // Best-effort cleanup
-            rm("$tmpDir/file1.txt")
-            rm("$tmpDir/fish.sh")
-            rm("$tmpDir/.hidden.txt")
-            rmdir("$tmpDir/final")
-            rmdir(tmpDir)
+            // Best-effort cleanup using kotlinx-io
+            deleteFile("$tmpDir/file1.txt")
+            deleteFile("$tmpDir/fish.sh")
+            deleteFile("$tmpDir/.hidden.txt")
+            deleteDirectory("$tmpDir/final")
+            deleteDirectory(tmpDir)
         }
     }
 
@@ -64,7 +70,7 @@ class SimpleFileCompleterTest {
             // Prepare files in tmpDir and chdir into it
             touch("$tmpDir/apple.txt")
             touch("$tmpDir/application.md")
-            mkdir("$tmpDir/app", 0x1FF.toUShort())
+            SystemFileSystem.createDirectories(Path("$tmpDir/app"))
 
             chdir(tmpDir)
 
@@ -83,10 +89,10 @@ class SimpleFileCompleterTest {
             assertEquals(sorted, candidates, "Candidates must be sorted")
         } finally {
             chdir(oldCwd)
-            rm("$tmpDir/apple.txt")
-            rm("$tmpDir/application.md")
-            rmdir("$tmpDir/app")
-            rmdir(tmpDir)
+            deleteFile("$tmpDir/apple.txt")
+            deleteFile("$tmpDir/application.md")
+            deleteDirectory("$tmpDir/app")
+            deleteDirectory(tmpDir)
         }
     }
 
@@ -114,10 +120,10 @@ class SimpleFileCompleterTest {
             // 'normal' should not appear due to prefix mismatch
             assertTrue(candidates.none { it.endsWith("normal") })
         } finally {
-            rm("$tmpDir/.dotfile")
-            rm("$tmpDir/.dog")
-            rm("$tmpDir/normal")
-            rmdir(tmpDir)
+            deleteFile("$tmpDir/.dotfile")
+            deleteFile("$tmpDir/.dog")
+            deleteFile("$tmpDir/normal")
+            deleteDirectory(tmpDir)
         }
     }
 
@@ -128,7 +134,6 @@ class SimpleFileCompleterTest {
         val (_, candidates) = completer.complete(prefix, prefix.length)
         assertTrue(candidates.isEmpty(), "Expected no candidates for nonexistent directory")
     }
-
 
     @Test
     fun computesStartIndexAfterLastSpace() {
@@ -144,40 +149,22 @@ class SimpleFileCompleterTest {
             assertEquals(5, start)
             assertTrue(candidates.any { it.endsWith("alpha") })
         } finally {
-            rm("$tmpDir/alpha")
-            rmdir(tmpDir)
+            deleteFile("$tmpDir/alpha")
+            deleteDirectory(tmpDir)
         }
     }
 
-    private fun getPathSeparator(): String {
-        // SimpleFileCompleter uses kotlinx.io.files.SystemPathSeparator which translates to OS-specific
-        // Here we approximate via platform detection: on Windows, use '\\', otherwise '/'
-        return if (isWindows()) "\\" else "/"
-    }
+    private fun getPathSeparator(): String =
+        SystemPathSeparator.toString()
 
-    private fun isWindows(): Boolean {
-        // Very lightweight detection using preprocessor-like macros aren't available; read from uname/OS
-        val os = getenv("OS")?.toKString() ?: ""
-        if (os.contains("Windows", ignoreCase = true)) return true
-        // Fallback by checking path separator observed by runtime
-        // If current working directory contains backslash, assume Windows
-        val buf = ByteArray(4096)
-        val path = getcwd(buf.refTo(0), buf.size.convert())
-        if (path != null) {
-            val s = path.toKString()
-            if (s.contains('\\')) return true
-        }
-        return false
-    }
+    private fun touch(path: String): Unit =
+        SystemFileSystem.sink(Path(path)).use { }
 
-    private fun touch(path: String) {
-        val f = fopen(path, "w") ?: return
-        fclose(f)
-    }
+    private fun deleteFile(path: String): Unit =
+        SystemFileSystem.delete(Path(path), mustExist = false)
 
-    private fun rm(path: String) {
-        remove(path)
-    }
+    private fun deleteDirectory(path: String): Unit =
+        SystemFileSystem.delete(Path(path), mustExist = false)
 
     private fun makeTempDir(): String {
         val base = getenv("TMPDIR")?.toKString()
@@ -186,9 +173,11 @@ class SimpleFileCompleterTest {
             ?: "/tmp"
         var idx = 0
         while (true) {
-            val candidate = $$"$$base/readline4k_test_$pid_$idx"
-            if (mkdir(candidate, 0x1C0.toUShort()) == 0) { // 0700
+            val candidate = "$base/readline4k_test_${getpid()}_$idx"
+            try {
+                SystemFileSystem.createDirectories(Path(candidate))
                 return candidate
+            } catch (_: Throwable) {
             }
             idx++
             if (idx > 1000) error("Could not create a temp directory under $base")
