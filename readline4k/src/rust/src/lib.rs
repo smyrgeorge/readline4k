@@ -77,6 +77,24 @@ impl Highlighter for FileCompleterHelper {
         // Color the hint in a dimmed gray style
         format!("\x1b[90m{}\x1b[0m", hint).into()
     }
+
+    fn highlight_candidate<'c>(
+        &self,
+        candidate: &'c str,
+        _completion: CompletionType,
+    ) -> std::borrow::Cow<'c, str> {
+        // Color candidates in cyan to distinguish from input
+        format!("\x1b[36m{}\x1b[0m", candidate).into()
+    }
+
+    fn highlight_prompt<'b, 's: 'b, 'p: 'b>(
+        &self,
+        prompt: &'p str,
+        _default: bool,
+    ) -> std::borrow::Cow<'b, str> {
+        // Make the prompt bold green
+        format!("\x1b[1;32m{}\x1b[0m", prompt).into()
+    }
 }
 
 pub type CustomCompleterCallback = extern "C" fn(
@@ -86,16 +104,43 @@ pub type CustomCompleterCallback = extern "C" fn(
     out_start: *mut c_int,
 ) -> *mut c_char;
 
-pub type CustomHighlighterCallback =
+pub type CustomHintHighlighterCallback =
     extern "C" fn(k_callback_holder: *mut c_void, hint: *const c_char) -> *mut c_char;
+
+pub type CustomPromptHighlighterCallback = extern "C" fn(
+    k_callback_holder: *mut c_void,
+    prompt: *const c_char,
+    is_default: bool,
+) -> *mut c_char;
+
+pub type CustomCandidateHighlighterCallback = extern "C" fn(
+    k_callback_holder: *mut c_void,
+    candidate: *const c_char,
+    completion: c_int,
+) -> *mut c_char;
 
 #[derive(Helper, Hinter, Validator)]
 pub struct CustomHelper {
     #[rustyline(Hinter)]
     hinter: HistoryHinter,
     completer_cb: Option<CustomCompleterCallback>,
-    highlighter_cb: Option<CustomHighlighterCallback>,
+    hint_highlighter_cb: Option<CustomHintHighlighterCallback>,
+    prompt_highlighter_cb: Option<CustomPromptHighlighterCallback>,
+    candidate_highlighter_cb: Option<CustomCandidateHighlighterCallback>,
     k_callback_holder: *mut c_void,
+}
+
+impl Default for CustomHelper {
+    fn default() -> Self {
+        Self {
+            hinter: HistoryHinter {},
+            completer_cb: Default::default(),
+            hint_highlighter_cb: Default::default(),
+            prompt_highlighter_cb: Default::default(),
+            candidate_highlighter_cb: Default::default(),
+            k_callback_holder: Default::default(),
+        }
+    }
 }
 
 impl Completer for CustomHelper {
@@ -126,7 +171,7 @@ impl Completer for CustomHelper {
             };
             unsafe { free(ptr as *mut c_void) };
             let candidates: Vec<Pair> = items_str
-                .split("_#_*_")
+                .split("_*#*_")
                 .filter(|s| !s.is_empty())
                 .map(|s| Pair {
                     display: s.to_string(),
@@ -142,7 +187,7 @@ impl Completer for CustomHelper {
 
 impl Highlighter for CustomHelper {
     fn highlight_hint<'h>(&self, hint: &'h str) -> std::borrow::Cow<'h, str> {
-        if let Some(cb) = self.highlighter_cb {
+        if let Some(cb) = self.hint_highlighter_cb {
             let c_hint = CString::new(hint).unwrap();
             let ptr = cb(self.k_callback_holder, c_hint.as_ptr());
             if ptr.is_null() {
@@ -157,6 +202,61 @@ impl Highlighter for CustomHelper {
             owned.into()
         } else {
             std::borrow::Cow::Borrowed(hint)
+        }
+    }
+
+    fn highlight_candidate<'c>(
+        &self,
+        candidate: &'c str,
+        completion: CompletionType,
+    ) -> std::borrow::Cow<'c, str> {
+        if let Some(cb) = self.candidate_highlighter_cb {
+            let c_candidate = CString::new(candidate).unwrap();
+            let completion_code: c_int = match completion {
+                CompletionType::Circular => 0,
+                CompletionType::List => 1,
+                _ => 0,
+            };
+            let ptr = cb(
+                self.k_callback_holder,
+                c_candidate.as_ptr(),
+                completion_code,
+            );
+            if ptr.is_null() {
+                return std::borrow::Cow::Borrowed(candidate);
+            }
+            let owned = unsafe {
+                CStr::from_ptr(ptr as *const c_char)
+                    .to_string_lossy()
+                    .into_owned()
+            };
+            unsafe { free(ptr as *mut c_void) };
+            owned.into()
+        } else {
+            std::borrow::Cow::Borrowed(candidate)
+        }
+    }
+
+    fn highlight_prompt<'b, 's: 'b, 'p: 'b>(
+        &self,
+        prompt: &'p str,
+        is_default: bool,
+    ) -> std::borrow::Cow<'b, str> {
+        if let Some(cb) = self.prompt_highlighter_cb {
+            let c_prompt = CString::new(prompt).unwrap();
+            let ptr = cb(self.k_callback_holder, c_prompt.as_ptr(), is_default);
+            if ptr.is_null() {
+                return std::borrow::Cow::Owned(prompt.to_string());
+            }
+            let owned = unsafe {
+                CStr::from_ptr(ptr as *const c_char)
+                    .to_string_lossy()
+                    .into_owned()
+            };
+            unsafe { free(ptr as *mut c_void) };
+            owned.into()
+        } else {
+            std::borrow::Cow::Owned(prompt.to_string())
         }
     }
 }
@@ -300,12 +400,7 @@ pub extern "C" fn file_completer_editor_clear_history(rl: *mut c_void) -> *mut R
 pub extern "C" fn new_custom_editor_with_config(cfg: *const EditorConfig) -> *mut c_void {
     let cfg = unsafe { &*cfg };
     let cfg = map_config(cfg);
-    let helper = CustomHelper {
-        hinter: HistoryHinter {},
-        completer_cb: None,
-        highlighter_cb: None,
-        k_callback_holder: std::ptr::null_mut(),
-    };
+    let helper = CustomHelper::default();
     let mut rl: Editor<CustomHelper, FileHistory> = Editor::with_config(cfg).unwrap();
     rl.set_helper(Some(helper));
     let rl = Box::new(rl);
@@ -317,25 +412,51 @@ pub extern "C" fn new_custom_editor_with_config(cfg: *const EditorConfig) -> *mu
 pub extern "C" fn custom_editor_set_completer(
     rl: *mut c_void,
     cb: CustomCompleterCallback,
-    user_data: *mut c_void,
+    k_callback_holder: *mut c_void,
 ) {
     let rl = unsafe { &mut *(rl as *mut Editor<CustomHelper, FileHistory>) };
     if let Some(h) = rl.helper_mut() {
         h.completer_cb = Some(cb);
-        h.k_callback_holder = user_data;
+        h.k_callback_holder = k_callback_holder;
     }
 }
 
 #[no_mangle]
-pub extern "C" fn custom_editor_set_highlighter(
+pub extern "C" fn custom_editor_set_hint_highlighter(
     rl: *mut c_void,
-    cb: CustomHighlighterCallback,
-    user_data: *mut c_void,
+    cb: CustomHintHighlighterCallback,
+    k_callback_holder: *mut c_void,
 ) {
     let rl = unsafe { &mut *(rl as *mut Editor<CustomHelper, FileHistory>) };
     if let Some(h) = rl.helper_mut() {
-        h.highlighter_cb = Some(cb);
-        h.k_callback_holder = user_data;
+        h.hint_highlighter_cb = Some(cb);
+        h.k_callback_holder = k_callback_holder;
+    }
+}
+
+#[no_mangle]
+pub extern "C" fn custom_editor_set_prompt_highlighter(
+    rl: *mut c_void,
+    cb: CustomPromptHighlighterCallback,
+    k_callback_holder: *mut c_void,
+) {
+    let rl = unsafe { &mut *(rl as *mut Editor<CustomHelper, FileHistory>) };
+    if let Some(h) = rl.helper_mut() {
+        h.prompt_highlighter_cb = Some(cb);
+        h.k_callback_holder = k_callback_holder;
+    }
+}
+
+#[no_mangle]
+pub extern "C" fn custom_editor_set_candidate_highlighter(
+    rl: *mut c_void,
+    cb: CustomCandidateHighlighterCallback,
+    k_callback_holder: *mut c_void,
+) {
+    let rl = unsafe { &mut *(rl as *mut Editor<CustomHelper, FileHistory>) };
+    if let Some(h) = rl.helper_mut() {
+        h.candidate_highlighter_cb = Some(cb);
+        h.k_callback_holder = k_callback_holder;
     }
 }
 

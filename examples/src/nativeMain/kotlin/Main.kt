@@ -7,6 +7,7 @@ fun main() {
     // Configure the LineEditor.
     val config = LineEditorConfig(
         maxHistorySize = 100,
+        completionType = LineEditorConfig.CompletionType.LIST,
         // See the documentation for more options.
     )
 
@@ -17,7 +18,9 @@ fun main() {
         completer = { line, pos ->
             0 to listOf("test-1", "test-2", "test-3", "test-4")
         },
-        highlighter = { hint -> "\u001B[90m$hint\u001B[0m" }
+        hintHighlighter = { hint -> "\u001B[90m$hint\u001B[0m" },
+        candidateHighlighter = { candidate, _ -> "\u001B[36m$candidate\u001B[0m" },
+        promptHighlighter = { prompt, _ -> "\u001B[32m$prompt\u001B[0m" },
     ).also { le ->
         // Load the history from the disk (throws LineEditorError if it fails).
         le.loadHistory(history).getOrThrow()
