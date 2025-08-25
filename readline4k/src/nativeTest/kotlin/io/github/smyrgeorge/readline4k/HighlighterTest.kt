@@ -1,7 +1,5 @@
 package io.github.smyrgeorge.readline4k
 
-import io.github.smyrgeorge.readline4k.Highlighter
-import io.github.smyrgeorge.readline4k.LineEditorConfig
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
