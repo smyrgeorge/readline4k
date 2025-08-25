@@ -41,6 +41,7 @@ fun main() {
 
             }
             .onSuccess { line ->
+                // We can also add the line to the history automatically by setting autoAddHistory = true in the config.
                 editor.addHistoryEntry(line)
                 println(line)
             }

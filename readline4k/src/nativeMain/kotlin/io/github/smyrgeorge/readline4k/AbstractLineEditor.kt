@@ -92,6 +92,13 @@ abstract class AbstractLineEditor(
     fun clearScreen(): Result<Unit> = editor_clear_screen(rl).toUnitResult()
 
     /**
+     * Show or hide the terminal cursor while the editor is active.
+     *
+     * @param visible true to show the cursor; false to hide it.
+     */
+    fun setCursorVisibility(visible: Boolean) = editor_set_cursor_visibility(rl, visible)
+
+    /**
      * Install a [Completer] which will be consulted during completion (e.g., Tab).
      * Returns this editor instance for chaining.
      */
@@ -107,9 +114,11 @@ abstract class AbstractLineEditor(
      */
     fun withHighlighter(highlighter: Highlighter): AbstractLineEditor {
         holder.highlighter = highlighter
+        editor_set_highlighter(rl, staticCFunction(::highlighterCallback))
         editor_set_hint_highlighter(rl, staticCFunction(::hintHighlighterCallback))
         editor_set_prompt_highlighter(rl, staticCFunction(::promptHighlighterCallback))
         editor_set_candidate_highlighter(rl, staticCFunction(::candidateHighlighterCallback))
+        editor_set_char_highlighter(rl, staticCFunction(::charHighlighterCallback))
         return this
     }
 
@@ -117,5 +126,8 @@ abstract class AbstractLineEditor(
      * Holds user-supplied strategy objects so they can be accessed from native callbacks.
      * Stored behind a StableRef and passed to native as an opaque pointer.
      */
-    internal class CallbacksHolder(var completer: Completer? = null, var highlighter: Highlighter? = null)
+    internal class CallbacksHolder(
+        var completer: Completer? = null,
+        var highlighter: Highlighter? = null
+    )
 }

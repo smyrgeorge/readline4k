@@ -32,6 +32,8 @@ typedef struct EditorConfig {
 
 typedef char *(*CompleterCallCb)(void *k_callback_holder, const char *line, int pos, int *out_start);
 
+typedef char *(*HighlighterCb)(void *k_callback_holder, const char *line, int pos);
+
 typedef char *(*HintHighlighterCb)(void *k_callback_holder, const char *hint);
 
 typedef char *(*PromptHighlighterCb)(void *k_callback_holder, const char *prompt, bool is_default);
@@ -40,17 +42,23 @@ typedef char *(*CandidateHighlighterCb)(void *k_callback_holder,
                                         const char *candidate,
                                         int completion);
 
+typedef bool (*CharHighlighterCb)(void *k_callback_holder, const char *line, int pos, int kind);
+
 void free_read_line_result(struct ReadLineResult *ptr);
 
 void *new_editor_with_config(const struct EditorConfig *cfg, void *k_callback_holder);
 
 void editor_set_completer(void *rl, CompleterCallCb cb);
 
+void editor_set_highlighter(void *rl, HighlighterCb cb);
+
 void editor_set_hint_highlighter(void *rl, HintHighlighterCb cb);
 
 void editor_set_prompt_highlighter(void *rl, PromptHighlighterCb cb);
 
 void editor_set_candidate_highlighter(void *rl, CandidateHighlighterCb cb);
+
+void editor_set_char_highlighter(void *rl, CharHighlighterCb cb);
 
 struct ReadLineResult *editor_read_line(void *rl, const char *prefix);
 
@@ -63,6 +71,8 @@ struct ReadLineResult *editor_save_history(void *rl, const char *path);
 struct ReadLineResult *editor_clear_history(void *rl);
 
 struct ReadLineResult *editor_clear_screen(void *rl);
+
+void editor_set_cursor_visibility(void *rl, bool visible);
 
 void free_editor(void *ptr);
 

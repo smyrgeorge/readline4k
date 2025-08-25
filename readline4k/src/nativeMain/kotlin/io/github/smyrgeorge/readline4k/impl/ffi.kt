@@ -3,6 +3,7 @@
 package io.github.smyrgeorge.readline4k.impl
 
 import io.github.smyrgeorge.readline4k.AbstractLineEditor
+import io.github.smyrgeorge.readline4k.Highlighter.CmdKind
 import io.github.smyrgeorge.readline4k.LineEditorConfig
 import io.github.smyrgeorge.readline4k.LineEditorConfig.CompletionType
 import io.github.smyrgeorge.readline4k.LineEditorError
@@ -84,6 +85,19 @@ internal fun completerCallback(
     return strdup(joined)?.reinterpret()
 }
 
+internal fun highlighterCallback(
+    holderPointer: COpaquePointer?,
+    line: CPointer<ByteVar>?,
+    pos: Int,
+): CPointer<ByteVar>? {
+    if (line == null) return null
+    val holder = getHolder(holderPointer)
+    val highlighter = holder.highlighter ?: return null
+    val highlighted = highlighter.highlight(line.toKString(), pos)
+    // return malloc-allocated string for Rust to free via free()
+    return strdup(highlighted)?.reinterpret()
+}
+
 internal fun hintHighlighterCallback(
     holderPointer: COpaquePointer?,
     hint: CPointer<ByteVar>?,
@@ -121,4 +135,17 @@ internal fun candidateHighlighterCallback(
     val highlighted = highlighter.highlightCandidate(candidate.toKString(), CompletionType.entries[completion])
     // return malloc-allocated string for Rust to free via free()
     return strdup(highlighted)?.reinterpret()
+}
+
+internal fun charHighlighterCallback(
+    holderPointer: COpaquePointer?,
+    line: CPointer<ByteVar>?,
+    pos: Int,
+    kind: Int
+): Boolean {
+    if (line == null) return false
+    require(holderPointer != null) { "The holderPointer must not be null!" }
+    val holder = holderPointer.asStableRef<AbstractLineEditor.CallbacksHolder>().get()
+    val highlighter = holder.highlighter ?: return false
+    return highlighter.highlightChar(line.toKString(), pos, CmdKind.entries[kind])
 }
