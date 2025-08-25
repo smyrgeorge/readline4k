@@ -2,8 +2,6 @@ package io.github.smyrgeorge.readline4k
 
 import io.github.smyrgeorge.readline4k.LineEditorError.Companion.couldNotInstantiateTheEditor
 import io.github.smyrgeorge.readline4k.impl.*
-import io.github.smyrgeorge.readline4k.tools.Completer
-import io.github.smyrgeorge.readline4k.tools.Highlighter
 import kotlinx.cinterop.*
 import kotlinx.io.files.Path
 import kotlinx.io.files.SystemFileSystem
@@ -43,7 +41,7 @@ abstract class AbstractLineEditor(
 
     private val rl: COpaquePointer = memScoped {
         val cfg: CValue<EditorConfig> = config.toCValue()
-        new_editor_with_config(cfg.ptr) ?: couldNotInstantiateTheEditor()
+        new_editor_with_config(cfg.ptr, holderPointer) ?: couldNotInstantiateTheEditor()
     }
 
     /**
@@ -89,12 +87,17 @@ abstract class AbstractLineEditor(
     fun clearHistory(): Result<Unit> = editor_clear_history(rl).toUnitResult()
 
     /**
+     * Clears the terminal screen using the native line editor's rendering capabilities.
+     */
+    fun clearScreen(): Result<Unit> = editor_clear_screen(rl).toUnitResult()
+
+    /**
      * Install a [Completer] which will be consulted during completion (e.g., Tab).
      * Returns this editor instance for chaining.
      */
     fun withCompleter(completer: Completer): AbstractLineEditor {
         holder.completer = completer
-        editor_set_completer(rl, staticCFunction(::completerCallback), holderPointer)
+        editor_set_completer(rl, staticCFunction(::completerCallback))
         return this
     }
 
@@ -104,9 +107,9 @@ abstract class AbstractLineEditor(
      */
     fun withHighlighter(highlighter: Highlighter): AbstractLineEditor {
         holder.highlighter = highlighter
-        editor_set_hint_highlighter(rl, staticCFunction(::hintHighlighterCallback), holderPointer)
-        editor_set_prompt_highlighter(rl, staticCFunction(::promptHighlighterCallback), holderPointer)
-        editor_set_candidate_highlighter(rl, staticCFunction(::candidateHighlighterCallback), holderPointer)
+        editor_set_hint_highlighter(rl, staticCFunction(::hintHighlighterCallback))
+        editor_set_prompt_highlighter(rl, staticCFunction(::promptHighlighterCallback))
+        editor_set_candidate_highlighter(rl, staticCFunction(::candidateHighlighterCallback))
         return this
     }
 
@@ -114,33 +117,5 @@ abstract class AbstractLineEditor(
      * Holds user-supplied strategy objects so they can be accessed from native callbacks.
      * Stored behind a StableRef and passed to native as an opaque pointer.
      */
-    internal class CallbacksHolder(
-        var completer: Completer? = null,
-        var highlighter: Highlighter? = null,
-    )
-
-    /**
-     * Convert the high-level [LineEditorConfig] to the FFI struct consumed by the native editor.
-     */
-    private fun LineEditorConfig.toCValue(): CValue<EditorConfig> =
-        cValue<EditorConfig> {
-            max_history_size = this@toCValue.maxHistorySize
-            history_duplicates = this@toCValue.historyDuplicates.ordinal
-            history_ignore_space = this@toCValue.historyIgnoreSpace
-            completion_type = this@toCValue.completionType.ordinal
-            completion_show_all_if_ambiguous = this@toCValue.completionShowAllIfAmbiguous
-            completion_prompt_limit = this@toCValue.completionPromptLimit
-            key_seq_timeout = this@toCValue.keySeqTimeout ?: -1
-            edit_mode = this@toCValue.editMode.ordinal
-            auto_add_history = this@toCValue.autoAddHistory
-            bell_style = this@toCValue.bellStyle.ordinal
-            color_mode = this@toCValue.colorMode.ordinal
-            behavior = this@toCValue.behavior.ordinal
-            tab_stop = this@toCValue.tabStop.toUByte()
-            indent_size = this@toCValue.indentSize.toUByte()
-            check_cursor_position = this@toCValue.checkCursorPosition
-            enable_bracketed_paste = this@toCValue.enableBracketedPaste
-            enable_synchronized_output = this@toCValue.enableSynchronizedOutput
-            enable_signals = this@toCValue.enableSignals
-        }
+    internal class CallbacksHolder(var completer: Completer? = null, var highlighter: Highlighter? = null)
 }

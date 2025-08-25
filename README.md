@@ -34,6 +34,31 @@ Cross-platform Kotlin/Native readline library with history support for interacti
 - Mintty (Cygwin/MinGW) is not supported
 - Highlighting / Colors are not supported on Windows < Windows 10 except with ConEmu and ColorMode::Forced.
 
+## Features
+
+- Cross-platform line editing for Unix (Linux, macOS, FreeBSD) and Windows consoles.
+- Simple, composable API:
+  - Read one line with a prompt prefix and get Result<String> back (non-throwing API).
+  - Clear screen, manage history, and attach completion/highlighting strategies.
+- History management:
+  - In-memory history with max size and duplicate handling policy.
+  - Load from/save to a file, clear history, and optional auto-add on successful read.
+  - Optionally ignore lines starting with a space.
+- Pluggable completion:
+  - Interface-based Completer with cursor-aware token replacement.
+  - Built-in SimpleFileCompleter for filesystem paths (tilde expansion, hidden files rules, dir trailing slash).
+  - Multiple completion modes: Circular cycling or List with common-prefix and paging; show-all-if-ambiguous option.
+- Configurable highlighting:
+  - Highlighter interface to style prompt, inline hints, and candidates (e.g., via ANSI colors).
+  - Color modes: Enabled, Forced, or Disabled to match terminal capabilities.
+- Editing behavior and keymaps:
+  - Emacs or Vi editing modes.
+  - Bell styles: audible or none (with sensible Windows default).
+- Terminal features (where supported):
+  - Bracketed paste, synchronized output, and signal handling on Unix-like systems.
+- I/O behavior:
+  - STDIO by default or Prefer terminal behavior when available.
+
 ## Quick start
 
 A minimal REPL-style loop with history persistence:
@@ -93,9 +118,9 @@ Planned work and areas where contributions are welcome:
 - [x] Completion API
     - [x] Public autocomplete interface and registration in the editor
     - [x] Incremental suggestions, cycling (next/previous), and “accept hint” behavior
-- [ ] File completer
+- [x] File completer
     - [x] Cross‑platform path parsing, tilde and environment expansion, directory-only mode
-    - [ ] Hidden files toggle and suffix directories with a separator
+    - [x] Show hidden files only if the request starts with '.'
 - [ ] Multiline input
     - [ ] Continuation prompts, indentation preservation, and paste mode
 - [ ] Documentation and examples

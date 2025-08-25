@@ -12,10 +12,10 @@ use rustyline::history::FileHistory;
 use rustyline::Editor;
 use rustyline_derive::{Helper, Hinter, Validator};
 
-pub const OK: c_int = -1;
-pub const ERROR_EOF: c_int = 0;
-pub const ERROR_INTERRUPTED: c_int = 1;
-pub const ERROR_UNKNOWN: c_int = 2;
+const OK: c_int = -1;
+const ERROR_EOF: c_int = 0;
+const ERROR_INTERRUPTED: c_int = 1;
+const ERROR_UNKNOWN: c_int = 2;
 
 #[repr(C)]
 pub struct ReadLineResult {
@@ -64,23 +64,23 @@ pub struct EditorConfig {
     pub enable_signals: bool,
 }
 
-pub type CustomCompleterCallback = extern "C" fn(
+type CompleterCallCb = extern "C" fn(
     k_callback_holder: *mut c_void,
     line: *const c_char,
     pos: c_int,
     out_start: *mut c_int,
 ) -> *mut c_char;
 
-pub type CustomHintHighlighterCallback =
+type HintHighlighterCb =
     extern "C" fn(k_callback_holder: *mut c_void, hint: *const c_char) -> *mut c_char;
 
-pub type CustomPromptHighlighterCallback = extern "C" fn(
+type PromptHighlighterCb = extern "C" fn(
     k_callback_holder: *mut c_void,
     prompt: *const c_char,
     is_default: bool,
 ) -> *mut c_char;
 
-pub type CustomCandidateHighlighterCallback = extern "C" fn(
+type CandidateHighlighterCb = extern "C" fn(
     k_callback_holder: *mut c_void,
     candidate: *const c_char,
     completion: c_int,
@@ -90,10 +90,10 @@ pub type CustomCandidateHighlighterCallback = extern "C" fn(
 pub struct CustomHelper {
     #[rustyline(Hinter)]
     hinter: HistoryHinter,
-    completer_cb: Option<CustomCompleterCallback>,
-    hint_highlighter_cb: Option<CustomHintHighlighterCallback>,
-    prompt_highlighter_cb: Option<CustomPromptHighlighterCallback>,
-    candidate_highlighter_cb: Option<CustomCandidateHighlighterCallback>,
+    completer_cb: Option<CompleterCallCb>,
+    hint_highlighter_cb: Option<HintHighlighterCb>,
+    prompt_highlighter_cb: Option<PromptHighlighterCb>,
+    candidate_highlighter_cb: Option<CandidateHighlighterCb>,
     k_callback_holder: *mut c_void,
 }
 
@@ -246,10 +246,16 @@ pub extern "C" fn free_read_line_result(ptr: *mut ReadLineResult) {
 }
 
 #[no_mangle]
-pub extern "C" fn new_editor_with_config(cfg: *const EditorConfig) -> *mut c_void {
+pub extern "C" fn new_editor_with_config(
+    cfg: *const EditorConfig,
+    k_callback_holder: *mut c_void,
+) -> *mut c_void {
     let cfg = unsafe { &*cfg };
     let cfg = map_config(cfg);
-    let helper = CustomHelper::default();
+    let helper = CustomHelper {
+        k_callback_holder,
+        ..Default::default()
+    };
     let mut rl: Editor<CustomHelper, FileHistory> = Editor::with_config(cfg).unwrap();
     rl.set_helper(Some(helper));
     let rl = Box::new(rl);
@@ -258,54 +264,34 @@ pub extern "C" fn new_editor_with_config(cfg: *const EditorConfig) -> *mut c_voi
 }
 
 #[no_mangle]
-pub extern "C" fn editor_set_completer(
-    rl: *mut c_void,
-    cb: CustomCompleterCallback,
-    k_callback_holder: *mut c_void,
-) {
+pub extern "C" fn editor_set_completer(rl: *mut c_void, cb: CompleterCallCb) {
     let rl = unsafe { &mut *(rl as *mut Editor<CustomHelper, FileHistory>) };
     if let Some(h) = rl.helper_mut() {
         h.completer_cb = Some(cb);
-        h.k_callback_holder = k_callback_holder;
     }
 }
 
 #[no_mangle]
-pub extern "C" fn editor_set_hint_highlighter(
-    rl: *mut c_void,
-    cb: CustomHintHighlighterCallback,
-    k_callback_holder: *mut c_void,
-) {
+pub extern "C" fn editor_set_hint_highlighter(rl: *mut c_void, cb: HintHighlighterCb) {
     let rl = unsafe { &mut *(rl as *mut Editor<CustomHelper, FileHistory>) };
     if let Some(h) = rl.helper_mut() {
         h.hint_highlighter_cb = Some(cb);
-        h.k_callback_holder = k_callback_holder;
     }
 }
 
 #[no_mangle]
-pub extern "C" fn editor_set_prompt_highlighter(
-    rl: *mut c_void,
-    cb: CustomPromptHighlighterCallback,
-    k_callback_holder: *mut c_void,
-) {
+pub extern "C" fn editor_set_prompt_highlighter(rl: *mut c_void, cb: PromptHighlighterCb) {
     let rl = unsafe { &mut *(rl as *mut Editor<CustomHelper, FileHistory>) };
     if let Some(h) = rl.helper_mut() {
         h.prompt_highlighter_cb = Some(cb);
-        h.k_callback_holder = k_callback_holder;
     }
 }
 
 #[no_mangle]
-pub extern "C" fn editor_set_candidate_highlighter(
-    rl: *mut c_void,
-    cb: CustomCandidateHighlighterCallback,
-    k_callback_holder: *mut c_void,
-) {
+pub extern "C" fn editor_set_candidate_highlighter(rl: *mut c_void, cb: CandidateHighlighterCb) {
     let rl = unsafe { &mut *(rl as *mut Editor<CustomHelper, FileHistory>) };
     if let Some(h) = rl.helper_mut() {
         h.candidate_highlighter_cb = Some(cb);
-        h.k_callback_holder = k_callback_holder;
     }
 }
 
@@ -344,6 +330,13 @@ pub extern "C" fn editor_save_history(rl: *mut c_void, path: *const c_char) -> *
 pub extern "C" fn editor_clear_history(rl: *mut c_void) -> *mut ReadLineResult {
     let rl = unsafe { &mut *(rl as *mut Editor<CustomHelper, FileHistory>) };
     let result = rl.clear_history();
+    handle_simple_result(result)
+}
+
+#[no_mangle]
+pub extern "C" fn editor_clear_screen(rl: *mut c_void) -> *mut ReadLineResult {
+    let rl = unsafe { &mut *(rl as *mut Editor<CustomHelper, FileHistory>) };
+    let result = rl.clear_screen();
     handle_simple_result(result)
 }
 

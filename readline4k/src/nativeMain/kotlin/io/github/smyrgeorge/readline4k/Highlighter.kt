@@ -1,4 +1,4 @@
-package io.github.smyrgeorge.readline4k.tools
+package io.github.smyrgeorge.readline4k
 
 import io.github.smyrgeorge.readline4k.LineEditorConfig.CompletionType
 
@@ -9,7 +9,7 @@ import io.github.smyrgeorge.readline4k.LineEditorConfig.CompletionType
  *
  * All methods have sensible pass-through defaults, so you can override only
  * what you need. If your terminal does not support colors, consider returning
- * the input unmodified or using [io.github.smyrgeorge.readline4k.LineEditorConfig.ColorMode]
+ * the input unmodified or using [LineEditorConfig.ColorMode]
  * to control colorization globally.
  *
  * Example:

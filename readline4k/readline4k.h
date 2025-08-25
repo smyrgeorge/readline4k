@@ -3,14 +3,6 @@
 #include <stdint.h>
 #include <stdlib.h>
 
-#define OK -1
-
-#define ERROR_EOF 0
-
-#define ERROR_INTERRUPTED 1
-
-#define ERROR_UNKNOWN 2
-
 typedef struct ReadLineResult {
   int error;
   char *error_message;
@@ -38,38 +30,27 @@ typedef struct EditorConfig {
   bool enable_signals;
 } EditorConfig;
 
-typedef char *(*CustomCompleterCallback)(void *k_callback_holder,
-                                         const char *line,
-                                         int pos,
-                                         int *out_start);
+typedef char *(*CompleterCallCb)(void *k_callback_holder, const char *line, int pos, int *out_start);
 
-typedef char *(*CustomHintHighlighterCallback)(void *k_callback_holder, const char *hint);
+typedef char *(*HintHighlighterCb)(void *k_callback_holder, const char *hint);
 
-typedef char *(*CustomPromptHighlighterCallback)(void *k_callback_holder,
-                                                 const char *prompt,
-                                                 bool is_default);
+typedef char *(*PromptHighlighterCb)(void *k_callback_holder, const char *prompt, bool is_default);
 
-typedef char *(*CustomCandidateHighlighterCallback)(void *k_callback_holder,
-                                                    const char *candidate,
-                                                    int completion);
+typedef char *(*CandidateHighlighterCb)(void *k_callback_holder,
+                                        const char *candidate,
+                                        int completion);
 
 void free_read_line_result(struct ReadLineResult *ptr);
 
-void *new_editor_with_config(const struct EditorConfig *cfg);
+void *new_editor_with_config(const struct EditorConfig *cfg, void *k_callback_holder);
 
-void editor_set_completer(void *rl, CustomCompleterCallback cb, void *k_callback_holder);
+void editor_set_completer(void *rl, CompleterCallCb cb);
 
-void editor_set_hint_highlighter(void *rl,
-                                 CustomHintHighlighterCallback cb,
-                                 void *k_callback_holder);
+void editor_set_hint_highlighter(void *rl, HintHighlighterCb cb);
 
-void editor_set_prompt_highlighter(void *rl,
-                                   CustomPromptHighlighterCallback cb,
-                                   void *k_callback_holder);
+void editor_set_prompt_highlighter(void *rl, PromptHighlighterCb cb);
 
-void editor_set_candidate_highlighter(void *rl,
-                                      CustomCandidateHighlighterCallback cb,
-                                      void *k_callback_holder);
+void editor_set_candidate_highlighter(void *rl, CandidateHighlighterCb cb);
 
 struct ReadLineResult *editor_read_line(void *rl, const char *prefix);
 
@@ -80,6 +61,8 @@ void editor_add_history_entry(void *rl, const char *entry);
 struct ReadLineResult *editor_save_history(void *rl, const char *path);
 
 struct ReadLineResult *editor_clear_history(void *rl);
+
+struct ReadLineResult *editor_clear_screen(void *rl);
 
 void free_editor(void *ptr);
 

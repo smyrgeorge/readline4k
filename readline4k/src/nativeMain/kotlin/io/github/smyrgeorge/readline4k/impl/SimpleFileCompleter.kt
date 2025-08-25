@@ -2,7 +2,7 @@
 
 package io.github.smyrgeorge.readline4k.impl
 
-import io.github.smyrgeorge.readline4k.tools.Completer
+import io.github.smyrgeorge.readline4k.Completer
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.cinterop.toKString
 import kotlinx.io.files.Path

@@ -1,4 +1,4 @@
-package io.github.smyrgeorge.readline4k.tools
+package io.github.smyrgeorge.readline4k
 
 /**
  * Provides completion candidates for the current input line.
@@ -10,9 +10,9 @@ package io.github.smyrgeorge.readline4k.tools
  *
  * Notes:
  * - The returned candidates are plain strings; any coloring/highlighting of candidates
- *   is handled by [io.github.smyrgeorge.readline4k.tools.Highlighter].
+ *   is handled by [Highlighter].
  * - If no completions are available, return an empty list. The editor will handle it
- *   gracefully according to the configured [io.github.smyrgeorge.readline4k.LineEditorConfig.CompletionType].
+ *   gracefully according to the configured [LineEditorConfig.CompletionType].
  * - The API is platform-agnostic; internals will bridge to the native backend.
  *
  * Example:

@@ -3,12 +3,35 @@
 package io.github.smyrgeorge.readline4k.impl
 
 import io.github.smyrgeorge.readline4k.AbstractLineEditor
+import io.github.smyrgeorge.readline4k.LineEditorConfig
 import io.github.smyrgeorge.readline4k.LineEditorConfig.CompletionType
 import io.github.smyrgeorge.readline4k.LineEditorError
 import kotlinx.cinterop.*
 import platform.posix.strdup
+import readline4k.EditorConfig
 import readline4k.ReadLineResult
 import readline4k.free_read_line_result
+
+internal fun LineEditorConfig.toCValue(): CValue<EditorConfig> = cValue<EditorConfig> {
+    max_history_size = this@toCValue.maxHistorySize
+    history_duplicates = this@toCValue.historyDuplicates.ordinal
+    history_ignore_space = this@toCValue.historyIgnoreSpace
+    completion_type = this@toCValue.completionType.ordinal
+    completion_show_all_if_ambiguous = this@toCValue.completionShowAllIfAmbiguous
+    completion_prompt_limit = this@toCValue.completionPromptLimit
+    key_seq_timeout = this@toCValue.keySeqTimeout ?: -1
+    edit_mode = this@toCValue.editMode.ordinal
+    auto_add_history = this@toCValue.autoAddHistory
+    bell_style = this@toCValue.bellStyle.ordinal
+    color_mode = this@toCValue.colorMode.ordinal
+    behavior = this@toCValue.behavior.ordinal
+    tab_stop = this@toCValue.tabStop.toUByte()
+    indent_size = this@toCValue.indentSize.toUByte()
+    check_cursor_position = this@toCValue.checkCursorPosition
+    enable_bracketed_paste = this@toCValue.enableBracketedPaste
+    enable_synchronized_output = this@toCValue.enableSynchronizedOutput
+    enable_signals = this@toCValue.enableSignals
+}
 
 internal fun CPointer<ReadLineResult>?.toUnitResult(): Result<Unit> {
     return use { result ->
