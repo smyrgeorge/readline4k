@@ -1,6 +1,7 @@
 plugins {
     id("io.github.smyrgeorge.readline4k.multiplatform.lib")
     id("io.github.smyrgeorge.readline4k.publish")
+    id("io.github.smyrgeorge.readline4k.dokka")
 }
 
 kotlin {

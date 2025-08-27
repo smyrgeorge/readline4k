@@ -1,6 +1,5 @@
 package io.github.smyrgeorge.readline4k.publish
 
-import com.vanniktech.maven.publish.JavadocJar
 import com.vanniktech.maven.publish.KotlinMultiplatform
 import com.vanniktech.maven.publish.MavenPublishBaseExtension
 import org.gradle.api.Plugin
@@ -22,8 +21,6 @@ class PublishConventions : Plugin<Project> {
                 KotlinMultiplatform(
                     // whether to publish a sources jar
                     sourcesJar = true,
-                    // configures the -javadoc artifact, possible values:
-                    javadocJar = JavadocJar.Dokka("dokkaHtml"),
                 )
             )
             coordinates(

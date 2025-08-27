@@ -13,6 +13,7 @@ assertk = "0.28.1"
 [libraries]
 gradle-kotlin-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 gradle-publish-plugin = { module = "com.vanniktech:gradle-maven-publish-plugin", version.ref = "publish" }
+gradle-dokka-plugin = { module = "org.jetbrains.dokka:dokka-gradle-plugin", version.ref = "dokka" }
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
 kotlinx-io-core = { module = "org.jetbrains.kotlinx:kotlinx-io-core", version.ref = "kotlinx-io" }
 assertk = { module = "com.willowtreeapps.assertk:assertk", version.ref = "assertk" }

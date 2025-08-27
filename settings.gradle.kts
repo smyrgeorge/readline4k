@@ -10,4 +10,6 @@ pluginManagement {
 }
 
 include("readline4k")
+
+include("dokka")
 include("examples")
