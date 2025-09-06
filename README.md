@@ -272,5 +272,5 @@ comprehensive readline functionality, with communication between Kotlin and the 
 
 ## License
 
-MIT — see LICENSE.
+MIT — see [LICENSE](./LICENSE).
 

@@ -45,17 +45,15 @@ abstract class AbstractLineEditor(
     }
 
     /**
-     * Read a single line from the user.
+     * Reads a single line of input from the user, optionally displaying a [prefix] at the start of the line.
      *
-     * The native editor renders [linePrefix], processes key bindings according to [config],
-     * applies optional completion/highlighting if configured, and returns the accepted line.
+     * The method captures input using a line editor and returns it as a [Result] object, containing
+     * either the successfully read line as a string or an error if the operation fails.
      *
-     * Returns:
-     * - Result.success(String) with the user input when a line is accepted.
-     * - Result.failure(LineEditorError) when the input is interrupted (e.g., Ctrl-C), EOF, or
-     *   an unknown native error occurs. Inspect [LineEditorError.code].
+     * @param prefix The optional string to display as a prompt at the start of the line. Defaults to the editor's [linePrefix].
+     * @return A [Result] containing the read line as a [String] on success, or an error description on failure.
      */
-    fun readLine(): Result<String> = editor_read_line(rl, linePrefix).toStringResult()
+    fun readLine(prefix: String = linePrefix): Result<String> = editor_read_line(rl, prefix).toStringResult()
 
     /**
      * Load history entries from the given file [path].

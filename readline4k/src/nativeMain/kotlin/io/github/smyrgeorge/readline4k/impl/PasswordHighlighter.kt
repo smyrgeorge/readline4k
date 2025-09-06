@@ -15,7 +15,6 @@ import io.github.smyrgeorge.readline4k.Highlighter
  *   pure cursor movement does not trigger unnecessary re-rendering of characters; other
  *   command kinds return true to ensure the masked view stays up to date.
  */
-@Suppress("unused")
 class PasswordHighlighter : Highlighter {
     /**
      * Returns a masked string ("*****") with the same length as [line]. The [pos]
