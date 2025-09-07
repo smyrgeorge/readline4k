@@ -44,6 +44,10 @@ typedef char *(*CandidateHighlighterCb)(void *k_callback_holder,
 
 typedef bool (*CharHighlighterCb)(void *k_callback_holder, const char *line, int pos, int kind);
 
+typedef int (*ValidatorCb)(void *k_callback_holder, const char *line, int pos, char **out_message);
+
+typedef bool (*ValidatorWhileTypingCb)(void *k_callback_holder);
+
 void free_read_line_result(struct ReadLineResult *ptr);
 
 void *new_editor_with_config(const struct EditorConfig *cfg, void *k_callback_holder);
@@ -59,6 +63,10 @@ void editor_set_prompt_highlighter(void *rl, PromptHighlighterCb cb);
 void editor_set_candidate_highlighter(void *rl, CandidateHighlighterCb cb);
 
 void editor_set_char_highlighter(void *rl, CharHighlighterCb cb);
+
+void editor_set_validator(void *rl, ValidatorCb cb);
+
+void editor_set_validator_while_typing(void *rl, ValidatorWhileTypingCb cb);
 
 struct ReadLineResult *editor_read_line(void *rl, const char *prefix);
 

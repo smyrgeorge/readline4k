@@ -7,6 +7,7 @@ import io.github.smyrgeorge.readline4k.Highlighter.CmdKind
 import io.github.smyrgeorge.readline4k.LineEditorConfig
 import io.github.smyrgeorge.readline4k.LineEditorConfig.CompletionType
 import io.github.smyrgeorge.readline4k.LineEditorError
+import io.github.smyrgeorge.readline4k.Validator.Validation
 import kotlinx.cinterop.*
 import platform.posix.strdup
 import readline4k.EditorConfig
@@ -148,4 +149,43 @@ internal fun charHighlighterCallback(
     val holder = holderPointer.asStableRef<AbstractLineEditor.CallbacksHolder>().get()
     val highlighter = holder.highlighter ?: return false
     return highlighter.highlightChar(line.toKString(), pos, CmdKind.entries[kind])
+}
+
+internal fun validatorCallback(
+    holderPointer: COpaquePointer?,
+    line: CPointer<ByteVar>?,
+    pos: Int,
+    outMessage: CPointer<CPointerVar<ByteVar>>?,
+): Int {
+    if (line == null) return 0 // treat as Valid
+    val holder = getHolder(holderPointer)
+    val validator = holder.validator ?: return 0
+    return when (val res = validator.validate(line.toKString(), pos)) {
+        is Validation.Valid -> {
+            val msg = res.message
+            val cstr = msg?.let { strdup(it) }?.reinterpret<ByteVar>()
+            if (outMessage != null) outMessage.pointed.value = cstr
+            0
+        }
+
+        is Validation.Invalid -> {
+            val msg = res.message
+            val cstr = msg?.let { strdup(it) }?.reinterpret<ByteVar>()
+            if (outMessage != null) outMessage.pointed.value = cstr
+            1
+        }
+
+        is Validation.Incomplete -> {
+            if (outMessage != null) outMessage.pointed.value = null
+            2
+        }
+    }
+}
+
+internal fun validatorWhileTypingCallback(
+    holderPointer: COpaquePointer?,
+): Boolean {
+    val holder = getHolder(holderPointer)
+    val validator = holder.validator ?: return false
+    return validator.validateWhileTyping()
 }

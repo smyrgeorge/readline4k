@@ -9,8 +9,9 @@ use rustyline::error::ReadlineError;
 use rustyline::highlight::{CmdKind, Highlighter};
 use rustyline::hint::HistoryHinter;
 use rustyline::history::FileHistory;
+use rustyline::validate::{ValidationContext, ValidationResult, Validator};
 use rustyline::Editor;
-use rustyline_derive::{Helper, Hinter, Validator};
+use rustyline_derive::{Helper, Hinter};
 
 const OK: c_int = -1;
 const ERROR_EOF: c_int = 0;
@@ -96,7 +97,16 @@ type CharHighlighterCb = extern "C" fn(
     kind: c_int,
 ) -> bool;
 
-#[derive(Helper, Hinter, Validator)]
+type ValidatorCb = extern "C" fn(
+    k_callback_holder: *mut c_void,
+    line: *const c_char,
+    pos: c_int,
+    out_message: *mut *mut c_char,
+) -> c_int; // 0=Valid,1=Invalid,2=Incomplete
+
+type ValidatorWhileTypingCb = extern "C" fn(k_callback_holder: *mut c_void) -> bool;
+
+#[derive(Helper, Hinter)]
 pub struct CustomHelper {
     #[rustyline(Hinter)]
     hinter: HistoryHinter,
@@ -106,6 +116,8 @@ pub struct CustomHelper {
     prompt_highlighter_cb: Option<PromptHighlighterCb>,
     candidate_highlighter_cb: Option<CandidateHighlighterCb>,
     char_highlighter_cb: Option<CharHighlighterCb>,
+    validator_cb: Option<ValidatorCb>,
+    validator_while_typing_cb: Option<ValidatorWhileTypingCb>,
     k_callback_holder: *mut c_void,
 }
 
@@ -119,6 +131,8 @@ impl Default for CustomHelper {
             prompt_highlighter_cb: Default::default(),
             candidate_highlighter_cb: Default::default(),
             char_highlighter_cb: Default::default(),
+            validator_cb: Default::default(),
+            validator_while_typing_cb: Default::default(),
             k_callback_holder: Default::default(),
         }
     }
@@ -279,6 +293,64 @@ impl Highlighter for CustomHelper {
     }
 }
 
+impl Validator for CustomHelper {
+    fn validate(&self, ctx: &mut ValidationContext) -> rustyline::Result<ValidationResult> {
+        if let Some(cb) = self.validator_cb {
+            let line = ctx.input();
+            let c_line = CString::new(line).unwrap();
+            let mut msg_ptr: *mut c_char = std::ptr::null_mut();
+            let code = cb(
+                self.k_callback_holder,
+                c_line.as_ptr(),
+                0 as c_int,
+                &mut msg_ptr as *mut *mut c_char,
+            );
+            let res = match code {
+                0 => {
+                    if msg_ptr.is_null() {
+                        ValidationResult::Valid(None)
+                    } else {
+                        let owned = unsafe {
+                            CStr::from_ptr(msg_ptr as *const c_char)
+                                .to_string_lossy()
+                                .into_owned()
+                        };
+                        unsafe { free(msg_ptr as *mut c_void) };
+                        ValidationResult::Valid(Some(owned))
+                    }
+                }
+                1 => {
+                    if msg_ptr.is_null() {
+                        ValidationResult::Invalid(None)
+                    } else {
+                        let owned = unsafe {
+                            CStr::from_ptr(msg_ptr as *const c_char)
+                                .to_string_lossy()
+                                .into_owned()
+                        };
+                        unsafe { free(msg_ptr as *mut c_void) };
+                        ValidationResult::Invalid(Some(owned))
+                    }
+                }
+                2 => ValidationResult::Incomplete,
+                _ => panic!("Unexpected error code from validator callback"),
+            };
+            Ok(res)
+        } else {
+            // If no validator is set, the input is considered valid.
+            Ok(ValidationResult::Valid(None))
+        }
+    }
+
+    fn validate_while_typing(&self) -> bool {
+        if let Some(cb) = self.validator_while_typing_cb {
+            cb(self.k_callback_holder)
+        } else {
+            false
+        }
+    }
+}
+
 #[no_mangle]
 pub extern "C" fn free_read_line_result(ptr: *mut ReadLineResult) {
     let ptr: ReadLineResult = unsafe { *Box::from_raw(ptr) };
@@ -359,6 +431,22 @@ pub extern "C" fn editor_set_char_highlighter(rl: *mut c_void, cb: CharHighlight
     let rl = unsafe { &mut *(rl as *mut Editor<CustomHelper, FileHistory>) };
     if let Some(h) = rl.helper_mut() {
         h.char_highlighter_cb = Some(cb);
+    }
+}
+
+#[no_mangle]
+pub extern "C" fn editor_set_validator(rl: *mut c_void, cb: ValidatorCb) {
+    let rl = unsafe { &mut *(rl as *mut Editor<CustomHelper, FileHistory>) };
+    if let Some(h) = rl.helper_mut() {
+        h.validator_cb = Some(cb);
+    }
+}
+
+#[no_mangle]
+pub extern "C" fn editor_set_validator_while_typing(rl: *mut c_void, cb: ValidatorWhileTypingCb) {
+    let rl = unsafe { &mut *(rl as *mut Editor<CustomHelper, FileHistory>) };
+    if let Some(h) = rl.helper_mut() {
+        h.validator_while_typing_cb = Some(cb);
     }
 }
 

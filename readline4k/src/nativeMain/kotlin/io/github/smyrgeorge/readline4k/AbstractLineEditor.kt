@@ -16,7 +16,7 @@ import readline4k.*
  *
  * Typical usage:
  * - Instantiate a concrete editor (e.g., SimpleLineEditor) with a prompt prefix and optional [config].
- * - Optionally attach a [Completer] via [withCompleter] and/or a [Highlighter] via [withHighlighter].
+ * - Optionally attach a [Completer] via [installCompleter] and/or a [Highlighter] via [installHighlighter].
  * - Call [readLine] in a loop; handle the returned [Result].
  * - Optionally persist history with [loadHistory] and [saveHistory].
  *
@@ -121,7 +121,7 @@ abstract class AbstractLineEditor(
      * Install a [Completer] which will be consulted during completion (e.g., Tab).
      * Returns this editor instance for chaining.
      */
-    fun withCompleter(completer: Completer): AbstractLineEditor {
+    fun installCompleter(completer: Completer): AbstractLineEditor {
         holder.completer = completer
         editor_set_completer(rl, staticCFunction(::completerCallback))
         return this
@@ -131,7 +131,7 @@ abstract class AbstractLineEditor(
      * Install a [Highlighter] to customize visual presentation of hints, prompts, and candidates.
      * Returns this editor instance for chaining.
      */
-    fun withHighlighter(highlighter: Highlighter): AbstractLineEditor {
+    fun installHighlighter(highlighter: Highlighter): AbstractLineEditor {
         holder.highlighter = highlighter
         editor_set_highlighter(rl, staticCFunction(::highlighterCallback))
         editor_set_hint_highlighter(rl, staticCFunction(::hintHighlighterCallback))
@@ -142,11 +142,27 @@ abstract class AbstractLineEditor(
     }
 
     /**
+     * Sets a custom validation mechanism for the line editor by installing the specified [validator].
+     * This method modifies the internal editor to use the provided [validator] for input line validation
+     * and indicates whether input can be accepted, requires more data, or is invalid.
+     *
+     * @param validator The [Validator] instance responsible for handling validation logic.
+     * @return The current [AbstractLineEditor] instance, enabling chained method calls.
+     */
+    fun installValidator(validator: Validator): AbstractLineEditor {
+        holder.validator = validator
+        editor_set_validator(rl, staticCFunction(::validatorCallback))
+        editor_set_validator_while_typing(rl, staticCFunction(::validatorWhileTypingCallback))
+        return this
+    }
+
+    /**
      * Holds user-supplied strategy objects so they can be accessed from native callbacks.
      * Stored behind a StableRef and passed to native as an opaque pointer.
      */
     internal class CallbacksHolder(
         var completer: Completer? = null,
-        var highlighter: Highlighter? = null
+        var highlighter: Highlighter? = null,
+        var validator: Validator? = null,
     )
 }

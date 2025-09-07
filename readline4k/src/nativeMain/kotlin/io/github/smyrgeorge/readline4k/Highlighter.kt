@@ -29,7 +29,7 @@ import io.github.smyrgeorge.readline4k.LineEditorConfig.CompletionType
  * ```
  *
  * @see io.github.smyrgeorge.readline4k.impl.SimpleHighlighter for a basic ANSI-based implementation.
- * @see AbstractLineEditor.withHighlighter to attach a highlighter to an editor instance.
+ * @see AbstractLineEditor.installHighlighter to attach a highlighter to an editor instance.
  */
 interface Highlighter {
     /**
