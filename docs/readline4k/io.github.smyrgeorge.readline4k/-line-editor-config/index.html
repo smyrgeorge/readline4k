@@ -41,11 +41,11 @@
             </a>        <button class="navigation-controls--btn navigation-controls--btn_toc ui-kit_mobile-only" id="toc-toggle" type="button">Toggle table of contents
         </button>
         <div class="navigation-controls--break ui-kit_mobile-only"></div>
-        <div class="library-version" id="library-version">0.3.0
+        <div class="library-version" id="library-version">0.4.0
         </div>
         <div class="navigation-controls">
         <div class="filter-section filter-section_loading" id="filter-section">
-                <button class="platform-tag platform-selector native-like" data-active="" data-filter=":readline4k:dokkaHtmlPartial/nativeMain">native</button>
+                <button class="platform-tag platform-selector native-like" data-active="" data-filter=":readline4k/nativeMain">native</button>
             <div class="dropdown filter-section--dropdown" data-role="dropdown" id="filter-section-dropdown">
                 <button class="button button_dropdown filter-section--dropdown-toggle" role="combobox" data-role="dropdown-toggle" aria-controls="platform-tags-listbox" aria-haspopup="listbox" aria-expanded="false" aria-label="Toggle source sets"></button>
                 <ul role="listbox" id="platform-tags-listbox" class="dropdown--list" data-role="dropdown-listbox">
@@ -56,7 +56,7 @@
                     </div>
                         <li role="option" class="dropdown--option platform-selector-option native-like" tabindex="0">
                             <label class="checkbox">
-                                <input type="checkbox" class="checkbox--input" id=":readline4k:dokkaHtmlPartial/nativeMain" data-filter=":readline4k:dokkaHtmlPartial/nativeMain">
+                                <input type="checkbox" class="checkbox--input" id=":readline4k/nativeMain" data-filter=":readline4k/nativeMain">
                                 <span class="checkbox--icon"></span>
                                 native
                             </label>
@@ -90,28 +90,28 @@
                 </div>
             </div>
             <div id="main">
-<div class="main-content" data-page-type="classlike" id="content" pageids="readline4k::io.github.smyrgeorge.readline4k/LineEditorConfig///PointingToDeclaration//2012386630">
+<div class="main-content" data-page-type="classlike" id="content" pageids="readline4k::io.github.smyrgeorge.readline4k/LineEditorConfig///PointingToDeclaration//-1395717344">
   <div class="breadcrumbs"><a href="../../index.html">readline4k</a><span class="delimiter">/</span><a href="../index.html">io.github.smyrgeorge.readline4k</a><span class="delimiter">/</span><span class="current">LineEditorConfig</span></div>
   <div class="cover ">
     <h1 class="cover"><span>Line</span><wbr><span>Editor</span><wbr><span><span>Config</span></span></h1>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":readline4k:dokkaHtmlPartial/nativeMain"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="index.html">LineEditorConfig</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>maxHistorySize<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">100</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>historyDuplicates<span class="token operator">: </span><a href="-history-duplicates/index.html">LineEditorConfig.HistoryDuplicates</a><span class="token operator"> = </span>HistoryDuplicates.IGNORE_CONSECUTIVE<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>historyIgnoreSpace<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span><span class="token boolean">false</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>completionType<span class="token operator">: </span><a href="-completion-type/index.html">LineEditorConfig.CompletionType</a><span class="token operator"> = </span>CompletionType.CIRCULAR<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>completionShowAllIfAmbiguous<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span><span class="token boolean">false</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>completionPromptLimit<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">100</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>keySeqTimeout<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator">?</span><span class="token operator"> = </span>null<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>editMode<span class="token operator">: </span><a href="-edit-mode/index.html">LineEditorConfig.EditMode</a><span class="token operator"> = </span>EditMode.EMACS<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>autoAddHistory<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span><span class="token boolean">false</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>bellStyle<span class="token operator">: </span><a href="-bell-style/index.html">LineEditorConfig.BellStyle</a><span class="token operator"> = </span>BellStyle.default()<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>colorMode<span class="token operator">: </span><a href="-color-mode/index.html">LineEditorConfig.ColorMode</a><span class="token operator"> = </span>ColorMode.ENABLED<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>behavior<span class="token operator">: </span><a href="-behavior/index.html">LineEditorConfig.Behavior</a><span class="token operator"> = </span>Behavior.STDIO<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>tabStop<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">8</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>indentSize<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">2</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>checkCursorPosition<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span><span class="token boolean">false</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>enableBracketedPaste<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span><span class="token boolean">true</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>enableSynchronizedOutput<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span><span class="token boolean">true</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>enableSignals<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span><span class="token boolean">false</span></span></span><span class="token punctuation">)</span></div><p class="paragraph">Configuration for the interactive line editor.</p><p class="paragraph">This data class centralizes all tunables that control history handling, completion behavior, editing mode, colors, I/O behavior, and various terminal capabilities. It is immutable; create a new instance (or use named parameters) to adjust specific settings.</p><p class="paragraph">Typical usage:</p><ul><li><p class="paragraph">Construct a config, pass it to your LineEditor implementation (e.g., CustomLineEditor).</p></li><li><p class="paragraph">Most parameters have sensible defaults. Override only what you need.</p></li><li><p class="paragraph">Some options are platform/terminal-dependent; see notes below.</p></li></ul><p class="paragraph">Platform notes:</p><ul><li><p class="paragraph"><a href="-bell-style/-companion/default.html">BellStyle.default</a> returns NONE on Windows and AUDIBLE otherwise.</p></li><li><p class="paragraph"><a href="enable-bracketed-paste.html">enableBracketedPaste</a>, <a href="enable-synchronized-output.html">enableSynchronizedOutput</a>, and <a href="enable-signals.html">enableSignals</a> are only meaningful on Unix-like platforms; they are ignored where unsupported.</p></li><li><p class="paragraph"><a href="color-mode.html">colorMode</a> can be used to force or disable colors regardless of terminal detection.</p></li></ul><p class="paragraph">Properties overview:</p></div></div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":readline4k/nativeMain"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="index.html">LineEditorConfig</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>maxHistorySize<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">100</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>historyDuplicates<span class="token operator">: </span><a href="-history-duplicates/index.html">LineEditorConfig.HistoryDuplicates</a><span class="token operator"> = </span>HistoryDuplicates.IGNORE_CONSECUTIVE<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>historyIgnoreSpace<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span><span class="token boolean">false</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>completionType<span class="token operator">: </span><a href="-completion-type/index.html">LineEditorConfig.CompletionType</a><span class="token operator"> = </span>CompletionType.CIRCULAR<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>completionShowAllIfAmbiguous<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span><span class="token boolean">false</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>completionPromptLimit<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">100</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>keySeqTimeout<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator">?</span><span class="token operator"> = </span>null<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>editMode<span class="token operator">: </span><a href="-edit-mode/index.html">LineEditorConfig.EditMode</a><span class="token operator"> = </span>EditMode.EMACS<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>autoAddHistory<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span><span class="token boolean">false</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>bellStyle<span class="token operator">: </span><a href="-bell-style/index.html">LineEditorConfig.BellStyle</a><span class="token operator"> = </span>BellStyle.default()<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>colorMode<span class="token operator">: </span><a href="-color-mode/index.html">LineEditorConfig.ColorMode</a><span class="token operator"> = </span>ColorMode.ENABLED<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>behavior<span class="token operator">: </span><a href="-behavior/index.html">LineEditorConfig.Behavior</a><span class="token operator"> = </span>Behavior.STDIO<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>tabStop<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">8</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>indentSize<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">2</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>checkCursorPosition<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span><span class="token boolean">false</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>enableBracketedPaste<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span><span class="token boolean">true</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>enableSynchronizedOutput<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span><span class="token boolean">true</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>enableSignals<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span><span class="token boolean">false</span></span></span><span class="token punctuation">)</span><span class="clearfix"><span class="floating-right">(<a href="https://github.com/smyrgeorge/readline4k/tree/main/readline4k/src/nativeMain/kotlin/io/github/smyrgeorge/readline4k/LineEditorConfig.kt#L46">source</a>)</span></span></div><p class="paragraph">Configuration for the interactive line editor.</p><p class="paragraph">This data class centralizes all tunables that control history handling, completion behavior, editing mode, colors, I/O behavior, and various terminal capabilities. It is immutable; create a new instance (or use named parameters) to adjust specific settings.</p><p class="paragraph">Typical usage:</p><ul><li><p class="paragraph">Construct a config, pass it to your LineEditor implementation (e.g., CustomLineEditor).</p></li><li><p class="paragraph">Most parameters have sensible defaults. Override only what you need.</p></li><li><p class="paragraph">Some options are platform/terminal-dependent; see notes below.</p></li></ul><p class="paragraph">Platform notes:</p><ul><li><p class="paragraph"><a href="-bell-style/-companion/default.html">BellStyle.default</a> returns NONE on Windows and AUDIBLE otherwise.</p></li><li><p class="paragraph"><a href="enable-bracketed-paste.html">enableBracketedPaste</a>, <a href="enable-synchronized-output.html">enableSynchronizedOutput</a>, and <a href="enable-signals.html">enableSignals</a> are only meaningful on Unix-like platforms; they are ignored where unsupported.</p></li><li><p class="paragraph"><a href="color-mode.html">colorMode</a> can be used to force or disable colors regardless of terminal detection.</p></li></ul><p class="paragraph">Properties overview:</p></div></div>
   </div>
   <div class="tabbedcontent">
     <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button></div>
     <div class="tabs-section-body">
       <div data-togglable="CONSTRUCTOR">
         <h2 class="">Constructors</h2>
-        <div class="table"><a data-name="206097543%2FConstructors%2F2012386630" anchor-label="LineEditorConfig" id="206097543%2FConstructors%2F2012386630" data-filterable-set=":readline4k:dokkaHtmlPartial/nativeMain"></a>
-          <div class="table-row" data-togglable="CONSTRUCTOR" data-filterable-current=":readline4k:dokkaHtmlPartial/nativeMain" data-filterable-set=":readline4k:dokkaHtmlPartial/nativeMain">
+        <div class="table"><a data-name="206097543%2FConstructors%2F-1395717344" anchor-label="LineEditorConfig" id="206097543%2FConstructors%2F-1395717344" data-filterable-set=":readline4k/nativeMain"></a>
+          <div class="table-row" data-togglable="CONSTRUCTOR" data-filterable-current=":readline4k/nativeMain" data-filterable-set=":readline4k/nativeMain">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-line-editor-config.html"><span>Line</span><wbr><span>Editor</span><wbr><span><span>Config</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="206097543%2FConstructors%2F2012386630"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="206097543%2FConstructors%2F-1395717344"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":readline4k:dokkaHtmlPartial/nativeMain"><div class="symbol monospace"><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">maxHistorySize<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">100</span><span class="token punctuation">, </span></span><span class="parameter ">historyDuplicates<span class="token operator">: </span><a href="-history-duplicates/index.html">LineEditorConfig.HistoryDuplicates</a><span class="token operator"> = </span>HistoryDuplicates.IGNORE_CONSECUTIVE<span class="token punctuation">, </span></span><span class="parameter ">historyIgnoreSpace<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span><span class="token boolean">false</span><span class="token punctuation">, </span></span><span class="parameter ">completionType<span class="token operator">: </span><a href="-completion-type/index.html">LineEditorConfig.CompletionType</a><span class="token operator"> = </span>CompletionType.CIRCULAR<span class="token punctuation">, </span></span><span class="parameter ">completionShowAllIfAmbiguous<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span><span class="token boolean">false</span><span class="token punctuation">, </span></span><span class="parameter ">completionPromptLimit<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">100</span><span class="token punctuation">, </span></span><span class="parameter ">keySeqTimeout<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator">?</span><span class="token operator"> = </span>null<span class="token punctuation">, </span></span><span class="parameter ">editMode<span class="token operator">: </span><a href="-edit-mode/index.html">LineEditorConfig.EditMode</a><span class="token operator"> = </span>EditMode.EMACS<span class="token punctuation">, </span></span><span class="parameter ">autoAddHistory<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span><span class="token boolean">false</span><span class="token punctuation">, </span></span><span class="parameter ">bellStyle<span class="token operator">: </span><a href="-bell-style/index.html">LineEditorConfig.BellStyle</a><span class="token operator"> = </span>BellStyle.default()<span class="token punctuation">, </span></span><span class="parameter ">colorMode<span class="token operator">: </span><a href="-color-mode/index.html">LineEditorConfig.ColorMode</a><span class="token operator"> = </span>ColorMode.ENABLED<span class="token punctuation">, </span></span><span class="parameter ">behavior<span class="token operator">: </span><a href="-behavior/index.html">LineEditorConfig.Behavior</a><span class="token operator"> = </span>Behavior.STDIO<span class="token punctuation">, </span></span><span class="parameter ">tabStop<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">8</span><span class="token punctuation">, </span></span><span class="parameter ">indentSize<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">2</span><span class="token punctuation">, </span></span><span class="parameter ">checkCursorPosition<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span><span class="token boolean">false</span><span class="token punctuation">, </span></span><span class="parameter ">enableBracketedPaste<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span><span class="token boolean">true</span><span class="token punctuation">, </span></span><span class="parameter ">enableSynchronizedOutput<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span><span class="token boolean">true</span><span class="token punctuation">, </span></span><span class="parameter ">enableSignals<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span><span class="token boolean">false</span></span></span><span class="token punctuation">)</span></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":readline4k/nativeMain"><div class="symbol monospace"><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">maxHistorySize<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">100</span><span class="token punctuation">, </span></span><span class="parameter ">historyDuplicates<span class="token operator">: </span><a href="-history-duplicates/index.html">LineEditorConfig.HistoryDuplicates</a><span class="token operator"> = </span>HistoryDuplicates.IGNORE_CONSECUTIVE<span class="token punctuation">, </span></span><span class="parameter ">historyIgnoreSpace<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span><span class="token boolean">false</span><span class="token punctuation">, </span></span><span class="parameter ">completionType<span class="token operator">: </span><a href="-completion-type/index.html">LineEditorConfig.CompletionType</a><span class="token operator"> = </span>CompletionType.CIRCULAR<span class="token punctuation">, </span></span><span class="parameter ">completionShowAllIfAmbiguous<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span><span class="token boolean">false</span><span class="token punctuation">, </span></span><span class="parameter ">completionPromptLimit<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">100</span><span class="token punctuation">, </span></span><span class="parameter ">keySeqTimeout<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator">?</span><span class="token operator"> = </span>null<span class="token punctuation">, </span></span><span class="parameter ">editMode<span class="token operator">: </span><a href="-edit-mode/index.html">LineEditorConfig.EditMode</a><span class="token operator"> = </span>EditMode.EMACS<span class="token punctuation">, </span></span><span class="parameter ">autoAddHistory<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span><span class="token boolean">false</span><span class="token punctuation">, </span></span><span class="parameter ">bellStyle<span class="token operator">: </span><a href="-bell-style/index.html">LineEditorConfig.BellStyle</a><span class="token operator"> = </span>BellStyle.default()<span class="token punctuation">, </span></span><span class="parameter ">colorMode<span class="token operator">: </span><a href="-color-mode/index.html">LineEditorConfig.ColorMode</a><span class="token operator"> = </span>ColorMode.ENABLED<span class="token punctuation">, </span></span><span class="parameter ">behavior<span class="token operator">: </span><a href="-behavior/index.html">LineEditorConfig.Behavior</a><span class="token operator"> = </span>Behavior.STDIO<span class="token punctuation">, </span></span><span class="parameter ">tabStop<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">8</span><span class="token punctuation">, </span></span><span class="parameter ">indentSize<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">2</span><span class="token punctuation">, </span></span><span class="parameter ">checkCursorPosition<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span><span class="token boolean">false</span><span class="token punctuation">, </span></span><span class="parameter ">enableBracketedPaste<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span><span class="token boolean">true</span><span class="token punctuation">, </span></span><span class="parameter ">enableSynchronizedOutput<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span><span class="token boolean">true</span><span class="token punctuation">, </span></span><span class="parameter ">enableSignals<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span><span class="token boolean">false</span></span></span><span class="token punctuation">)</span></div></div></div>
                 </div>
               </div>
             </div>
@@ -120,92 +120,92 @@
       </div>
       <div data-togglable="TYPE">
         <h2 class="">Types</h2>
-        <div class="table"><a data-name="814711977%2FClasslikes%2F2012386630" anchor-label="Behavior" id="814711977%2FClasslikes%2F2012386630" data-filterable-set=":readline4k:dokkaHtmlPartial/nativeMain"></a>
-          <div class="table-row" data-filterable-current=":readline4k:dokkaHtmlPartial/nativeMain" data-filterable-set=":readline4k:dokkaHtmlPartial/nativeMain">
+        <div class="table"><a data-name="814711977%2FClasslikes%2F-1395717344" anchor-label="Behavior" id="814711977%2FClasslikes%2F-1395717344" data-filterable-set=":readline4k/nativeMain"></a>
+          <div class="table-row" data-filterable-current=":readline4k/nativeMain" data-filterable-set=":readline4k/nativeMain">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-behavior/index.html"><span><span>Behavior</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="814711977%2FClasslikes%2F2012386630"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="814711977%2FClasslikes%2F-1395717344"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":readline4k:dokkaHtmlPartial/nativeMain"><div class="symbol monospace"><span class="token keyword">enum </span><a href="-behavior/index.html">Behavior</a> : <a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-enum/index.html">Enum</a><span class="token operator">&lt;</span><a href="-behavior/index.html">LineEditorConfig.Behavior</a><span class="token operator">&gt; </span></div><div class="brief "><p class="paragraph">Determines how the editor interacts with I/O.</p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":readline4k/nativeMain"><div class="symbol monospace"><span class="token keyword">enum </span><a href="-behavior/index.html">Behavior</a> : <a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-enum/index.html">Enum</a><span class="token operator">&lt;</span><a href="-behavior/index.html">LineEditorConfig.Behavior</a><span class="token operator">&gt; </span></div><div class="brief "><p class="paragraph">Determines how the editor interacts with I/O.</p></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-2004771783%2FClasslikes%2F2012386630" anchor-label="BellStyle" id="-2004771783%2FClasslikes%2F2012386630" data-filterable-set=":readline4k:dokkaHtmlPartial/nativeMain"></a>
-          <div class="table-row" data-filterable-current=":readline4k:dokkaHtmlPartial/nativeMain" data-filterable-set=":readline4k:dokkaHtmlPartial/nativeMain">
+<a data-name="-2004771783%2FClasslikes%2F-1395717344" anchor-label="BellStyle" id="-2004771783%2FClasslikes%2F-1395717344" data-filterable-set=":readline4k/nativeMain"></a>
+          <div class="table-row" data-filterable-current=":readline4k/nativeMain" data-filterable-set=":readline4k/nativeMain">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-bell-style/index.html"><span>Bell</span><wbr><span><span>Style</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2004771783%2FClasslikes%2F2012386630"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2004771783%2FClasslikes%2F-1395717344"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":readline4k:dokkaHtmlPartial/nativeMain"><div class="symbol monospace"><span class="token keyword">enum </span><a href="-bell-style/index.html">BellStyle</a> : <a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-enum/index.html">Enum</a><span class="token operator">&lt;</span><a href="-bell-style/index.html">LineEditorConfig.BellStyle</a><span class="token operator">&gt; </span></div><div class="brief "><p class="paragraph">Controls how the editor signals events such as errors or invalid keys.</p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":readline4k/nativeMain"><div class="symbol monospace"><span class="token keyword">enum </span><a href="-bell-style/index.html">BellStyle</a> : <a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-enum/index.html">Enum</a><span class="token operator">&lt;</span><a href="-bell-style/index.html">LineEditorConfig.BellStyle</a><span class="token operator">&gt; </span></div><div class="brief "><p class="paragraph">Controls how the editor signals events such as errors or invalid keys.</p></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-2049754623%2FClasslikes%2F2012386630" anchor-label="ColorMode" id="-2049754623%2FClasslikes%2F2012386630" data-filterable-set=":readline4k:dokkaHtmlPartial/nativeMain"></a>
-          <div class="table-row" data-filterable-current=":readline4k:dokkaHtmlPartial/nativeMain" data-filterable-set=":readline4k:dokkaHtmlPartial/nativeMain">
+<a data-name="-2049754623%2FClasslikes%2F-1395717344" anchor-label="ColorMode" id="-2049754623%2FClasslikes%2F-1395717344" data-filterable-set=":readline4k/nativeMain"></a>
+          <div class="table-row" data-filterable-current=":readline4k/nativeMain" data-filterable-set=":readline4k/nativeMain">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-color-mode/index.html"><span>Color</span><wbr><span><span>Mode</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2049754623%2FClasslikes%2F2012386630"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2049754623%2FClasslikes%2F-1395717344"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":readline4k:dokkaHtmlPartial/nativeMain"><div class="symbol monospace"><span class="token keyword">enum </span><a href="-color-mode/index.html">ColorMode</a> : <a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-enum/index.html">Enum</a><span class="token operator">&lt;</span><a href="-color-mode/index.html">LineEditorConfig.ColorMode</a><span class="token operator">&gt; </span></div><div class="brief "><p class="paragraph">Colorization mode for editor-rendered elements (prompt, hint, candidates).</p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":readline4k/nativeMain"><div class="symbol monospace"><span class="token keyword">enum </span><a href="-color-mode/index.html">ColorMode</a> : <a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-enum/index.html">Enum</a><span class="token operator">&lt;</span><a href="-color-mode/index.html">LineEditorConfig.ColorMode</a><span class="token operator">&gt; </span></div><div class="brief "><p class="paragraph">Colorization mode for editor-rendered elements (prompt, hint, candidates).</p></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="276715205%2FClasslikes%2F2012386630" anchor-label="CompletionType" id="276715205%2FClasslikes%2F2012386630" data-filterable-set=":readline4k:dokkaHtmlPartial/nativeMain"></a>
-          <div class="table-row" data-filterable-current=":readline4k:dokkaHtmlPartial/nativeMain" data-filterable-set=":readline4k:dokkaHtmlPartial/nativeMain">
+<a data-name="276715205%2FClasslikes%2F-1395717344" anchor-label="CompletionType" id="276715205%2FClasslikes%2F-1395717344" data-filterable-set=":readline4k/nativeMain"></a>
+          <div class="table-row" data-filterable-current=":readline4k/nativeMain" data-filterable-set=":readline4k/nativeMain">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-completion-type/index.html"><span>Completion</span><wbr><span><span>Type</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="276715205%2FClasslikes%2F2012386630"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="276715205%2FClasslikes%2F-1395717344"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":readline4k:dokkaHtmlPartial/nativeMain"><div class="symbol monospace"><span class="token keyword">enum </span><a href="-completion-type/index.html">CompletionType</a> : <a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-enum/index.html">Enum</a><span class="token operator">&lt;</span><a href="-completion-type/index.html">LineEditorConfig.CompletionType</a><span class="token operator">&gt; </span></div><div class="brief "><p class="paragraph">Tab completion style used by the editor.</p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":readline4k/nativeMain"><div class="symbol monospace"><span class="token keyword">enum </span><a href="-completion-type/index.html">CompletionType</a> : <a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-enum/index.html">Enum</a><span class="token operator">&lt;</span><a href="-completion-type/index.html">LineEditorConfig.CompletionType</a><span class="token operator">&gt; </span></div><div class="brief "><p class="paragraph">Tab completion style used by the editor.</p></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-1137336178%2FClasslikes%2F2012386630" anchor-label="EditMode" id="-1137336178%2FClasslikes%2F2012386630" data-filterable-set=":readline4k:dokkaHtmlPartial/nativeMain"></a>
-          <div class="table-row" data-filterable-current=":readline4k:dokkaHtmlPartial/nativeMain" data-filterable-set=":readline4k:dokkaHtmlPartial/nativeMain">
+<a data-name="-1137336178%2FClasslikes%2F-1395717344" anchor-label="EditMode" id="-1137336178%2FClasslikes%2F-1395717344" data-filterable-set=":readline4k/nativeMain"></a>
+          <div class="table-row" data-filterable-current=":readline4k/nativeMain" data-filterable-set=":readline4k/nativeMain">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-edit-mode/index.html"><span>Edit</span><wbr><span><span>Mode</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1137336178%2FClasslikes%2F2012386630"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1137336178%2FClasslikes%2F-1395717344"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":readline4k:dokkaHtmlPartial/nativeMain"><div class="symbol monospace"><span class="token keyword">enum </span><a href="-edit-mode/index.html">EditMode</a> : <a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-enum/index.html">Enum</a><span class="token operator">&lt;</span><a href="-edit-mode/index.html">LineEditorConfig.EditMode</a><span class="token operator">&gt; </span></div><div class="brief "><p class="paragraph">Base editing mode that selects a standard keymap and editing semantics.</p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":readline4k/nativeMain"><div class="symbol monospace"><span class="token keyword">enum </span><a href="-edit-mode/index.html">EditMode</a> : <a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-enum/index.html">Enum</a><span class="token operator">&lt;</span><a href="-edit-mode/index.html">LineEditorConfig.EditMode</a><span class="token operator">&gt; </span></div><div class="brief "><p class="paragraph">Base editing mode that selects a standard keymap and editing semantics.</p></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="824616939%2FClasslikes%2F2012386630" anchor-label="HistoryDuplicates" id="824616939%2FClasslikes%2F2012386630" data-filterable-set=":readline4k:dokkaHtmlPartial/nativeMain"></a>
-          <div class="table-row" data-filterable-current=":readline4k:dokkaHtmlPartial/nativeMain" data-filterable-set=":readline4k:dokkaHtmlPartial/nativeMain">
+<a data-name="824616939%2FClasslikes%2F-1395717344" anchor-label="HistoryDuplicates" id="824616939%2FClasslikes%2F-1395717344" data-filterable-set=":readline4k/nativeMain"></a>
+          <div class="table-row" data-filterable-current=":readline4k/nativeMain" data-filterable-set=":readline4k/nativeMain">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-history-duplicates/index.html"><span>History</span><wbr><span><span>Duplicates</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="824616939%2FClasslikes%2F2012386630"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="824616939%2FClasslikes%2F-1395717344"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":readline4k:dokkaHtmlPartial/nativeMain"><div class="symbol monospace"><span class="token keyword">enum </span><a href="-history-duplicates/index.html">HistoryDuplicates</a> : <a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-enum/index.html">Enum</a><span class="token operator">&lt;</span><a href="-history-duplicates/index.html">LineEditorConfig.HistoryDuplicates</a><span class="token operator">&gt; </span></div><div class="brief "><p class="paragraph">Controls how duplicate lines are handled when adding to history.</p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":readline4k/nativeMain"><div class="symbol monospace"><span class="token keyword">enum </span><a href="-history-duplicates/index.html">HistoryDuplicates</a> : <a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-enum/index.html">Enum</a><span class="token operator">&lt;</span><a href="-history-duplicates/index.html">LineEditorConfig.HistoryDuplicates</a><span class="token operator">&gt; </span></div><div class="brief "><p class="paragraph">Controls how duplicate lines are handled when adding to history.</p></div></div></div>
                 </div>
               </div>
             </div>
@@ -214,272 +214,272 @@
       </div>
       <div data-togglable="PROPERTY">
         <h2 class="">Properties</h2>
-        <div class="table"><a data-name="1930126404%2FProperties%2F2012386630" anchor-label="autoAddHistory" id="1930126404%2FProperties%2F2012386630" data-filterable-set=":readline4k:dokkaHtmlPartial/nativeMain"></a>
-          <div class="table-row" data-filterable-current=":readline4k:dokkaHtmlPartial/nativeMain" data-filterable-set=":readline4k:dokkaHtmlPartial/nativeMain">
+        <div class="table"><a data-name="1930126404%2FProperties%2F-1395717344" anchor-label="autoAddHistory" id="1930126404%2FProperties%2F-1395717344" data-filterable-set=":readline4k/nativeMain"></a>
+          <div class="table-row" data-filterable-current=":readline4k/nativeMain" data-filterable-set=":readline4k/nativeMain">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="auto-add-history.html"><span>auto</span><wbr><span>Add</span><wbr><span><span>History</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1930126404%2FProperties%2F2012386630"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1930126404%2FProperties%2F-1395717344"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":readline4k:dokkaHtmlPartial/nativeMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="auto-add-history.html">autoAddHistory</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span><span class="token boolean">false</span></div><div class="brief "><p class="paragraph">If true, non-blank lines returned by readLine are auto-added to history.</p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":readline4k/nativeMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="auto-add-history.html">autoAddHistory</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span><span class="token boolean">false</span></div><div class="brief "><p class="paragraph">If true, non-blank lines returned by readLine are auto-added to history.</p></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="1486100084%2FProperties%2F2012386630" anchor-label="behavior" id="1486100084%2FProperties%2F2012386630" data-filterable-set=":readline4k:dokkaHtmlPartial/nativeMain"></a>
-          <div class="table-row" data-filterable-current=":readline4k:dokkaHtmlPartial/nativeMain" data-filterable-set=":readline4k:dokkaHtmlPartial/nativeMain">
+<a data-name="1486100084%2FProperties%2F-1395717344" anchor-label="behavior" id="1486100084%2FProperties%2F-1395717344" data-filterable-set=":readline4k/nativeMain"></a>
+          <div class="table-row" data-filterable-current=":readline4k/nativeMain" data-filterable-set=":readline4k/nativeMain">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="behavior.html"><span><span>behavior</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1486100084%2FProperties%2F2012386630"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1486100084%2FProperties%2F-1395717344"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":readline4k:dokkaHtmlPartial/nativeMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="behavior.html">behavior</a><span class="token operator">: </span><a href="-behavior/index.html">LineEditorConfig.Behavior</a></div><div class="brief "><p class="paragraph">Whether to use stdio or prefer terminal-style interaction.</p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":readline4k/nativeMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="behavior.html">behavior</a><span class="token operator">: </span><a href="-behavior/index.html">LineEditorConfig.Behavior</a></div><div class="brief "><p class="paragraph">Whether to use stdio or prefer terminal-style interaction.</p></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-1019204250%2FProperties%2F2012386630" anchor-label="bellStyle" id="-1019204250%2FProperties%2F2012386630" data-filterable-set=":readline4k:dokkaHtmlPartial/nativeMain"></a>
-          <div class="table-row" data-filterable-current=":readline4k:dokkaHtmlPartial/nativeMain" data-filterable-set=":readline4k:dokkaHtmlPartial/nativeMain">
+<a data-name="-1019204250%2FProperties%2F-1395717344" anchor-label="bellStyle" id="-1019204250%2FProperties%2F-1395717344" data-filterable-set=":readline4k/nativeMain"></a>
+          <div class="table-row" data-filterable-current=":readline4k/nativeMain" data-filterable-set=":readline4k/nativeMain">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="bell-style.html"><span>bell</span><wbr><span><span>Style</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1019204250%2FProperties%2F2012386630"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1019204250%2FProperties%2F-1395717344"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":readline4k:dokkaHtmlPartial/nativeMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="bell-style.html">bellStyle</a><span class="token operator">: </span><a href="-bell-style/index.html">LineEditorConfig.BellStyle</a></div><div class="brief "><p class="paragraph">Audible/visible bell behavior when signaling (e.g., invalid key press).</p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":readline4k/nativeMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="bell-style.html">bellStyle</a><span class="token operator">: </span><a href="-bell-style/index.html">LineEditorConfig.BellStyle</a></div><div class="brief "><p class="paragraph">Audible/visible bell behavior when signaling (e.g., invalid key press).</p></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="439965549%2FProperties%2F2012386630" anchor-label="checkCursorPosition" id="439965549%2FProperties%2F2012386630" data-filterable-set=":readline4k:dokkaHtmlPartial/nativeMain"></a>
-          <div class="table-row" data-filterable-current=":readline4k:dokkaHtmlPartial/nativeMain" data-filterable-set=":readline4k:dokkaHtmlPartial/nativeMain">
+<a data-name="439965549%2FProperties%2F-1395717344" anchor-label="checkCursorPosition" id="439965549%2FProperties%2F-1395717344" data-filterable-set=":readline4k/nativeMain"></a>
+          <div class="table-row" data-filterable-current=":readline4k/nativeMain" data-filterable-set=":readline4k/nativeMain">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="check-cursor-position.html"><span>check</span><wbr><span>Cursor</span><wbr><span><span>Position</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="439965549%2FProperties%2F2012386630"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="439965549%2FProperties%2F-1395717344"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":readline4k:dokkaHtmlPartial/nativeMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="check-cursor-position.html">checkCursorPosition</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span><span class="token boolean">false</span></div><div class="brief "><p class="paragraph">If true, check cursor is at column 0 before displaying prompt (helps with messy outputs).</p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":readline4k/nativeMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="check-cursor-position.html">checkCursorPosition</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span><span class="token boolean">false</span></div><div class="brief "><p class="paragraph">If true, check cursor is at column 0 before displaying prompt (helps with messy outputs).</p></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-1064187090%2FProperties%2F2012386630" anchor-label="colorMode" id="-1064187090%2FProperties%2F2012386630" data-filterable-set=":readline4k:dokkaHtmlPartial/nativeMain"></a>
-          <div class="table-row" data-filterable-current=":readline4k:dokkaHtmlPartial/nativeMain" data-filterable-set=":readline4k:dokkaHtmlPartial/nativeMain">
+<a data-name="-1064187090%2FProperties%2F-1395717344" anchor-label="colorMode" id="-1064187090%2FProperties%2F-1395717344" data-filterable-set=":readline4k/nativeMain"></a>
+          <div class="table-row" data-filterable-current=":readline4k/nativeMain" data-filterable-set=":readline4k/nativeMain">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="color-mode.html"><span>color</span><wbr><span><span>Mode</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1064187090%2FProperties%2F2012386630"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1064187090%2FProperties%2F-1395717344"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":readline4k:dokkaHtmlPartial/nativeMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="color-mode.html">colorMode</a><span class="token operator">: </span><a href="-color-mode/index.html">LineEditorConfig.ColorMode</a></div><div class="brief "><p class="paragraph">Global colorization mode for prompts, hints, and candidates.</p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":readline4k/nativeMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="color-mode.html">colorMode</a><span class="token operator">: </span><a href="-color-mode/index.html">LineEditorConfig.ColorMode</a></div><div class="brief "><p class="paragraph">Global colorization mode for prompts, hints, and candidates.</p></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-1922469191%2FProperties%2F2012386630" anchor-label="completionPromptLimit" id="-1922469191%2FProperties%2F2012386630" data-filterable-set=":readline4k:dokkaHtmlPartial/nativeMain"></a>
-          <div class="table-row" data-filterable-current=":readline4k:dokkaHtmlPartial/nativeMain" data-filterable-set=":readline4k:dokkaHtmlPartial/nativeMain">
+<a data-name="-1922469191%2FProperties%2F-1395717344" anchor-label="completionPromptLimit" id="-1922469191%2FProperties%2F-1395717344" data-filterable-set=":readline4k/nativeMain"></a>
+          <div class="table-row" data-filterable-current=":readline4k/nativeMain" data-filterable-set=":readline4k/nativeMain">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="completion-prompt-limit.html"><span>completion</span><wbr><span>Prompt</span><wbr><span><span>Limit</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1922469191%2FProperties%2F2012386630"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1922469191%2FProperties%2F-1395717344"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":readline4k:dokkaHtmlPartial/nativeMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="completion-prompt-limit.html">completionPromptLimit</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">100</span></div><div class="brief "><p class="paragraph">Maximum number of candidates shown per page when listing matches.</p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":readline4k/nativeMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="completion-prompt-limit.html">completionPromptLimit</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">100</span></div><div class="brief "><p class="paragraph">Maximum number of candidates shown per page when listing matches.</p></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-39110273%2FProperties%2F2012386630" anchor-label="completionShowAllIfAmbiguous" id="-39110273%2FProperties%2F2012386630" data-filterable-set=":readline4k:dokkaHtmlPartial/nativeMain"></a>
-          <div class="table-row" data-filterable-current=":readline4k:dokkaHtmlPartial/nativeMain" data-filterable-set=":readline4k:dokkaHtmlPartial/nativeMain">
+<a data-name="-39110273%2FProperties%2F-1395717344" anchor-label="completionShowAllIfAmbiguous" id="-39110273%2FProperties%2F-1395717344" data-filterable-set=":readline4k/nativeMain"></a>
+          <div class="table-row" data-filterable-current=":readline4k/nativeMain" data-filterable-set=":readline4k/nativeMain">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="completion-show-all-if-ambiguous.html"><span>completion</span><wbr><span>Show</span><wbr><span>All</span><wbr><span>If</span><wbr><span><span>Ambiguous</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-39110273%2FProperties%2F2012386630"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-39110273%2FProperties%2F-1395717344"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":readline4k:dokkaHtmlPartial/nativeMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="completion-show-all-if-ambiguous.html">completionShowAllIfAmbiguous</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span><span class="token boolean">false</span></div><div class="brief "><p class="paragraph">When LIST mode is used, whether to immediately show all ambiguous matches.</p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":readline4k/nativeMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="completion-show-all-if-ambiguous.html">completionShowAllIfAmbiguous</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span><span class="token boolean">false</span></div><div class="brief "><p class="paragraph">When LIST mode is used, whether to immediately show all ambiguous matches.</p></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-1213694640%2FProperties%2F2012386630" anchor-label="completionType" id="-1213694640%2FProperties%2F2012386630" data-filterable-set=":readline4k:dokkaHtmlPartial/nativeMain"></a>
-          <div class="table-row" data-filterable-current=":readline4k:dokkaHtmlPartial/nativeMain" data-filterable-set=":readline4k:dokkaHtmlPartial/nativeMain">
+<a data-name="-1213694640%2FProperties%2F-1395717344" anchor-label="completionType" id="-1213694640%2FProperties%2F-1395717344" data-filterable-set=":readline4k/nativeMain"></a>
+          <div class="table-row" data-filterable-current=":readline4k/nativeMain" data-filterable-set=":readline4k/nativeMain">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="completion-type.html"><span>completion</span><wbr><span><span>Type</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1213694640%2FProperties%2F2012386630"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1213694640%2FProperties%2F-1395717344"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":readline4k:dokkaHtmlPartial/nativeMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="completion-type.html">completionType</a><span class="token operator">: </span><a href="-completion-type/index.html">LineEditorConfig.CompletionType</a></div><div class="brief "><p class="paragraph">Strategy for how completion is applied/presented.</p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":readline4k/nativeMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="completion-type.html">completionType</a><span class="token operator">: </span><a href="-completion-type/index.html">LineEditorConfig.CompletionType</a></div><div class="brief "><p class="paragraph">Strategy for how completion is applied/presented.</p></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-465948071%2FProperties%2F2012386630" anchor-label="editMode" id="-465948071%2FProperties%2F2012386630" data-filterable-set=":readline4k:dokkaHtmlPartial/nativeMain"></a>
-          <div class="table-row" data-filterable-current=":readline4k:dokkaHtmlPartial/nativeMain" data-filterable-set=":readline4k:dokkaHtmlPartial/nativeMain">
+<a data-name="-465948071%2FProperties%2F-1395717344" anchor-label="editMode" id="-465948071%2FProperties%2F-1395717344" data-filterable-set=":readline4k/nativeMain"></a>
+          <div class="table-row" data-filterable-current=":readline4k/nativeMain" data-filterable-set=":readline4k/nativeMain">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="edit-mode.html"><span>edit</span><wbr><span><span>Mode</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-465948071%2FProperties%2F2012386630"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-465948071%2FProperties%2F-1395717344"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":readline4k:dokkaHtmlPartial/nativeMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="edit-mode.html">editMode</a><span class="token operator">: </span><a href="-edit-mode/index.html">LineEditorConfig.EditMode</a></div><div class="brief "><p class="paragraph">Base keymap style (Emacs or Vi).</p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":readline4k/nativeMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="edit-mode.html">editMode</a><span class="token operator">: </span><a href="-edit-mode/index.html">LineEditorConfig.EditMode</a></div><div class="brief "><p class="paragraph">Base keymap style (Emacs or Vi).</p></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="1602812407%2FProperties%2F2012386630" anchor-label="enableBracketedPaste" id="1602812407%2FProperties%2F2012386630" data-filterable-set=":readline4k:dokkaHtmlPartial/nativeMain"></a>
-          <div class="table-row" data-filterable-current=":readline4k:dokkaHtmlPartial/nativeMain" data-filterable-set=":readline4k:dokkaHtmlPartial/nativeMain">
+<a data-name="1602812407%2FProperties%2F-1395717344" anchor-label="enableBracketedPaste" id="1602812407%2FProperties%2F-1395717344" data-filterable-set=":readline4k/nativeMain"></a>
+          <div class="table-row" data-filterable-current=":readline4k/nativeMain" data-filterable-set=":readline4k/nativeMain">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="enable-bracketed-paste.html"><span>enable</span><wbr><span>Bracketed</span><wbr><span><span>Paste</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1602812407%2FProperties%2F2012386630"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1602812407%2FProperties%2F-1395717344"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":readline4k:dokkaHtmlPartial/nativeMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="enable-bracketed-paste.html">enableBracketedPaste</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span><span class="token boolean">true</span></div><div class="brief "><p class="paragraph">Enables bracketed paste on Unix-like platforms to avoid accidental execution.</p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":readline4k/nativeMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="enable-bracketed-paste.html">enableBracketedPaste</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span><span class="token boolean">true</span></div><div class="brief "><p class="paragraph">Enables bracketed paste on Unix-like platforms to avoid accidental execution.</p></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="1528272332%2FProperties%2F2012386630" anchor-label="enableSignals" id="1528272332%2FProperties%2F2012386630" data-filterable-set=":readline4k:dokkaHtmlPartial/nativeMain"></a>
-          <div class="table-row" data-filterable-current=":readline4k:dokkaHtmlPartial/nativeMain" data-filterable-set=":readline4k:dokkaHtmlPartial/nativeMain">
+<a data-name="1528272332%2FProperties%2F-1395717344" anchor-label="enableSignals" id="1528272332%2FProperties%2F-1395717344" data-filterable-set=":readline4k/nativeMain"></a>
+          <div class="table-row" data-filterable-current=":readline4k/nativeMain" data-filterable-set=":readline4k/nativeMain">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="enable-signals.html"><span>enable</span><wbr><span><span>Signals</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1528272332%2FProperties%2F2012386630"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1528272332%2FProperties%2F-1395717344"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":readline4k:dokkaHtmlPartial/nativeMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="enable-signals.html">enableSignals</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span><span class="token boolean">false</span></div><div class="brief "><p class="paragraph">If true, termios signals are enabled (Unix); when false, they may be disabled.</p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":readline4k/nativeMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="enable-signals.html">enableSignals</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span><span class="token boolean">false</span></div><div class="brief "><p class="paragraph">If true, termios signals are enabled (Unix); when false, they may be disabled.</p></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-523292818%2FProperties%2F2012386630" anchor-label="enableSynchronizedOutput" id="-523292818%2FProperties%2F2012386630" data-filterable-set=":readline4k:dokkaHtmlPartial/nativeMain"></a>
-          <div class="table-row" data-filterable-current=":readline4k:dokkaHtmlPartial/nativeMain" data-filterable-set=":readline4k:dokkaHtmlPartial/nativeMain">
+<a data-name="-523292818%2FProperties%2F-1395717344" anchor-label="enableSynchronizedOutput" id="-523292818%2FProperties%2F-1395717344" data-filterable-set=":readline4k/nativeMain"></a>
+          <div class="table-row" data-filterable-current=":readline4k/nativeMain" data-filterable-set=":readline4k/nativeMain">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="enable-synchronized-output.html"><span>enable</span><wbr><span>Synchronized</span><wbr><span><span>Output</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-523292818%2FProperties%2F2012386630"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-523292818%2FProperties%2F-1395717344"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":readline4k:dokkaHtmlPartial/nativeMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="enable-synchronized-output.html">enableSynchronizedOutput</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span><span class="token boolean">true</span></div><div class="brief "><p class="paragraph">Enables synchronized output on Unix-like platforms to reduce flicker/tearing.</p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":readline4k/nativeMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="enable-synchronized-output.html">enableSynchronizedOutput</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span><span class="token boolean">true</span></div><div class="brief "><p class="paragraph">Enables synchronized output on Unix-like platforms to reduce flicker/tearing.</p></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="855377944%2FProperties%2F2012386630" anchor-label="historyDuplicates" id="855377944%2FProperties%2F2012386630" data-filterable-set=":readline4k:dokkaHtmlPartial/nativeMain"></a>
-          <div class="table-row" data-filterable-current=":readline4k:dokkaHtmlPartial/nativeMain" data-filterable-set=":readline4k:dokkaHtmlPartial/nativeMain">
+<a data-name="855377944%2FProperties%2F-1395717344" anchor-label="historyDuplicates" id="855377944%2FProperties%2F-1395717344" data-filterable-set=":readline4k/nativeMain"></a>
+          <div class="table-row" data-filterable-current=":readline4k/nativeMain" data-filterable-set=":readline4k/nativeMain">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="history-duplicates.html"><span>history</span><wbr><span><span>Duplicates</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="855377944%2FProperties%2F2012386630"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="855377944%2FProperties%2F-1395717344"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":readline4k:dokkaHtmlPartial/nativeMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="history-duplicates.html">historyDuplicates</a><span class="token operator">: </span><a href="-history-duplicates/index.html">LineEditorConfig.HistoryDuplicates</a></div><div class="brief "><p class="paragraph">Strategy for handling duplicate consecutive history lines.</p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":readline4k/nativeMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="history-duplicates.html">historyDuplicates</a><span class="token operator">: </span><a href="-history-duplicates/index.html">LineEditorConfig.HistoryDuplicates</a></div><div class="brief "><p class="paragraph">Strategy for handling duplicate consecutive history lines.</p></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="19173414%2FProperties%2F2012386630" anchor-label="historyIgnoreSpace" id="19173414%2FProperties%2F2012386630" data-filterable-set=":readline4k:dokkaHtmlPartial/nativeMain"></a>
-          <div class="table-row" data-filterable-current=":readline4k:dokkaHtmlPartial/nativeMain" data-filterable-set=":readline4k:dokkaHtmlPartial/nativeMain">
+<a data-name="19173414%2FProperties%2F-1395717344" anchor-label="historyIgnoreSpace" id="19173414%2FProperties%2F-1395717344" data-filterable-set=":readline4k/nativeMain"></a>
+          <div class="table-row" data-filterable-current=":readline4k/nativeMain" data-filterable-set=":readline4k/nativeMain">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="history-ignore-space.html"><span>history</span><wbr><span>Ignore</span><wbr><span><span>Space</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="19173414%2FProperties%2F2012386630"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="19173414%2FProperties%2F-1395717344"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":readline4k:dokkaHtmlPartial/nativeMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="history-ignore-space.html">historyIgnoreSpace</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span><span class="token boolean">false</span></div><div class="brief "><p class="paragraph">If true, lines starting with a space are not added to history.</p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":readline4k/nativeMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="history-ignore-space.html">historyIgnoreSpace</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span><span class="token boolean">false</span></div><div class="brief "><p class="paragraph">If true, lines starting with a space are not added to history.</p></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="706616345%2FProperties%2F2012386630" anchor-label="indentSize" id="706616345%2FProperties%2F2012386630" data-filterable-set=":readline4k:dokkaHtmlPartial/nativeMain"></a>
-          <div class="table-row" data-filterable-current=":readline4k:dokkaHtmlPartial/nativeMain" data-filterable-set=":readline4k:dokkaHtmlPartial/nativeMain">
+<a data-name="706616345%2FProperties%2F-1395717344" anchor-label="indentSize" id="706616345%2FProperties%2F-1395717344" data-filterable-set=":readline4k/nativeMain"></a>
+          <div class="table-row" data-filterable-current=":readline4k/nativeMain" data-filterable-set=":readline4k/nativeMain">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="indent-size.html"><span>indent</span><wbr><span><span>Size</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="706616345%2FProperties%2F2012386630"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="706616345%2FProperties%2F-1395717344"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":readline4k:dokkaHtmlPartial/nativeMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="indent-size.html">indentSize</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">2</span></div><div class="brief "><p class="paragraph">Indentation size used by indent/dedent editor commands.</p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":readline4k/nativeMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="indent-size.html">indentSize</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">2</span></div><div class="brief "><p class="paragraph">Indentation size used by indent/dedent editor commands.</p></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="1428676595%2FProperties%2F2012386630" anchor-label="keySeqTimeout" id="1428676595%2FProperties%2F2012386630" data-filterable-set=":readline4k:dokkaHtmlPartial/nativeMain"></a>
-          <div class="table-row" data-filterable-current=":readline4k:dokkaHtmlPartial/nativeMain" data-filterable-set=":readline4k:dokkaHtmlPartial/nativeMain">
+<a data-name="1428676595%2FProperties%2F-1395717344" anchor-label="keySeqTimeout" id="1428676595%2FProperties%2F-1395717344" data-filterable-set=":readline4k/nativeMain"></a>
+          <div class="table-row" data-filterable-current=":readline4k/nativeMain" data-filterable-set=":readline4k/nativeMain">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="key-seq-timeout.html"><span>key</span><wbr><span>Seq</span><wbr><span><span>Timeout</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1428676595%2FProperties%2F2012386630"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1428676595%2FProperties%2F-1395717344"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":readline4k:dokkaHtmlPartial/nativeMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="key-seq-timeout.html">keySeqTimeout</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator">?</span><span class="token operator"> = </span>null</div><div class="brief "><p class="paragraph">Milliseconds to wait when reading an ambiguous key sequence; null uses the default.</p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":readline4k/nativeMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="key-seq-timeout.html">keySeqTimeout</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator">?</span><span class="token operator"> = </span>null</div><div class="brief "><p class="paragraph">Milliseconds to wait when reading an ambiguous key sequence; null uses the default.</p></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-1899570123%2FProperties%2F2012386630" anchor-label="maxHistorySize" id="-1899570123%2FProperties%2F2012386630" data-filterable-set=":readline4k:dokkaHtmlPartial/nativeMain"></a>
-          <div class="table-row" data-filterable-current=":readline4k:dokkaHtmlPartial/nativeMain" data-filterable-set=":readline4k:dokkaHtmlPartial/nativeMain">
+<a data-name="-1899570123%2FProperties%2F-1395717344" anchor-label="maxHistorySize" id="-1899570123%2FProperties%2F-1395717344" data-filterable-set=":readline4k/nativeMain"></a>
+          <div class="table-row" data-filterable-current=":readline4k/nativeMain" data-filterable-set=":readline4k/nativeMain">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="max-history-size.html"><span>max</span><wbr><span>History</span><wbr><span><span>Size</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1899570123%2FProperties%2F2012386630"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1899570123%2FProperties%2F-1395717344"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":readline4k:dokkaHtmlPartial/nativeMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="max-history-size.html">maxHistorySize</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">100</span></div><div class="brief "><p class="paragraph">Maximum number of entries stored in history before older ones are dropped.</p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":readline4k/nativeMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="max-history-size.html">maxHistorySize</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">100</span></div><div class="brief "><p class="paragraph">Maximum number of entries stored in history before older ones are dropped.</p></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-1561807747%2FProperties%2F2012386630" anchor-label="tabStop" id="-1561807747%2FProperties%2F2012386630" data-filterable-set=":readline4k:dokkaHtmlPartial/nativeMain"></a>
-          <div class="table-row" data-filterable-current=":readline4k:dokkaHtmlPartial/nativeMain" data-filterable-set=":readline4k:dokkaHtmlPartial/nativeMain">
+<a data-name="-1561807747%2FProperties%2F-1395717344" anchor-label="tabStop" id="-1561807747%2FProperties%2F-1395717344" data-filterable-set=":readline4k/nativeMain"></a>
+          <div class="table-row" data-filterable-current=":readline4k/nativeMain" data-filterable-set=":readline4k/nativeMain">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="tab-stop.html"><span>tab</span><wbr><span><span>Stop</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1561807747%2FProperties%2F2012386630"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1561807747%2FProperties%2F-1395717344"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":readline4k:dokkaHtmlPartial/nativeMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="tab-stop.html">tabStop</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">8</span></div><div class="brief "><p class="paragraph">Horizontal width of a tab character, used for cursor computations.</p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":readline4k/nativeMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="tab-stop.html">tabStop</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">8</span></div><div class="brief "><p class="paragraph">Horizontal width of a tab character, used for cursor computations.</p></div></div></div>
                 </div>
               </div>
             </div>
