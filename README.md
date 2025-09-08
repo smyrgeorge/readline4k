@@ -112,6 +112,8 @@ fun main() {
 }
 ```
 
+See more examples [here](./examples/src/nativeMain/kotlin/io/github/smyrgeorge/readline4k/examples)
+
 ## Actions
 
 For all modes:

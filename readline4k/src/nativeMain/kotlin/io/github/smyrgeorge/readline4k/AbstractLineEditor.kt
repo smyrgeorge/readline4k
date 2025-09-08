@@ -1,11 +1,46 @@
 package io.github.smyrgeorge.readline4k
 
 import io.github.smyrgeorge.readline4k.LineEditorError.Companion.couldNotInstantiateTheEditor
-import io.github.smyrgeorge.readline4k.impl.*
-import kotlinx.cinterop.*
+import io.github.smyrgeorge.readline4k.LineEditorError.Companion.editorIsDisposed
+import io.github.smyrgeorge.readline4k.impl.candidateHighlighterCallback
+import io.github.smyrgeorge.readline4k.impl.charHighlighterCallback
+import io.github.smyrgeorge.readline4k.impl.completerCallback
+import io.github.smyrgeorge.readline4k.impl.highlighterCallback
+import io.github.smyrgeorge.readline4k.impl.hintHighlighterCallback
+import io.github.smyrgeorge.readline4k.impl.promptHighlighterCallback
+import io.github.smyrgeorge.readline4k.impl.toCValue
+import io.github.smyrgeorge.readline4k.impl.toStringResult
+import io.github.smyrgeorge.readline4k.impl.toUnitResult
+import io.github.smyrgeorge.readline4k.impl.validatorCallback
+import io.github.smyrgeorge.readline4k.impl.validatorWhileTypingCallback
+import kotlinx.cinterop.COpaquePointer
+import kotlinx.cinterop.CValue
+import kotlinx.cinterop.ExperimentalForeignApi
+import kotlinx.cinterop.StableRef
+import kotlinx.cinterop.memScoped
+import kotlinx.cinterop.staticCFunction
 import kotlinx.io.files.Path
 import kotlinx.io.files.SystemFileSystem
-import readline4k.*
+import readline4k.EditorConfig
+import readline4k.editor_add_history_entry
+import readline4k.editor_clear_history
+import readline4k.editor_clear_screen
+import readline4k.editor_load_history
+import readline4k.editor_read_line
+import readline4k.editor_save_history
+import readline4k.editor_set_auto_add_history
+import readline4k.editor_set_candidate_highlighter
+import readline4k.editor_set_char_highlighter
+import readline4k.editor_set_color_mode
+import readline4k.editor_set_completer
+import readline4k.editor_set_cursor_visibility
+import readline4k.editor_set_highlighter
+import readline4k.editor_set_hint_highlighter
+import readline4k.editor_set_prompt_highlighter
+import readline4k.editor_set_validator
+import readline4k.editor_set_validator_while_typing
+import readline4k.free_editor
+import readline4k.new_editor_with_config
 
 /**
  * Abstract base for interactive line editors backed by a native engine.
@@ -16,7 +51,7 @@ import readline4k.*
  *
  * Typical usage:
  * - Instantiate a concrete editor (e.g., SimpleLineEditor) with a prompt prefix and optional [config].
- * - Optionally attach a [Completer] via [installCompleter] and/or a [Highlighter] via [installHighlighter].
+ * - Optionally attach a [Completer] via [setCompleter] and/or a [Highlighter] via [setHighlighter].
  * - Call [readLine] in a loop; handle the returned [Result].
  * - Optionally persist history with [loadHistory] and [saveHistory].
  *
@@ -29,20 +64,21 @@ import readline4k.*
  * @property linePrefix The prompt/prefix displayed before each input (e.g., "> ").
  * @property config The immutable configuration used to initialize the native editor.
  */
-@Suppress("unused")
 @OptIn(ExperimentalForeignApi::class)
 abstract class AbstractLineEditor(
     val linePrefix: String,
     val config: LineEditorConfig,
-) {
+) : AutoCloseable {
     private val holder: CallbacksHolder = CallbacksHolder()
     private val holderRef: StableRef<CallbacksHolder> = StableRef.create(holder)
     private val holderPointer: COpaquePointer = holderRef.asCPointer()
 
-    private val rl: COpaquePointer = memScoped {
+    private var _rl: COpaquePointer? = memScoped {
         val cfg: CValue<EditorConfig> = config.toCValue()
         new_editor_with_config(cfg.ptr, holderPointer) ?: couldNotInstantiateTheEditor()
     }
+
+    private val rl: COpaquePointer = _rl ?: editorIsDisposed()
 
     /**
      * Reads a single line of input from the user, optionally displaying a [prefix] at the start of the line.
@@ -110,7 +146,7 @@ abstract class AbstractLineEditor(
      * Set the color rendering mode used by the editor for prompts, hints, and highlights.
      *
      * This controls how ANSI color sequences are produced or suppressed based on the selected
-     * [LineEditorConfig.ColorMode]. Typically you would choose AUTO to respect terminal support,
+     * [LineEditorConfig.ColorMode]. Typically, you would choose AUTO to respect terminal support,
      * FORCE to always emit colors, or NONE to disable colors entirely.
      *
      * @param value The desired color mode.
@@ -121,7 +157,7 @@ abstract class AbstractLineEditor(
      * Install a [Completer] which will be consulted during completion (e.g., Tab).
      * Returns this editor instance for chaining.
      */
-    fun installCompleter(completer: Completer): AbstractLineEditor {
+    fun setCompleter(completer: Completer): AbstractLineEditor {
         holder.completer = completer
         editor_set_completer(rl, staticCFunction(::completerCallback))
         return this
@@ -131,7 +167,7 @@ abstract class AbstractLineEditor(
      * Install a [Highlighter] to customize visual presentation of hints, prompts, and candidates.
      * Returns this editor instance for chaining.
      */
-    fun installHighlighter(highlighter: Highlighter): AbstractLineEditor {
+    fun setHighlighter(highlighter: Highlighter): AbstractLineEditor {
         holder.highlighter = highlighter
         editor_set_highlighter(rl, staticCFunction(::highlighterCallback))
         editor_set_hint_highlighter(rl, staticCFunction(::hintHighlighterCallback))
@@ -149,12 +185,42 @@ abstract class AbstractLineEditor(
      * @param validator The [Validator] instance responsible for handling validation logic.
      * @return The current [AbstractLineEditor] instance, enabling chained method calls.
      */
-    fun installValidator(validator: Validator): AbstractLineEditor {
+    fun setValidator(validator: Validator): AbstractLineEditor {
         holder.validator = validator
         editor_set_validator(rl, staticCFunction(::validatorCallback))
         editor_set_validator_while_typing(rl, staticCFunction(::validatorWhileTypingCallback))
         return this
     }
+
+    /**
+     * Disposes of resources held by the editor and performs cleanup tasks.
+     *
+     * This method releases any native resources and handles the associated cleanup tasks
+     * to ensure proper memory and state management. It should be called when the editor
+     * is no longer needed to avoid resource leaks or undefined behaviors in dependent
+     * components.
+     *
+     * Specifically, this method:
+     * - Frees the underlying native editor resources through [free_editor].
+     * - Disposes of the reference held by [holderRef].
+     * - Sets any nullable references, such as [_rl], to null to assist in garbage collection.
+     */
+    fun dispose() {
+        free_editor(rl)
+        holderRef.dispose()
+        _rl = null
+    }
+
+    /**
+     * Closes the editor by disposing of its resources and performing necessary cleanup tasks.
+     *
+     * This method ensures that all resources held by the editor are properly released,
+     * preventing resource leaks or undefined behaviors in dependent components. It
+     * effectively invokes the `dispose` method internally.
+     *
+     * @return Unit, indicating that the close operation completes without any result.
+     */
+    final override fun close(): Unit = dispose()
 
     /**
      * Holds user-supplied strategy objects so they can be accessed from native callbacks.

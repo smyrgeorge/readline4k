@@ -5,7 +5,7 @@ import io.github.smyrgeorge.readline4k.impl.SimpleLineEditor
 
 object ReadPassword {
     fun main() {
-        val editor = SimpleLineEditor().installHighlighter(PasswordHighlighter())
+        val editor = SimpleLineEditor().setHighlighter(PasswordHighlighter())
         println("Welcome to the LineEditor ReadPassword example!")
         println("Press Ctrl+C to exit")
         editor.setAutoAddHistory(false) // Make sure password is not added to history.

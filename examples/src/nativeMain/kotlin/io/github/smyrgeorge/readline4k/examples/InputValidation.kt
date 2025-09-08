@@ -15,7 +15,7 @@ object InputValidation {
     }
 
     fun main() {
-        val editor = SimpleLineEditor().installValidator(NumberValidator())
+        val editor = SimpleLineEditor().setValidator(NumberValidator())
         println("Welcome to the LineEditor InputValidation example!")
         println("Press Ctrl+C to exit")
         val line = editor.readLine("Number only> ").getOrElse { return }

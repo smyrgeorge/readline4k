@@ -24,8 +24,8 @@ object Default {
         ).also { editor ->
             // Set up the completer and highlighter.
             editor
-                .installCompleter(SimpleFileCompleter()) // Provides file completion (optional).
-                .installHighlighter(SimpleHighlighter()) // Provides color highlighting (optional).
+                .setCompleter(SimpleFileCompleter()) // Provides file completion (optional).
+                .setHighlighter(SimpleHighlighter()) // Provides color highlighting (optional).
 
             // Load the history from the disk (throws LineEditorError if it fails).
             editor.loadHistory(history).getOrThrow()

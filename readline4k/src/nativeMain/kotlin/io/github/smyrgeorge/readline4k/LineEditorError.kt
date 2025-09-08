@@ -15,7 +15,7 @@ class LineEditorError(
     message: String? = null,
 ) : RuntimeException("[$code] :: $message") {
     enum class Code {
-        // IMPORTANT: Do not change the order the errors.
+        // IMPORTANT: Do not change the order of the errors.
         // Error from the underlying driver:
         Eof,
         Interrupted,
@@ -25,5 +25,7 @@ class LineEditorError(
     companion object {
         internal fun couldNotInstantiateTheEditor(): Nothing =
             throw LineEditorError(Code.Unknown, "Could not instantiate the editor.")
+        internal fun editorIsDisposed(): Nothing =
+            throw LineEditorError(Code.Unknown, "Editor is disposed.")
     }
 }
