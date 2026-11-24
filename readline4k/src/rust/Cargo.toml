@@ -14,7 +14,7 @@ panic = "abort"
 
 [dependencies]
 # https://crates.io/crates/rustyline
-rustyline = "18.0.0"
+rustyline = "19.0.0"
 # https://crates.io/crates/rustyline-derive
 rustyline-derive = "0.12.0"
 
